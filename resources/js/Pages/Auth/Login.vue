@@ -2,7 +2,7 @@
 import logo from '@/assets/logo.png'
 
 import {Head, Link, useForm, usePage} from '@inertiajs/vue3';
-import {watch} from "vue";
+import ziggyRoute from "ziggy-js";
 
 defineProps<{
     canResetPassword?: boolean;
@@ -24,10 +24,6 @@ const submit = () => {
         },
     });
 };
-
-watch(() => page.props.errors, () => {
-    console.log(page.props.errors)
-})
 </script>
 
 <template>
@@ -63,10 +59,14 @@ watch(() => page.props.errors, () => {
                         <span v-if="page.props.errors.email" class="label-text-alt text-error">{{ page.props.errors.email}}</span>
                     </label>
                     <div>
-                        <button type="submit" class="btn btn-primary w-full">Inciar sesión</button>
+                        <button type="submit" class="btn btn-primary w-full">Iniciar sesión</button>
                     </div>
                 </form>
 
+                <p class="mt-10 text-center text-sm text-gray-500">
+                    ¿Aún no tienes cuenta?
+                    <Link :href="ziggyRoute('register')" class="font-semibold leading-6 text-primary hover:text-primary-focus">Registrate</Link>
+                </p>
             </div>
         </div>
 </template>

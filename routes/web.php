@@ -18,12 +18,11 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    if(!auth()->check()) {
+        return redirect()->route('login');
+    }
+
+    return redirect()->route( auth()->user()->isAdmin() ? 'filament.admin.pages.dashboard' : 'dashboard');
 });
 
 Route::get('/dashboard', function () {

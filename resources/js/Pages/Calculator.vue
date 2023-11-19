@@ -33,7 +33,7 @@ const quantity = ref(0);
                 <p class="text-base font-semibold leading-7 text-primary">Introducir información nutricional para 100g/ml</p>
             </div>
         </div>
-        <div class="mx-8 my-2">
+        <div class="mx-8 my-2 md:flex md:justify-between">
 
             <div class="form-control w-full max-w-xs">
                 <label class="label">
