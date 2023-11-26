@@ -5,9 +5,9 @@ import NavBar from "@/Components/Layout/NavBar.vue";
 import ziggyRoute from "ziggy-js";
 
 const points = computed(() => {
-    if(!calories.value || !fats.value || !sugars.value || !proteins.value || !quantity.value) return '-';
+    if(!calories.value || !quantity.value) return '-';
 
-    return Math.round(((calories.value * 0.0305) + (fats.value * 0.275) + (sugars.value * 0.12) - (proteins.value * 0.098)) * (quantity.value / 100))
+    return Math.round((((calories.value * 0.0305) + (fats.value * 0.275) + (sugars.value * 0.12) - (proteins.value * 0.098)) * (quantity.value / 100)) * 2) / 2;
 })
 
 const calories = ref(0);
@@ -43,9 +43,9 @@ const quantity = ref(0);
             </div>
             <div class="form-control w-full max-w-xs">
                 <label class="label">
-                    <span class="label-text">Proteínas</span>
+                    <span class="label-text">Grasas saturadas</span>
                 </label>
-                <input v-model.number="proteins" @focus="$event.target.select()" type="number" class="input input-bordered  w-full max-w-xs focus:border-primary" />
+                <input v-model.number="fats" @focus="$event.target.select()" type="number" class="input input-bordered  w-full max-w-xs focus:border-primary" />
             </div>
             <div class="form-control w-full max-w-xs">
                 <label class="label">
@@ -55,9 +55,9 @@ const quantity = ref(0);
             </div>
             <div class="form-control w-full max-w-xs">
                 <label class="label">
-                    <span class="label-text">Grasas saturadas</span>
+                    <span class="label-text">Proteínas</span>
                 </label>
-                <input v-model.number="fats" @focus="$event.target.select()" type="number" class="input input-bordered  w-full max-w-xs focus:border-primary" />
+                <input v-model.number="proteins" @focus="$event.target.select()" type="number" class="input input-bordered  w-full max-w-xs focus:border-primary" />
             </div>
             <div class="form-control w-full max-w-xs">
                 <label class="label">
