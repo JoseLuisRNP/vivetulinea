@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Invitation;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -37,15 +38,26 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $invitation = Invitation::firstWhere('email', $request->email);
+
+        if(!$invitation) {
+            return redirect()->back()->withErrors([
+                'email' => 'No se ha encontrado ninguna invitación para este email.',
+            ]);
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'dietician_id' => $invitation->dietician_id ?? '',
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
+        
+        $invitation->delete();
 
         return redirect(RouteServiceProvider::HOME);
     }

@@ -3,12 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -39,6 +41,11 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
+    public function isDietician()
+    {
+        return $this->role === 'dietician';
+    }
+
     public function dietician()
     {
         return $this->belongsTo(User::class, 'dietician_id');
@@ -46,5 +53,10 @@ class User extends Authenticatable
 
     public function members(){
         return $this->hasMany(User::class, 'dietician_id');
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->isAdmin() || $this->isDietician();
     }
 }
