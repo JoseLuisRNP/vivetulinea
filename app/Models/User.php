@@ -51,6 +51,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->role === 'member';
     }
 
+    public function isActive()
+    {
+        return now()->diff($this->created_at)->days < 10;
+    }
+
     public function dietician()
     {
         return $this->belongsTo(User::class, 'dietician_id');
