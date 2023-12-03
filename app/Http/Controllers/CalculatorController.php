@@ -2,13 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class CalculatorController extends Controller
 {
     public function show()
     {
-        return Inertia::render('Calculator');
+
+        $prevRoute = url()->previous();
+
+        $backTo = Str::contains($prevRoute, 'dashboard') ? 'dashboard' : 'menu';
+
+        $dayActive = \request('dayActive');
+
+        return Inertia::render('Calculator' , [
+            'backTo' => $backTo,
+            'dayActive' => $dayActive,
+        ]);
     }
 }

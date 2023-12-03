@@ -1,9 +1,10 @@
 <?php
 
 use App\Http\Controllers\CalculatorController;
+use App\Http\Controllers\MenuAppController;
+use App\Http\Controllers\PointsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\HandleActiveUsersMiddleware;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -23,7 +24,7 @@ Route::get('/', function () {
         return redirect()->route('login');
     }
 
-    return redirect()->route( auth()->user()->isAdmin() ? 'filament.admin.pages.dashboard' : 'dashboard');
+    return redirect()->route( auth()->user()->isAdmin() ? 'filament.admin.pages.dashboard' : 'menu');
 });
 
 
@@ -36,6 +37,8 @@ Route::middleware(['auth', HandleActiveUsersMiddleware::class])->group(function 
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('calculator', [CalculatorController::class, 'show'])->name('calculator');
+    Route::get('menu', MenuAppController::class)->name('menu');
+    Route::post('points/store', [PointsController::class, 'store'])->name('points.store');
 });
 
 require __DIR__.'/auth.php';

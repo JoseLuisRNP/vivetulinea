@@ -49,7 +49,7 @@ export default {
                     'base-content' : '#1e2734',
 
                     'info' : '#1c92f2',
-                    'success' : '#009485',
+                    'success' : '#9ec151',
                     'warning' : '#ff9900',
                     'error' : '#ff5724',
 
