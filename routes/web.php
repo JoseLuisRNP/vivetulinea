@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CalculatorController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MenuAppController;
 use App\Http\Controllers\PointsController;
 use App\Http\Controllers\ProfileController;
@@ -30,15 +31,14 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth', HandleActiveUsersMiddleware::class])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->middleware(['verified'])->name('dashboard');
+    Route::get('/dashboard', DashboardController::class)->middleware(['verified'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('calculator', [CalculatorController::class, 'show'])->name('calculator');
     Route::get('menu', MenuAppController::class)->name('menu');
     Route::post('points/store', [PointsController::class, 'store'])->name('points.store');
+    Route::get('points', [PointsController::class, 'show'])->name('points.show');
 });
 
 require __DIR__.'/auth.php';

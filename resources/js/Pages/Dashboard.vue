@@ -1,17 +1,30 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import NavBar from "@/Components/Layout/NavBar.vue";
 import { Link } from '@inertiajs/vue3';
 import ziggyRoute from "ziggy-js";
-import {ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
+import {times} from "@/data";
 
-const times = [
-    'Desayuno',
-    'Media mañana',
-    'Almuerzo',
-    'Merienda',
-    'Cena',
-]
+interface Meal {
+    id: number,
+    name: string,
+    points: number,
+    quantity: number,
+    consumed_at: string,
+}
+
+interface Meals {
+    [key: string]: Meal[]
+}
+
+const props = defineProps<{
+    meals: Meals,
+    remainingPoints: number,
+    weekRemainingPoints: number,
+    pointsByColor: Record<string, number>,
+}>();
+
 
 const oneDay = 24 * 60 * 60 * 1000;
 const dayActive = ref(new Date());
@@ -26,7 +39,19 @@ const prevDay = () => {
 
 watch(dayActive, () => {
     // Get points of this day
+    router.reload({data: {dayActive: dayActive.value.toISOString()}});
+})
 
+const getTotalPoints = (array: Meal[]) => array ?  array.reduce((acc, meal) => acc + meal.points, 0) : 0;
+
+const totalPointsPerMeal = computed(() => {
+    const result = {} as Record<string, number>;
+
+    times.forEach((time) => {
+        result[time] = getTotalPoints(props.meals[time]) ;
+    })
+
+    return result;
 })
 </script>
 
@@ -56,13 +81,13 @@ watch(dayActive, () => {
 
                 <div class="flex justify-between w-full px-8 py-4">
                     <div class="flex flex-col items-center">
-                        <div class="text-4xl">20</div>
+                        <div class="text-4xl">{{ weekRemainingPoints }}</div>
                         <div class="text-xs">semanales</div>
                         <div class="text-xs">restantes</div>
                     </div>
                     <div class="flex items-center">No contar</div>
                     <div class="flex flex-col items-center">
-                        <div class="text-4xl">20</div>
+                        <div class="text-4xl">{{ Math.max(remainingPoints, 0) }}</div>
                         <div class="text-xs">diarios</div>
                         <div class="text-xs">restantes</div>
                     </div>
@@ -70,19 +95,19 @@ watch(dayActive, () => {
             <div class="m-4 flex justify-evenly w-full text-xs">
                 <div class="flex items-center">
                     <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                    <div>5 puntos</div>
+                    <div>{{pointsByColor['blue'] || 0}} puntos</div>
                 </div>
                 <div class="flex items-center">
                     <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                    <div>3 puntos</div>
-                </div>
-                <div class="flex items-center">
-                    <div class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></div>
-                    <div>8 puntos</div>
+                    <div>{{pointsByColor['green'] || 0}} puntos</div>
                 </div>
                 <div class="flex items-center">
                     <div class="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-                    <div>3 puntos</div>
+                    <div>{{pointsByColor['red'] || 0}} puntos</div>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></div>
+                    <div>{{pointsByColor['yellow'] || 0}} puntos</div>
                 </div>
             </div>
             <div @click.stop>
@@ -94,49 +119,31 @@ watch(dayActive, () => {
         <div>
             <div class="collapse collapse-arrow bg-base-200" v-for="time in times" :key="time">
                 <input type="checkbox" class="peer w-full" />
-                <div class="collapse-title bg-primary-content text-primary peer-checked:bg-primary-content peer-checked:text-primary">
+                <div class="collapse-title bg-primary-content text-primary peer-checked:bg-primary-content peer-checked:text-primary flex justify-between items-center">
                     {{ time }}
+                    <Link :href="ziggyRoute('points.show', {time, dayActive})" class="text-primary-content bg-primary rounded-full h-3 w-3 flex items-center justify-center p-3 z-10">+</Link>
                 </div>
                 <div class="collapse-content bg-primary-content text-primary peer-checked:bg-primary-content peer-checked:text-primary">
                     <ul class="ml-4 text-neutral">
-                        <li class="border-b py-2">
+                        <li class="border-b py-2" v-for="meal in meals[time]" :key="meal.id">
                             <div class="flex items-center">
-                                <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                                <div class="w-2 h-2 bg-blue-500 rounded-full mr-2" :class="{
+                                    'bg-blue-500': meal.color === 'blue',
+                                    'bg-green-500': meal.color === 'green',
+                                    'bg-yellow-500': meal.color === 'yellow',
+                                    'bg-red-500': meal.color === 'red',
+                                }"></div>
                                 <div class="flex justify-between w-full items-center">
                                     <div>
-                                        <div class="text-sm">Pollo</div>
-                                        <div class="text-xs">140g</div>
+                                        <div class="text-sm">{{meal.name}}</div>
+                                        <div class="text-xs">{{  meal.quantity }}g</div>
                                     </div>
-                                    <div class="text-sm">5 puntos</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="border-b py-2">
-                            <div class="flex items-center">
-                                <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                                <div class="flex justify-between w-full items-center">
-                                    <div>
-                                        <div class="text-sm">Lechuga</div>
-                                        <div class="text-xs">300g</div>
-                                    </div>
-                                    <div class="text-sm">2 puntos</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="border-b py-2">
-                            <div class="flex items-center">
-                                <div class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></div>
-                                <div class="flex justify-between w-full items-center">
-                                    <div>
-                                        <div class="text-sm">Patatas</div>
-                                        <div class="text-xs">140g</div>
-                                    </div>
-                                    <div class="text-sm">10 puntos</div>
+                                    <div class="text-sm">{{meal.points}} puntos</div>
                                 </div>
                             </div>
                         </li>
                     </ul>
-                    <div class="text-neutral text-right py-2">Total: <span class="font-bold">17 puntos</span> </div>
+                    <div class="text-neutral text-right py-2">Total: <span class="font-bold">{{totalPointsPerMeal[time]}} puntos</span> </div>
                 </div>
             </div>
 
