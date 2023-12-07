@@ -78,6 +78,7 @@ watch(search, () => {
 const resultsWrapper = ref();
 
 onClickOutside(resultsWrapper, () => {
+    if(!openResults.value) return;
     openResults.value= false
 })
 </script>
