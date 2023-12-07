@@ -23,6 +23,7 @@
         "vue-tsc": "^1.2.0"
     },
     "dependencies": {
+        "@vueuse/core": "^10.7.0",
         "vue-toastification": "^2.0.0-rc.5"
     }
 }

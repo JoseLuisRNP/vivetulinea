@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('meals', function (Blueprint $table) {
-            $table->string('time_of_day')->default('Desayuno');
+        Schema::create('no_count_days', function (Blueprint $table) {
+            $table->id();
+            $table->timestamp('date');
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamps();
         });
     }
 };

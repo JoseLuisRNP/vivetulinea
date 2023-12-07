@@ -1,26 +1,35 @@
-<script setup>
-import {Head, router, usePage} from '@inertiajs/vue3';
+<script setup lang="ts">
+import { Head, router } from '@inertiajs/vue3';
 import NavBar from "@/Components/Layout/NavBar.vue";
-import { Link } from '@inertiajs/vue3';
 import ziggyRoute from "ziggy-js";
 import {computed, ref, watch} from "vue";
 import {times} from "@/data";
 
+const props = defineProps<{
+    food: any
+}>();
 
 const urlParams = new URLSearchParams(window.location.search);
 const dayActiveParam = urlParams.get('dayActive') || new Date().toISOString();
 const dayActive = ref(new Date(dayActiveParam));
 
 const quantity = ref(0);
-const name = ref('');
-const color = ref('yellow');
-const timeOfDay = ref(urlParams.get('time') || 'Snack');
+const name = ref(props.food?.name || '');
+const color = ref(props.food?.color || 'yellow');
+const timeOfDay = ref(urlParams.get('time') || 'Desayuno');
 const points = ref(0);
+const noCountDay = ref(urlParams.get('noCountDay'))
+
+const calculatedPoints = computed(() => {
+    if(!props.food || (noCountDay.value && props.food.no_count)) return 0;
+
+    return Math.max(Math.round((quantity.value * props.food.points / props.food.quantity * 2) / 2), 0);
+})
 
 const registerPoints = () => {
     const data = {
         quantity: quantity.value,
-        points: points.value,
+        points: props.food ? calculatedPoints.value : points.value,
         name: name.value,
         color: color.value,
         time_of_day: timeOfDay.value,
@@ -39,7 +48,7 @@ const registerPoints = () => {
         <div class="px-6 py-4 sm:py-32 lg:px-8">
             <div class="mx-auto max-w-2xl text-center">
                 <h2 class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Puntos</h2>
-                <p class="text-base font-semibold leading-7 text-primary">Añade tus puntos manualmente</p>
+                <p class="text-base font-semibold leading-7 text-primary">{{ food ? 'Registra puntos del alimento' : 'Añade tus puntos manualmente' }}</p>
             </div>
         </div>
         <div class="flex flex-col justify-center my-8">
@@ -48,9 +57,9 @@ const registerPoints = () => {
                     <label class="label">
                         <span class="label-text">Nombre</span>
                     </label>
-                    <input v-model="name" @focus="$event.target.select()" type="text" placeholder="Alimento" class="input input-bordered  w-full max-w-xs focus:border-primary" />
+                    <input v-model="name" @focus="$event.target.select()" type="text" placeholder="Alimento" class="input input-bordered  w-full max-w-xs focus:border-primary" :disabled="food"/>
                 </div>
-                <div class="form-control w-full max-w-xs">
+                <div class="form-control w-full max-w-xs" v-if="!food">
                     <label class="label">
                         <span class="label-text">Puntos</span>
                     </label>
@@ -60,9 +69,9 @@ const registerPoints = () => {
                     <label class="label">
                         <span class="label-text">Cantidad</span>
                     </label>
-                    <input v-model.number="quantity" @focus="$event.target.select()" type="number" placeholder="Alimento" class="input input-bordered  w-full max-w-xs focus:border-primary" />
+                    <input v-model.number="quantity" @focus="$event.target.select()" type="number" placeholder="0" class="input input-bordered  w-full max-w-xs focus:border-primary" />
                 </div>
-                <div class="form-control w-full max-w-xs">
+                <div class="form-control w-full max-w-xs" v-if="!food">
                     <label class="label">
                         <span class="label-text">Color</span>
                     </label>
@@ -80,6 +89,11 @@ const registerPoints = () => {
                     <select v-model="timeOfDay" class="select select-bordered w-full max-w-xs">
                         <option v-for="time in times" :key="time" :value="time">{{time}}</option>
                     </select>
+                </div>
+                <div class="avatar placeholder mt-6" v-if="food">
+                    <div class="bg-primary text-primary-content rounded-full w-16 m-auto">
+                        <span class="text-xl">{{ calculatedPoints }}</span>
+                    </div>
                 </div>
                 <button class="btn btn-primary  mt-4 w-2/4 m-auto"  @click="registerPoints">Añadir puntos al diario</button>
             </div>

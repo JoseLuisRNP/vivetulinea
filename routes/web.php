@@ -37,8 +37,9 @@ Route::middleware(['auth', HandleActiveUsersMiddleware::class])->group(function 
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('calculator', [CalculatorController::class, 'show'])->name('calculator');
     Route::get('menu', MenuAppController::class)->name('menu');
+    Route::get('points/{food?}', [PointsController::class, 'show'])->name('points.show');
     Route::post('points/store', [PointsController::class, 'store'])->name('points.store');
-    Route::get('points', [PointsController::class, 'show'])->name('points.show');
+    Route::post('no-count', [PointsController::class, 'noCountDay'])->name('points.no-count');
 });
 
 require __DIR__.'/auth.php';

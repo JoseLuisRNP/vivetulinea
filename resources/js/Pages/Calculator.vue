@@ -24,7 +24,7 @@ const proteins = ref(0);
 const quantity = ref(0);
 const name = ref('');
 const color = ref('yellow');
-const timeOfDay = ref('Snack');
+const timeOfDay = ref('Desayuno');
 
 const registerPoints = () => {
     if(!calories.value || !quantity.value) return;

@@ -4,5 +4,4 @@ export const times = [
     'Almuerzo',
     'Merienda',
     'Cena',
-    'Snack'
 ]

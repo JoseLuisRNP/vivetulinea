@@ -74,4 +74,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Meal::class);
     }
+
+    public function noCountDays()
+    {
+        return $this->hasMany(NoCountDay::class);
+    }
 }

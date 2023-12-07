@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('meals', function (Blueprint $table) {
-            $table->string('time_of_day')->default('Desayuno');
+        Schema::table('foods', function (Blueprint $table) {
+            $table->boolean('no_count')->default(false);
         });
     }
 };
