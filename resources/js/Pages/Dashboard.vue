@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/vue3';
 import ziggyRoute from "ziggy-js";
 import {computed, ref, watch} from "vue";
 import {times} from "@/data";
-import {watchDebounced} from "@vueuse/core";
+import {watchDebounced, onClickOutside} from "@vueuse/core";
 
 interface Meal {
     id: number,
@@ -69,6 +69,17 @@ const startNoCountDay = () => {
         date: dayActive.value.toISOString()
     })
 }
+
+const openResults = ref(false);
+
+watch(search, () => {
+    openResults.value = true;
+})
+const resultsWrapper = ref();
+
+onClickOutside(resultsWrapper, () => {
+    openResults.value= false
+})
 </script>
 
 <template>
@@ -100,7 +111,7 @@ const startNoCountDay = () => {
                         </svg>
                     </div>
                     <input v-model="search" type="text" name="text" id="text" class="block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-primary placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6" placeholder="Buscar alimento">
-                    <div class="absolute w-full bg-primary-content text-neutral ">
+                    <div class="absolute w-full bg-primary-content text-neutral " v-show="openResults" ref="resultsWrapper">
                         <Link :href="ziggyRoute('points.show', {food: result.id, dayActive, noCountDay})" v-for="result in resultSearch" :key="result.id" class="hover:bg-primary hover:text-primary-content flex items-center p-1">
                             <div class="w-2 h-2 bg-blue-500 rounded-full mr-2 " :class="{
                                     'bg-blue-500': result.color === 'blue',
