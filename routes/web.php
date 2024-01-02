@@ -31,7 +31,7 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth', HandleActiveUsersMiddleware::class])->group(function () {
-    Route::get('/dashboard', DashboardController::class)->middleware(['verified'])->name('dashboard');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -39,7 +39,13 @@ Route::middleware(['auth', HandleActiveUsersMiddleware::class])->group(function 
     Route::get('menu', MenuAppController::class)->name('menu');
     Route::get('points/{food?}', [PointsController::class, 'show'])->name('points.show');
     Route::post('points/store', [PointsController::class, 'store'])->name('points.store');
+    Route::delete('points/{meal}', [PointsController::class, 'destroy'])->name('points.destroy');
+    Route::post('guideline/update/{guideline}', [PointsController::class, 'storeGuideline'])->name('guidelines.store');
     Route::post('no-count', [PointsController::class, 'noCountDay'])->name('points.no-count');
+    Route::get('food/no-count', [PointsController::class, 'noCountFood'])->name('food.no-count');
+    Route::get('no-active', function() {
+        return Inertia::render('NoActiveAccount');
+    })->name('no-active');
 });
 
 require __DIR__.'/auth.php';

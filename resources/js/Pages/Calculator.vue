@@ -45,7 +45,7 @@ const registerPoints = () => {
     <div>
         <Head title="Calculadora" />
         <NavBar>
-            <Link :href="ziggyRoute('menu')" class="btn btn-square btn-ghost flex items-end text-primary">
+            <Link :href="ziggyRoute(backTo || 'menu')" class="btn btn-square btn-ghost flex items-end text-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
                 </svg>
@@ -72,7 +72,7 @@ const registerPoints = () => {
             </div>
             <div class="form-control w-full max-w-xs">
                 <label class="label">
-                    <span class="label-text">Azúcares</span>
+                    <span class="label-text">Hidratos de carbono</span>
                 </label>
                 <input v-model.number="sugars" @focus="$event.target.select()" type="number" class="input input-bordered  w-full max-w-xs focus:border-primary" />
             </div>
@@ -107,9 +107,9 @@ const registerPoints = () => {
                         <span class="label-text">Color</span>
                     </label>
                     <select v-model="color" class="select select-bordered w-full max-w-xs">
-                        <option value="red">🔴 Grasas</option>
-                        <option value="green">🟢 Azúcares</option>
+                        <option value="green">🟢 Hidratos de carbono</option>
                         <option value="blue">🔵 Proteínas</option>
+                        <option value="red">🔴 Grasas</option>
                         <option value="yellow">🟡 Sin identificar</option>
                     </select>
                 </div>

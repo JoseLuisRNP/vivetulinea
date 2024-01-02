@@ -53,7 +53,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function isActive()
     {
-        return now()->diff($this->created_at)->days < 10;
+        return $this->is_actived;
     }
 
     public function dietician()
@@ -79,4 +79,10 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(NoCountDay::class);
     }
+
+    public function guidelines()
+    {
+        return $this->hasMany(Guideline::class);
+    }
+
 }

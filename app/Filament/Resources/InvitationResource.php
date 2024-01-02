@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\InvitationResource\Pages;
 use App\Filament\Resources\InvitationResource\RelationManagers;
 use App\Models\Invitation;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,13 +19,17 @@ class InvitationResource extends Resource
     protected static ?string $model = Invitation::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Sin activar App';
+    protected static ?string $pluralLabel = 'Sin activar App';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('email')
-                    ->email()
+                    ->label('Teléfono')
+                    ->rules('required', 'numeric', 'digits:9')
+                    ->unique(User::class, 'email')
                     ->required(),
             ]);
     }
@@ -33,7 +38,7 @@ class InvitationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('email')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('email')->label('Teléfono')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('dietician.name')->label('Dietista'),
 
             ])
@@ -68,7 +73,7 @@ class InvitationResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return 'Invitaciones';
+        return 'Sin activar app';
     }
 
     public static function getEloquentQuery(): Builder

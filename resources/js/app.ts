@@ -6,9 +6,17 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Toast, {POSITION} from "vue-toastification";
+import * as Sentry from "@sentry/vue";
+
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
+if(import.meta.env.PROD) {
+    Sentry.init({
+        dsn: import.meta.env.VITE_SENTRY_DSN_PUBLIC,
+    });
+}
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

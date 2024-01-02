@@ -7,16 +7,10 @@ const page = usePage();
 const form = useForm({
     name: '',
     email: '',
-    password: '',
-    password_confirmation: '',
 });
 
 const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => {
-            form.reset('password', 'password_confirmation');
-        },
-    });
+    form.post(route('register'));
 };
 </script>
 
@@ -37,26 +31,9 @@ const submit = () => {
                     </div>
                 </div>
                 <div>
-                    <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
+                    <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Teléfono</label>
                     <div class="mt-2">
-                        <input v-model="form.email" id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6">
-                    </div>
-                </div>
-
-                <div>
-                    <div class="flex items-center justify-between">
-                        <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Constraseña</label>
-                    </div>
-                    <div class="mt-2">
-                        <input v-model="form.password" id="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6">
-                    </div>
-                </div>
-                <div>
-                    <div class="flex items-center justify-between">
-                        <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Repite contraseña</label>
-                    </div>
-                    <div class="mt-2">
-                        <input v-model="form.password_confirmation" id="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6">
+                        <input v-model="form.email" id="email" name="email" type="text"  required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6">
                     </div>
                 </div>
                 <div>

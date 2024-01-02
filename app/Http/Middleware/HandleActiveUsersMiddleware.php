@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 class HandleActiveUsersMiddleware
@@ -15,10 +16,8 @@ class HandleActiveUsersMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (\auth()->check() && auth()->user()->isMember() && !\auth()->user()->isActive()) {
-            \auth()->logout();
-
-            return redirect()->route('login')->with('error', 'Your account has been deactivated.');
+        if (Route::currentRouteName() !== 'no-active' && \auth()->check() && auth()->user()->isMember() && !\auth()->user()->isActive()) {
+            return redirect()->route('no-active');
         }
 
         return $next($request);

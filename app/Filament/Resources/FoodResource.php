@@ -46,6 +46,7 @@ class FoodResource extends Resource
                         'blue' => 'Azul',
                         'red' => 'Rojo',
                         'yellow' => 'Amarillo',
+                        'black' => 'Negro'
                     ])
             ]);
     }

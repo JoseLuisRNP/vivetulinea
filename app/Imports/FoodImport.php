@@ -30,6 +30,8 @@ class FoodImport implements ToModel, WithProgressBar, WithHeadingRow
     private function parseColor(string $color)
     {
         switch ($color) {
+            case 'naranja':
+            case 'morado':
             case 'amarillo':
                 return 'yellow';
             case 'azul':
@@ -38,6 +40,8 @@ class FoodImport implements ToModel, WithProgressBar, WithHeadingRow
                 return 'green';
             case 'rojo':
                 return 'red';
+            case 'negro':
+                return 'black';
             default:
                 return null;
         }

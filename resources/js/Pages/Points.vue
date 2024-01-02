@@ -2,7 +2,7 @@
 import { Head, router } from '@inertiajs/vue3';
 import NavBar from "@/Components/Layout/NavBar.vue";
 import ziggyRoute from "ziggy-js";
-import {computed, ref, watch} from "vue";
+import {computed, ref } from "vue";
 import {times} from "@/data";
 
 const props = defineProps<{
@@ -13,15 +13,17 @@ const urlParams = new URLSearchParams(window.location.search);
 const dayActiveParam = urlParams.get('dayActive') || new Date().toISOString();
 const dayActive = ref(new Date(dayActiveParam));
 
-const quantity = ref(0);
 const name = ref(props.food?.name || '');
 const color = ref(props.food?.color || 'yellow');
 const timeOfDay = ref(urlParams.get('time') || 'Desayuno');
 const points = ref(0);
-const noCountDay = ref(urlParams.get('noCountDay'))
+const noCountDay = ref(!!parseInt(urlParams.get('noCountDay')))
+const oilCount = ref(parseInt(urlParams.get('oil')))
+const specialCount = ref(parseInt(urlParams.get('special')))
+const quantity = ref(noCountDay && props.food &&( props.food.special_no_count || props.food.oil_no_count) ? 1 : 0);
 
 const calculatedPoints = computed(() => {
-    if(!props.food || (noCountDay.value && props.food.no_count)) return 0;
+    if(!props.food || (noCountDay.value && props.food.no_count && !(props.food.oil_no_count && oilCount.value >= 2 || props.food.special_no_count && specialCount.value >=3) )) return 0;
 
     return Math.max(Math.round((quantity.value * props.food.points / props.food.quantity * 2) / 2), 0);
 })
@@ -34,6 +36,8 @@ const registerPoints = () => {
         color: color.value,
         time_of_day: timeOfDay.value,
         consumed_at: dayActive.value.toISOString(),
+        special_no_count: noCountDay.value && props.food.special_no_count,
+        oil_no_count: noCountDay.value && props.food.oil_no_count
     }
 
     router.post(ziggyRoute('points.store'), data)
@@ -65,7 +69,7 @@ const registerPoints = () => {
                     </label>
                     <input v-model.number="points" @focus="$event.target.select()" type="number" placeholder="Alimento" class="input input-bordered  w-full max-w-xs focus:border-primary" />
                 </div>
-                <div class="form-control w-full max-w-xs">
+                <div class="form-control w-full max-w-xs" v-if="!(noCountDay && food &&( food.special_no_count || food.oil_no_count))">
                     <label class="label">
                         <span class="label-text">Cantidad</span>
                     </label>
@@ -76,9 +80,9 @@ const registerPoints = () => {
                         <span class="label-text">Color</span>
                     </label>
                     <select v-model="color" class="select select-bordered w-full max-w-xs">
-                        <option value="red">🔴 Grasas</option>
-                        <option value="green">🟢 Azúcares</option>
+                        <option value="green">🟢 Hidratos de carbono</option>
                         <option value="blue">🔵 Proteínas</option>
+                        <option value="red">🔴 Grasas</option>
                         <option value="yellow">🟡 Sin identificar</option>
                     </select>
                 </div>

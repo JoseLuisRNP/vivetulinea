@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
@@ -23,7 +24,21 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->autofocus()
+                    ->required()
+                    ->label('Nombre'),
+                Forms\Components\TextInput::make('email')
+                    ->required()
+                    ->rules('required', 'numeric', 'digits:9')
+                    ->label('Teléfono'),
+                Forms\Components\TextInput::make('daily_points')->label('Puntos diarios'),
+                Forms\Components\TextInput::make('proteins')->label('Proteínas'),
+                Forms\Components\TextInput::make('sugars')->label('Hidratos'),
+                Forms\Components\TextInput::make('fats')->label('Grasas'),
+                Forms\Components\TextInput::make('weekly_points')->label('Extras semanales'),
+                Forms\Components\Checkbox::make('is_actived')
+                    ->label('Activo')
             ]);
     }
 
@@ -32,14 +47,29 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Nombre'),
-                Tables\Columns\TextColumn::make('email')->searchable(),
+                Tables\Columns\TextColumn::make('email')->label('Teléfono')->searchable(),
                 Tables\Columns\TextColumn::make('dietician.name')->label('Dietista'),
+                Tables\Columns\IconColumn::make('is_actived')
+                    ->icon(fn (string $state): string => match ($state) {
+                        '1' => 'heroicon-o-check-circle',
+                        '0' => 'heroicon-m-x-mark',
+                    })
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('Solo mis socias')->query( fn (Builder $query) => $query->where('dietician_id', auth()->user()->id))->toggle()->label('Solo mis socias'),
             ])
             ->actions([
-//                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('Cambiar password')
+                    ->icon('heroicon-o-key')
+                    ->requiresConfirmation()
+                    ->form([Forms\Components\TextInput::make('password')->label('Nueva contraseña')->required()])
+                ->action(function (array $data, User $user): void {
+                    $user->update([
+                        'password' => Hash::make($data['password']),
+                    ]);
+                })
+                ->visible(fn (User $user): bool => $user->dietician_id === auth()->id()),
             ])
             ->bulkActions([
 //                Tables\Actions\BulkActionGroup::make([
@@ -64,10 +94,15 @@ class UserResource extends Resource
         ];
     }
 
-    public static function getEloquentQuery(): Builder
+    public static function getModelLabel(): string
     {
-        return parent::getEloquentQuery()->when(auth()->user()->isDietician(), function (Builder $query) {
-            $query->where('dietician_id', auth()->id());
-        });
+        return 'Socias';
     }
+
+//    public static function getEloquentQuery(): Builder
+//    {
+//        return parent::getEloquentQuery()->when(auth()->user()->isDietician(), function (Builder $query) {
+//            $query->where('dietician_id', auth()->id());
+//        });
+//    }
 }

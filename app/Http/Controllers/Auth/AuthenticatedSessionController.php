@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         if(\auth()->user()->isMember()) {
-            return redirect()->intended(authRouteServiceProvider::HOME);
+            return redirect()->route('dashboard');
         }
 
         return Inertia::location(\route('filament.admin.pages.dashboard'));

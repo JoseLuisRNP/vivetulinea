@@ -51,7 +51,18 @@ class DashboardController extends Controller
 
         $resultSearch = collect();
         if($search) {
-            $resultSearch = Food::whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["$search%"])->take(5)->get();
+            $resultSearch = Food::whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["%$search%"])->take(5)->get();
+        }
+
+        $guideLine = auth()->user()->guidelines()->where('consumed_at', $day->toDateString())->first();
+        if(!$guideLine) {
+            $guideLine = auth()->user()->guidelines()->create([
+                'consumed_at' => $day->toDateString(),
+                'water' => 0,
+                'fruit' => 0,
+                'vegetable' => 0,
+                'sport' => 0,
+            ]);
         }
 
         return Inertia::render('Dashboard', [
@@ -61,6 +72,7 @@ class DashboardController extends Controller
             'pointsByColor' => $pointsByColor,
             'resultSearch' => $resultSearch,
             'noCountDay' => !!$noCountDay,
+            'guideline' => $guideLine,
         ]);
     }
 }
