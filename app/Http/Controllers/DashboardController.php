@@ -15,9 +15,9 @@ class DashboardController extends Controller
         $meals = auth()->user()->meals()->whereDate('consumed_at', $day->toDateString())->get();
 
         $from =$day->clone()
-            ->startOfWeek(auth()->user()->created_at->dayOfWeek);
+            ->startOfWeek(auth()->user()->created_at->addDay()->dayOfWeek)->startOfDay();
 
-        $noCountDayWeek = auth()->user()->noCountDays()->whereBetween('date', [$from->toDateString(), $from->clone()->addDays(6)])->get();
+        $noCountDayWeek = auth()->user()->noCountDays()->whereBetween('date', [$from->toDateString(), $from->clone()->addDays(6)->endOfDay()])->get();
 
         $noCountDay = $noCountDayWeek->contains(fn($d) => $d->date->isSameDay($day));
 
@@ -29,7 +29,8 @@ class DashboardController extends Controller
         $remainingPoints = auth()->user()->daily_points - $meals->filter(fn ($meal) => !$noCountDayWeek->contains(fn($d) => $d->date->isSameDay($meal->consumed_at)) )->sum('points');
 
 
-        $weeklyMeals = auth()->user()->meals()->whereBetween('consumed_at', [$from->toDateString(), $from->clone()->addDays(6)->toDateString()])->get();
+
+        $weeklyMeals = auth()->user()->meals()->whereBetween('consumed_at', [$from, $from->clone()->addDays(6)->endOfDay()])->get();
 
         $groupByDay = $weeklyMeals->groupBy(fn($meal) => $meal->consumed_at->format('Y-m-d'));
 
