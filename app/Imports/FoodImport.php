@@ -19,11 +19,16 @@ class FoodImport implements ToModel, WithProgressBar, WithHeadingRow
     */
     public function model(array $row)
     {
+        if(!$row["nombre"]) {
+            return null;
+        }
         return Food::updateOrCreate([
             'name' => $row["nombre"],
             'points' => $row["puntos"],
-            'quantity' => $row["cantidaden_gramos"],
-            'color' => $this->parseColor($row["color"]),
+            'quantity' => $row["cantidaden_gramos"] ?? 100,
+            'unit' => $row["observaciones"] ?: 'gr',
+            'color' => $row["color"] ? $this->parseColor($row["color"]) : 'yellow',
+            'no_count' => (bool) $row['hoy_no_cuento'],
         ]);
     }
 

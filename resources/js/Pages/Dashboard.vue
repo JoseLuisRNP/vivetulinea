@@ -162,7 +162,7 @@ const deleteMeal = (meal) => {
                                     'bg-black': result.color === 'black',
                                 }"></div>
                             <div>{{result.name}}</div>
-                            <div class="ml-4 text-xs text-gray-400">{{result.points}} puntos / {{result.quantity }} gr</div>
+                            <div class="ml-4 text-xs text-gray-400">{{result.points}} puntos / {{result.quantity }} {{result.unit.toLowerCase()}}</div>
                         </Link>
                     </div>
             </div>

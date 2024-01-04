@@ -39,6 +39,10 @@ class FoodResource extends Resource
                     ->required()
                     ->numeric()
                     ->placeholder('100'),
+                TextInput::make('unit')
+                    ->name('Unidad')
+                    ->default('gr')
+                    ->placeholder('gr'),
                 Select::make('color')
                     ->required()
                     ->options([
@@ -58,6 +62,7 @@ class FoodResource extends Resource
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('points')->alignCenter()->label('Puntos'),
                 Tables\Columns\TextColumn::make('quantity')->alignCenter()->label('Cantidad en gramos'),
+                Tables\Columns\TextColumn::make('unit')->alignCenter()->label('Unidad'),
                 Tables\Columns\ColorColumn::make('color')->alignCenter()
             ])
             ->filters([
