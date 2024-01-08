@@ -21,7 +21,7 @@ export default defineConfig({
         VitePWA({
             outDir: 'public/build',
             registerType: 'autoUpdate',
-            includeAssets: ['favicon.svg', 'robots.txt', 'safari-pinned-tab.svg'],
+            includeAssets: ['favicon.png', 'robots.txt', 'safari-pinned-tab.svg'],
             workbox: {
                 cleanupOutdatedCaches: true,
                 directoryIndex: null,
