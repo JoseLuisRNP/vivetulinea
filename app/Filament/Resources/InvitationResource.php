@@ -73,7 +73,7 @@ class InvitationResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return 'Sin activar app';
+        return 'nuevo';
     }
 
     public static function getEloquentQuery(): Builder

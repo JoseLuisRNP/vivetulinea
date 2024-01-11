@@ -37,7 +37,7 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('sugars')->label('Hidratos'),
                 Forms\Components\TextInput::make('fats')->label('Grasas'),
                 Forms\Components\TextInput::make('weekly_points')->label('Extras semanales'),
-                Forms\Components\Checkbox::make('is_actived')
+                Forms\Components\Checkbox::make('is_actived')->label('Activo')
                     ->label('Activo')
             ]);
     }
@@ -50,6 +50,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')->label('Teléfono')->searchable(),
                 Tables\Columns\TextColumn::make('dietician.name')->label('Dietista'),
                 Tables\Columns\IconColumn::make('is_actived')
+                    ->label('Activo')
                     ->icon(fn (string $state): string => match ($state) {
                         '1' => 'heroicon-o-check-circle',
                         '0' => 'heroicon-m-x-mark',

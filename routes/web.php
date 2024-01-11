@@ -25,8 +25,15 @@ Route::get('/', function () {
         return redirect()->route('login');
     }
 
-    return redirect()->route( auth()->user()->isAdmin() ? 'filament.admin.pages.dashboard' : 'menu');
+    return redirect()->route('menu');
 });
+
+Route::view('/aviso-legal', 'aviso-legal')->name('about');
+Route::view('/proteccion-de-datos', 'proteccion-datos')->name('proteccion-datos');
+Route::view('/cookies', 'cookies')->name('cookies');
+Route::view('/index', 'index')->name('index');
+Route::view('/mapa', 'mapa')->name('mapa');
+Route::view('/politica-de-privacidad', 'politica-privacidad')->name('politica-privacidad');
 
 
 
