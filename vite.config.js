@@ -35,8 +35,8 @@ export default defineConfig({
                 short_name: 'ViveTuLinea',
                 theme_color: '#c11387',
                 id: '/',
-                scope: '/',
-                start_url: '/',
+                scope: '/app',
+                start_url: '/app/',
                 icons: [
                     {
                         "src": "windows11/SmallTile.scale-100.png",

@@ -20,7 +20,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
+Route::get('/app', function () {
     if(!auth()->check()) {
         return redirect()->route('login');
     }
@@ -31,13 +31,13 @@ Route::get('/', function () {
 Route::view('/aviso-legal', 'aviso-legal')->name('about');
 Route::view('/proteccion-de-datos', 'proteccion-datos')->name('proteccion-datos');
 Route::view('/cookies', 'cookies')->name('cookies');
-Route::view('/index', 'index')->name('index');
+Route::view('/', 'index')->name('index');
 Route::view('/mapa', 'mapa')->name('mapa');
 Route::view('/politica-de-privacidad', 'politica-privacidad')->name('politica-privacidad');
 
 
 
-Route::middleware(['auth', HandleActiveUsersMiddleware::class])->group(function () {
+Route::prefix('app')->middleware(['auth', HandleActiveUsersMiddleware::class])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
