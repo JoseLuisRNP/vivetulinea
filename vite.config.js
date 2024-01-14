@@ -31,7 +31,6 @@ export default defineConfig({
                 navigateFallbackDenylist: [/\/[api,admin,livewire]+\/.*/],
             },
             manifest: {
-
                 name: 'ViveTuLinea',
                 short_name: 'ViveTuLinea',
                 theme_color: '#c11387',
@@ -559,11 +558,11 @@ export default defineConfig({
                         "sizes": "128x128",
                         type: 'image/png',
                     },
-                    // {
-                    //     "src": "ios/144.png",
-                    //     "sizes": "144x144",
-                    //     type: 'image/png',
-                    // },
+                    {
+                        "src": "/ios/144.png",
+                        "sizes": "144x144",
+                        type: 'image/png',
+                    },
                     {
                         "src": "ios/152.png",
                         "sizes": "152x152",
