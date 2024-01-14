@@ -20,6 +20,8 @@ use Inertia\Inertia;
 |
 */
 
+Route::get('/admin/login', fn () =>redirect()->route('login'))->name('filament.admin.auth.login');
+
 Route::get('/app', function () {
     if(!auth()->check()) {
         return redirect()->route('login');

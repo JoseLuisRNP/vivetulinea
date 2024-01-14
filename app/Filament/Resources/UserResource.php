@@ -70,7 +70,7 @@ class UserResource extends Resource
                         'password' => Hash::make($data['password']),
                     ]);
                 })
-                ->visible(fn (User $user): bool => $user->dietician_id === auth()->id()),
+                ->visible(fn (User $user): bool => $user->dietician_id === auth()->id() || $user->id === auth()->id()),
             ])
             ->bulkActions([
 //                Tables\Actions\BulkActionGroup::make([
