@@ -62,7 +62,7 @@ watchDebounced(search, () => {
                 <li v-for="food in foods.data" :key="food.id" class="flex items-center border-b p-2" :class="{
                     'bg-pink-100': food.special_no_count || food.oil_no_count,
                 }">
-                    <div class="w-2 h-2 bg-blue-500 rounded-full mr-2 " :class="{
+                    <div class="w-2 h-2 rounded-full mr-2 " :class="{
                                     'bg-blue-500': food.color === 'blue',
                                     'bg-green-500': food.color === 'green',
                                     'bg-yellow-500': food.color === 'yellow',
