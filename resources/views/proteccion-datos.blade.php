@@ -31,8 +31,8 @@
     <link rel="stylesheet" type="text/css"  href="css/estilo.css">
     <link rel="stylesheet" type="text/css" href="css/responsive.css">
 
-    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,700,300,600,800,400' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,700,300,600,800,400' rel='stylesheet' type='text/css'>
 
     <script type="text/javascript" src="js/modernizr.custom.js"></script>
 
@@ -64,14 +64,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="logo" href="index"><img style="width:100%" src="http://vivetulinea.es/img/logo.png" alt="vivetulinea"/></a>
+            <a class="logo" href="index"><img style="width:100%" src="https://vivetulinea.es/img/logo.png" alt="vivetulinea"/></a>
 
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://vivetulinea.es" class="page-scroll">Volver a la pagina principal</a></li>
+                <li><a href="https://vivetulinea.es" class="page-scroll">Volver a la pagina principal</a></li>
 
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -132,7 +132,7 @@
                     <br/>
                     <b>E-Mail:</b>info@vivetulinea.com
                     <br/>
-                    <b>Sitio web:</b> http://www.vivetulinea.es
+                    <b>Sitio web:</b> https://www.vivetulinea.es
                     <br/><br/>
 
 
@@ -288,7 +288,7 @@
                 "message": "Este Sitio web utiliza cookies de terceros para recopilar información estadística sobre sus hábitos de navegación y poder así mejorar y personalizar su experiencia ofreciéndole contenidos de su interés. Si sigue navegando, consideramos que acepta su instalación y uso. Puede cambiar la configuración u obtener más información en ",
                 "dismiss": "ACEPTAR",
                 "link": "Política de Cookies",
-                "href": "http://vivetulinea.es/cookies"
+                "href": "https://vivetulinea.es/cookies"
             }
         })});
 </script>

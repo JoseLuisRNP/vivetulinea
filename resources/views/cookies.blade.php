@@ -31,8 +31,8 @@
     <link rel="stylesheet" type="text/css"  href="css/estilo.css">
     <link rel="stylesheet" type="text/css" href="css/responsive.css">
 
-    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,700,300,600,800,400' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,700,300,600,800,400' rel='stylesheet' type='text/css'>
 
     <script type="text/javascript" src="js/modernizr.custom.js"></script>
 
@@ -64,14 +64,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="logo" href="index"><img style="width:100%" src="http://vivetulinea.es/img/logo.png" alt="vivetulinea"/></a>
+            <a class="logo" href="index"><img style="width:100%" src="https://vivetulinea.es/img/logo.png" alt="vivetulinea"/></a>
 
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://vivetulinea.es" class="page-scroll">Volver a la pagina principal</a></li>
+                <li><a href="https://vivetulinea.es" class="page-scroll">Volver a la pagina principal</a></li>
 
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -120,7 +120,7 @@
 
 
                     <h3>Información </h3>
-                    Uso de cookies en el sitio web http://www.vivetulinea.es En cumplimiento  de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico (LSSI), modificada en su art. 22 por el art. 4.3 perteneciente al Título II, Modificaciones relativas a la transposición de Directivas en materia de Telecomunicaciones y Sociedad de la Información, del Real Decreto Ley 13/2012, de 30 de marzo por el que se transponen directivas en materia comunicaciones electrónicas, le informamos de la utilización de cookies en el sitio web corporativo de DÑA. ANA BELÉN MORENO LIMA (VIVE TU LINEA) con el fin de facilitar y mejorar la navegación.
+                    Uso de cookies en el sitio web https://www.vivetulinea.es En cumplimiento  de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico (LSSI), modificada en su art. 22 por el art. 4.3 perteneciente al Título II, Modificaciones relativas a la transposición de Directivas en materia de Telecomunicaciones y Sociedad de la Información, del Real Decreto Ley 13/2012, de 30 de marzo por el que se transponen directivas en materia comunicaciones electrónicas, le informamos de la utilización de cookies en el sitio web corporativo de DÑA. ANA BELÉN MORENO LIMA (VIVE TU LINEA) con el fin de facilitar y mejorar la navegación.
                     <br/><br/>
 
 
@@ -128,7 +128,7 @@
                     Una cookie es un fichero que se descarga en el disco duro de su ordenador al acceder a determinadas páginas web o aplicaciones. Las cookies permiten, entre otras cosas, recopilar información estadística, facilitar ciertas funcionalidades técnicas, almacenar y recuperar información sobre los hábitos de navegación o preferencias de un usuario o de su equipo y, dependiendo de la información que contengan y de la forma en que utilice su equipo, pueden utilizarse para reconocer al usuario. Tenga en cuenta que las cookies no pueden dañar su equipo y que, a cambio, el que estén activadas nos ayudan a identificar y resolver los posibles errores.
                     <br/><br/>
 
-                    <h5>Las cookies utilizadas en http://www.vivetulinea.es</h5>
+                    <h5>Las cookies utilizadas en https://www.vivetulinea.es</h5>
 
                     • Cookies estrictamente necesarias como por ejemplo, aquellas que sirven para una correcta navegación y aseguran que el contenido de la página web se carga eficazmente.
                     <br/><br/>
@@ -257,7 +257,7 @@
                 "message": "Este Sitio web utiliza cookies de terceros para recopilar información estadística sobre sus hábitos de navegación y poder así mejorar y personalizar su experiencia ofreciéndole contenidos de su interés. Si sigue navegando, consideramos que acepta su instalación y uso. Puede cambiar la configuración u obtener más información en ",
                 "dismiss": "ACEPTAR",
                 "link": "Política de Cookies",
-                "href": "http://vivetulinea.es/cookies"
+                "href": "https://vivetulinea.es/cookies"
             }
         })});
 </script>
