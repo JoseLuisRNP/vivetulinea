@@ -189,13 +189,13 @@ const deleteMeal = (meal) => {
                     </div>
                 </div>
             <div class="m-4 flex justify-evenly w-full text-xs" :class="noCountDay ? 'opacity-0' : ''">
-                <div class="flex items-center px-1 rounded-full" :class="user.proteins <= pointsByColor['blue'] ? 'bg-primary-content text-neutral': 'bg-primary'">
-                    <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                    <div>{{pointsByColor['blue'] || 0}} puntos</div>
-                </div>
                 <div class="flex items-center px-1 rounded-full" :class="user.sugars <= pointsByColor['green'] ? 'bg-primary-content text-neutral': 'bg-primary'">
                     <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
                     <div>{{pointsByColor['green'] || 0}} puntos</div>
+                </div>
+                <div class="flex items-center px-1 rounded-full" :class="user.proteins <= pointsByColor['blue'] ? 'bg-primary-content text-neutral': 'bg-primary'">
+                    <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                    <div>{{pointsByColor['blue'] || 0}} puntos</div>
                 </div>
                 <div class="flex items-center px-1 rounded-full" :class="user.fats <= pointsByColor['red'] ? 'bg-primary-content text-neutral': 'bg-primary'">
                     <div class="w-2 h-2 bg-red-500 rounded-full mr-2"></div>

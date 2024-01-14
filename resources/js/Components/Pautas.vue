@@ -9,7 +9,7 @@
                 <div class="flex w-16 flex-shrink-0 items-center justify-center bg-blue-600 rounded-l-md text-sm font-medium text-white">Agua</div>
                 <div class="flex flex-1 items-center justify-between truncate rounded-r-md border-b border-r border-t border-gray-200 bg-white">
                     <div class="flex-1 truncate px-4 text-sm">
-                        <p class="font-medium text-xl text-gray-900 hover:text-gray-600">7 vasos</p>
+                        <p class="font-medium text-xl text-gray-900 hover:text-gray-600">8 vasos</p>
                     </div>
                 </div>
             </li>

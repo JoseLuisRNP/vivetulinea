@@ -35,7 +35,7 @@ watch(() => usePage().props.flash, flash => {
             <slot>
 
             </slot>
-            <Link v-if="!route().current('menu') && !route().current('calculator') && !route().current('no-active')" :href="ziggyRoute('menu')" class="btn btn-square btn-ghost flex items-end text-primary">
+            <Link v-if="!route().current('menu')  && !route().current('no-active')" :href="ziggyRoute(!route().current('dashboard') ? 'dashboard' : 'menu')" class="btn btn-square btn-ghost flex items-end text-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
                 </svg>

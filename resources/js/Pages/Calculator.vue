@@ -45,11 +45,7 @@ const registerPoints = () => {
     <div>
         <Head title="Calculadora" />
         <NavBar>
-            <Link :href="ziggyRoute(backTo || 'menu')" class="btn btn-square btn-ghost flex items-end text-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
-                </svg>
-            </Link>
+
         </NavBar>
         <div class="px-6 py-4 sm:py-32 lg:px-8">
             <div class="mx-auto max-w-2xl text-center">
@@ -72,7 +68,7 @@ const registerPoints = () => {
             </div>
             <div class="form-control w-full max-w-xs">
                 <label class="label">
-                    <span class="label-text">Hidratos de carbono</span>
+                    <span class="label-text">Azúcares</span>
                 </label>
                 <input v-model.number="sugars" @focus="$event.target.select()" type="number" class="input input-bordered  w-full max-w-xs focus:border-primary" />
             </div>

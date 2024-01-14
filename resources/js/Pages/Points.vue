@@ -71,7 +71,7 @@ const registerPoints = () => {
                 </div>
                 <div class="form-control w-full max-w-xs" v-if="!(noCountDay && food &&( food.special_no_count || food.oil_no_count))">
                     <label class="label">
-                        <span class="label-text">Cantidad</span>
+                        <span class="label-text">Cantidad <span v-if="food && food.unit"> en {{food.unit}}</span></span>
                     </label>
                     <input v-model.number="quantity" @focus="$event.target.select()" type="number" placeholder="0" class="input input-bordered  w-full max-w-xs focus:border-primary" />
                 </div>
