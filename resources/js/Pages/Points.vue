@@ -36,8 +36,8 @@ const registerPoints = () => {
         color: color.value,
         time_of_day: timeOfDay.value,
         consumed_at: dayActive.value.toISOString(),
-        special_no_count: noCountDay.value && props.food.special_no_count,
-        oil_no_count: noCountDay.value && props.food.oil_no_count
+        special_no_count: noCountDay.value && props.food && props.food.special_no_count,
+        oil_no_count: noCountDay.value && props.food && props.food.oil_no_count
     }
 
     router.post(ziggyRoute('points.store'), data)

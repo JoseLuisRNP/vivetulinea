@@ -75,8 +75,8 @@ watchDebounced(search, () => {
             </ul>
         </div>
         <div class="join justify-self-end sticky bottom-0" v-show="foods.prev_page_url || foods.next_page_url">
-            <Link :href="foods.prev_page_url" class="join-item btn " :class="foods.prev_page_url ? 'bg-primary text-primary-content' : 'bg-gray-100 text-neutral'">Previous page</Link>
-            <Link :href="foods.next_page_url" class="join-item btn " :class="foods.next_page_url ? 'bg-primary text-primary-content' : 'bg-gray-100 text-neutral'">Next</Link>
+            <Link :href="foods.prev_page_url" class="join-item btn " :class="foods.prev_page_url ? 'bg-primary text-primary-content' : 'bg-gray-100 text-neutral'">Anterior</Link>
+            <Link :href="foods.next_page_url" class="join-item btn " :class="foods.next_page_url ? 'bg-primary text-primary-content' : 'bg-gray-100 text-neutral'">Siguiente</Link>
         </div>
     </div>
 </template>
