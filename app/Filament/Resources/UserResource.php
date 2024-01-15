@@ -73,9 +73,9 @@ class UserResource extends Resource
                 ->visible(fn (User $user): bool => $user->dietician_id === auth()->id() || $user->id === auth()->id()),
             ])
             ->bulkActions([
-//                Tables\Actions\BulkActionGroup::make([
-//                    Tables\Actions\DeleteBulkAction::make(),
-//                ]),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 

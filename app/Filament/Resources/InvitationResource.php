@@ -34,11 +34,11 @@ class InvitationResource extends Resource
                     ->required()
                     ->rules('required', 'numeric', 'digits:9')
                     ->label('Teléfono'),
-                Forms\Components\TextInput::make('daily_points')->label('Puntos diarios'),
-                Forms\Components\TextInput::make('sugars')->label('Hidratos'),
-                Forms\Components\TextInput::make('proteins')->label('Proteínas'),
-                Forms\Components\TextInput::make('fats')->label('Grasas'),
-                Forms\Components\TextInput::make('weekly_points')->label('Extras semanales'),
+                Forms\Components\TextInput::make('daily_points')->default(30)->label('Puntos diarios'),
+                Forms\Components\TextInput::make('sugars')->default(13.5)->label('Hidratos'),
+                Forms\Components\TextInput::make('proteins')->default(10.5)->label('Proteínas'),
+                Forms\Components\TextInput::make('fats')->default(6)->label('Grasas'),
+                Forms\Components\TextInput::make('weekly_points')->default(30)->label('Extras semanales'),
             ]);
     }
 
@@ -51,7 +51,7 @@ class InvitationResource extends Resource
 
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('Solo mis invitaciones')->query( fn (Builder $query) => $query->where('dietician_id', auth()->user()->id))->toggle()->label('Solo mis invitaciones'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

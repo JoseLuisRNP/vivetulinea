@@ -54,7 +54,7 @@ class DashboardController extends Controller
         if($search) {
             $resultSearch = Food::whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["%$search%"])
                 ->orderByRaw("CASE WHEN LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?) THEN 1 ELSE 0 END DESC", ["$search%"])
-                ->take(5)->get();
+                ->get();
         }
 
         $guideLine = auth()->user()->guidelines()->where('consumed_at', $day->toDateString())->first();

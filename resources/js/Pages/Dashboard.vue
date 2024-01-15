@@ -152,7 +152,7 @@ const deleteMeal = (meal) => {
                         </svg>
                     </div>
                     <input v-model="search" type="text" name="text" id="text" class="block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-primary placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6" placeholder="Buscar alimento">
-                    <div class="absolute w-full bg-primary-content text-neutral " v-show="openResults" ref="resultsWrapper">
+                    <div class="absolute w-full bg-primary-content text-neutral max-h-48 overflow-auto" v-show="openResults" ref="resultsWrapper">
                         <Link :href="ziggyRoute('points.show', {food: result.id, dayActive, noCountDay, special: specialNoCountQuantity, oil: oilNoCountQuantity})" v-for="result in resultSearch" :key="result.id" class="hover:bg-primary hover:text-primary-content flex items-center p-1">
                             <div class="w-2 h-2 rounded-full mr-2 " :class="{
                                     'bg-blue-500': result.color === 'blue',
