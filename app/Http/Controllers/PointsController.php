@@ -94,6 +94,7 @@ class PointsController extends Controller
             'foods' => Food::query()
                 ->when($search, fn($q) => $q->whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["%$search%"]))
                 ->where('no_count', true)
+                ->orWhere('special_no_count', true)
                 ->paginate(10)
                 ->withQueryString(),
         ]);
