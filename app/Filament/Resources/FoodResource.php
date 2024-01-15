@@ -27,7 +27,6 @@ class FoodResource extends Resource
                     ->autofocus()
                     ->required()
                     ->maxLength(50)
-                    ->unique(Food::class, 'name')
                     ->placeholder('Nombre del alimento'),
                 TextInput::make('points')
                     ->name('Puntos')

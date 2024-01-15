@@ -34,7 +34,6 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|max:255',
             'email' => 'required|numeric|digits:9|unique:'.User::class,
         ]);
 
@@ -47,8 +46,13 @@ class RegisteredUserController extends Controller
         }
 
         $user = User::create([
-            'name' => $request->name,
+            'name' => $invitation->name,
             'email' => $request->email,
+            'daily_points' => $invitation->daily_points,
+            'sugars' => $invitation->sugars,
+            'proteins' => $invitation->proteins,
+            'fats' => $invitation->fats,
+            'weekly_points' => $invitation->weekly_points,
             'password' => Hash::make(Str::password(8)),
             'dietician_id' => $invitation->dietician_id ?? '',
         ]);

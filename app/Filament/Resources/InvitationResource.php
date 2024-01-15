@@ -26,11 +26,19 @@ class InvitationResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('name')
+                    ->autofocus()
+                    ->required()
+                    ->label('Nombre'),
                 Forms\Components\TextInput::make('email')
-                    ->label('Teléfono')
+                    ->required()
                     ->rules('required', 'numeric', 'digits:9')
-                    ->unique(User::class, 'email')
-                    ->required(),
+                    ->label('Teléfono'),
+                Forms\Components\TextInput::make('daily_points')->label('Puntos diarios'),
+                Forms\Components\TextInput::make('sugars')->label('Hidratos'),
+                Forms\Components\TextInput::make('proteins')->label('Proteínas'),
+                Forms\Components\TextInput::make('fats')->label('Grasas'),
+                Forms\Components\TextInput::make('weekly_points')->label('Extras semanales'),
             ]);
     }
 

@@ -24,12 +24,12 @@ const submit = () => {
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
             <form class="space-y-6" method="POST" @submit.prevent="submit">
-                <div>
-                    <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Nombre</label>
-                    <div class="mt-2">
-                        <input v-model="form.name" id="name" name="text" type="text" autocomplete="text" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6">
-                    </div>
-                </div>
+<!--                <div>-->
+<!--                    <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Nombre</label>-->
+<!--                    <div class="mt-2">-->
+<!--                        <input v-model="form.name" id="name" name="text" type="text" autocomplete="text" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6">-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div>
                     <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Teléfono</label>
                     <div class="mt-2">
