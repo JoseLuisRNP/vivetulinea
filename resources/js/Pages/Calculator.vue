@@ -9,6 +9,7 @@ import {times} from "@/data";
 const props = defineProps<{
     backTo: string,
     dayActive: string,
+    errors: any
 }>();
 
 const points = computed(() => {
@@ -96,7 +97,8 @@ const registerPoints = () => {
                     <label class="label">
                         <span class="label-text">Nombre</span>
                     </label>
-                    <input v-model="name" @focus="$event.target.select()" type="text" placeholder="Alimento" class="input input-bordered  w-full max-w-xs focus:border-primary" />
+                    <input v-model="name" @focus="$event.target.select()" type="text" placeholder="Alimento" class="input input-bordered  w-full max-w-xs focus:border-primary" :class="errors.name ? 'border-error' : ''"/>
+                    <span v-if="errors.name" class="text-xs text-error">{{errors.name}}</span>
                 </div>
                 <div class="form-control w-full max-w-xs">
                     <label class="label">

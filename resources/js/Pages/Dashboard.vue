@@ -438,11 +438,12 @@ const deleteMeal = (meal) => {
                     <ul class="ml-4 text-neutral">
                         <li class="border-b py-2" v-for="meal in meals[time]" :key="meal.id">
                             <div class="flex items-center">
-                                <div class="w-2 h-2 bg-blue-500 rounded-full mr-2" :class="{
+                                <div class="w-2 h-2  rounded-full mr-2" :class="{
                                     'bg-blue-500': meal.color === 'blue',
                                     'bg-green-500': meal.color === 'green',
                                     'bg-yellow-500': meal.color === 'yellow',
                                     'bg-red-500': meal.color === 'red',
+                                    'bg-black': meal.color === 'black',
                                 }"></div>
                                 <div class="flex justify-between w-full items-center">
                                     <div>

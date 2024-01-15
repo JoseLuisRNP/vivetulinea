@@ -28,7 +28,7 @@ class PointsController extends Controller
             'points' => 'required|numeric',
             'quantity' => 'required|numeric',
             'name' => 'string',
-            'color' =>  Rule::in(['yellow', 'blue', 'green', 'red']),
+            'color' =>  Rule::in(['yellow', 'blue', 'green', 'red', 'black']),
             'time_of_day' => Rule::in(['Desayuno', 'Media mañana', 'Almuerzo', 'Merienda', 'Cena']),
             'consumed_at' => 'required|date',
         ]);
@@ -51,7 +51,7 @@ class PointsController extends Controller
     {
         auth()->user()->meals()->find($meal)?->delete();
 
-        return redirect()->back()->with('success', 'Alimento correctamente');
+        return redirect()->back()->with('success', 'Alimento borrado');
     }
 
     public function noCountDay()

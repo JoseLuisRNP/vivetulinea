@@ -33,8 +33,8 @@ class UserResource extends Resource
                     ->rules('required', 'numeric', 'digits:9')
                     ->label('Teléfono'),
                 Forms\Components\TextInput::make('daily_points')->label('Puntos diarios'),
-                Forms\Components\TextInput::make('proteins')->label('Proteínas'),
                 Forms\Components\TextInput::make('sugars')->label('Hidratos'),
+                Forms\Components\TextInput::make('proteins')->label('Proteínas'),
                 Forms\Components\TextInput::make('fats')->label('Grasas'),
                 Forms\Components\TextInput::make('weekly_points')->label('Extras semanales'),
                 Forms\Components\Checkbox::make('is_actived')->label('Activo')

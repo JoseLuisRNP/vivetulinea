@@ -137,7 +137,7 @@ return [
         'string'  => 'El campo :attribute debe contener :size caracteres.',
     ],
     'starts_with'          => 'El campo :attribute debe comenzar con uno de los siguientes valores: :values',
-    'string'               => 'El campo :attribute debe ser una cadena de caracteres.',
+    'string'               => 'El campo :attribute no puede estar vacio.',
     'timezone'             => 'El campo :attribute debe ser una zona horaria válida.',
     'ulid'                 => 'El campo :attribute debe ser un ULID válido.',
     'unique'               => 'El campo :attribute ya ha sido registrado.',
