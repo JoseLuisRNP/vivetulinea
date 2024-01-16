@@ -51,6 +51,7 @@ Route::prefix('app')->middleware(['auth', HandleActiveUsersMiddleware::class])->
     Route::delete('points/{meal}', [PointsController::class, 'destroy'])->name('points.destroy');
     Route::post('guideline/update/{guideline}', [PointsController::class, 'storeGuideline'])->name('guidelines.store');
     Route::post('no-count', [PointsController::class, 'noCountDay'])->name('points.no-count');
+    Route::post('cancel-no-count', [PointsController::class, 'cancelNoCountDay'])->name('points.cancel-no-count');
     Route::get('food/no-count', [PointsController::class, 'noCountFood'])->name('food.no-count');
     Route::get('no-active', function() {
         return Inertia::render('NoActiveAccount');

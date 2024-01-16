@@ -67,6 +67,18 @@ class PointsController extends Controller
         return redirect()->back()->with('message', 'Día de no contar puntos iniciado correctamente');
     }
 
+    public function cancelNoCountDay()
+    {
+        $this->validate(\request(), [
+            'date' => 'required|date',
+        ]);
+
+
+        auth()->user()->noCountDays()->whereDate('date', Carbon::parse(\request('date'))->toDateString())->delete();
+
+        return redirect()->back()->with('message', 'Día de no contar puntos cancelado');
+    }
+
     public function storeGuideline(Guideline $guideline) {
         $this->validate(\request(), [
             'water' => 'required|numeric',
