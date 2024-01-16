@@ -332,12 +332,12 @@
                     <small><em>Conozca a nuestras monitoras y la ubicación de todos los puntos de reuniones de <b>VIVETULINEA</b> en las provincias de Málaga y Cádiz.</small>
                     <br/>
 
-                    <h4>Inscripción + 4 semanas consecutivas 39,95€. *Seguimiento posterior: 4 semanas consecutivas 34,95€.</h4>
+{{--                    <h4>Inscripción + 4 semanas consecutivas 39,95€. *Seguimiento posterior: 4 semanas consecutivas 34,95€.</h4>--}}
 
-                    <h5>PLAN A DISTANCIA</h5>
-                    <h4>Actuales 4 semanas: 34,95€</h4>
+{{--                    <h5>PLAN A DISTANCIA</h5>--}}
+{{--                    <h4>Actuales 4 semanas: 34,95€</h4>--}}
 
-                    <h4>Nuevas 4 semanas: 39,95€</h4>
+{{--                    <h4>Nuevas 4 semanas: 39,95€</h4>--}}
 
 
 

@@ -46,7 +46,7 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('Nombre'),
+                Tables\Columns\TextColumn::make('name')->label('Nombre')->searchable(),
                 Tables\Columns\TextColumn::make('email')->label('Teléfono')->searchable(),
                 Tables\Columns\TextColumn::make('dietician.name')->label('Dietista'),
                 Tables\Columns\IconColumn::make('is_actived')
