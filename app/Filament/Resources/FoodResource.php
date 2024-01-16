@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\FoodResource\Pages;
 use App\Filament\Resources\FoodResource\RelationManagers;
 use App\Models\Food;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -34,7 +35,7 @@ class FoodResource extends Resource
                     ->numeric()
                     ->placeholder('Puntos'),
                 TextInput::make('quantity')
-                    ->name('Cantidad en gramos')
+                    ->name('Cantidad')
                     ->required()
                     ->numeric()
                     ->placeholder('100'),
@@ -50,7 +51,8 @@ class FoodResource extends Resource
                         'red' => 'Rojo',
                         'yellow' => 'Amarillo',
                         'black' => 'Negro'
-                    ])
+                    ]),
+                Checkbox::make('special_no_count')->label('Alimento max 3 del día de no contar')
             ]);
     }
 

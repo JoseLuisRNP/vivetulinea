@@ -34,11 +34,11 @@ class InvitationResource extends Resource
                     ->required()
                     ->rules('required', 'numeric', 'digits:9')
                     ->label('Teléfono'),
-                Forms\Components\TextInput::make('daily_points')->default(30)->label('Puntos diarios'),
-                Forms\Components\TextInput::make('sugars')->default(13.5)->label('Hidratos'),
-                Forms\Components\TextInput::make('proteins')->default(10.5)->label('Proteínas'),
-                Forms\Components\TextInput::make('fats')->default(6)->label('Grasas'),
-                Forms\Components\TextInput::make('weekly_points')->default(30)->label('Extras semanales'),
+                Forms\Components\TextInput::make('daily_points')->default(30)->numeric()->inputMode('decimal')->label('Puntos diarios'),
+                Forms\Components\TextInput::make('sugars')->default(13.5)->numeric()->inputMode('decimal')->label('Hidratos'),
+                Forms\Components\TextInput::make('proteins')->default(10.5)->numeric()->inputMode('decimal')->label('Proteínas'),
+                Forms\Components\TextInput::make('fats')->default(6)->numeric()->inputMode('decimal')->label('Grasas'),
+                Forms\Components\TextInput::make('weekly_points')->default(30)->numeric()->inputMode('decimal')->label('Extras semanales'),
             ]);
     }
 
