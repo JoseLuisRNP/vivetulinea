@@ -36,6 +36,7 @@ Route::view('/cookies', 'cookies')->name('cookies');
 Route::view('/', 'index')->name('index');
 Route::view('/mapa', 'mapa')->name('mapa');
 Route::view('/politica-de-privacidad', 'politica-privacidad')->name('politica-privacidad');
+Route::get('food/no-count', [PointsController::class, 'noCountFood'])->name('food.no-count');
 
 
 
@@ -52,7 +53,6 @@ Route::prefix('app')->middleware(['auth', HandleActiveUsersMiddleware::class])->
     Route::post('guideline/update/{guideline}', [PointsController::class, 'storeGuideline'])->name('guidelines.store');
     Route::post('no-count', [PointsController::class, 'noCountDay'])->name('points.no-count');
     Route::post('cancel-no-count', [PointsController::class, 'cancelNoCountDay'])->name('points.cancel-no-count');
-    Route::get('food/no-count', [PointsController::class, 'noCountFood'])->name('food.no-count');
     Route::get('no-active', function() {
         return Inertia::render('NoActiveAccount');
     })->name('no-active');
