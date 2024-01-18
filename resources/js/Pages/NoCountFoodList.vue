@@ -59,7 +59,7 @@ watchDebounced(search, () => {
 
         <div class="mt-4 w-full p-4">
             <ul>
-                <li v-for="food in foods.data" :key="food.id" class="flex items-center border-b p-2" :class="{
+                <li v-for="food in foods.data" :key="food.id" class="flex items-center border-b p-2 w-full" :class="{
                     'bg-pink-100': food.special_no_count || food.oil_no_count,
                 }">
                     <div class="w-2 h-2 rounded-full mr-2 " :class="{
@@ -69,7 +69,10 @@ watchDebounced(search, () => {
                                     'bg-red-500': food.color === 'red',
                                     'bg-black': food.color === 'black',
                                 }"></div>
-                    <div>{{food.name}}</div>
+                    <div class="flex justify-between w-full">
+                        <div>{{food.name}}</div>
+                        <div v-show="food.special_no_count">{{food.quantity}}{{food.unit}}</div>
+                    </div>
                 </li>
 
             </ul>
