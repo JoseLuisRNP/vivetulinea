@@ -8,6 +8,7 @@ use App\Models\Food;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -52,7 +53,8 @@ class FoodResource extends Resource
                         'yellow' => 'Amarillo',
                         'black' => 'Negro'
                     ]),
-                Checkbox::make('special_no_count')->label('Alimento max 3 del día de no contar')
+                Toggle::make('no_count')->label('Alimento día de no contar'),
+                Toggle::make('special_no_count')->label('Alimento max 3 del día de no contar')
             ]);
     }
 
