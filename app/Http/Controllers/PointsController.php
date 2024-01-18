@@ -109,7 +109,7 @@ class PointsController extends Controller
                 ->when(!$search, fn($q) => $q->where('no_count', true)
                     ->orWhere('special_no_count', true)->orWhere('oil_no_count', true))
                 ->orderBy('name')
-                ->paginate(10)
+                ->paginate(100)
                 ->withQueryString(),
         ]);
     }
