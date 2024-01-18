@@ -38,8 +38,8 @@ const props = defineProps<{
 const search = ref('');
 
 watchDebounced(search, () => {
-    router.reload({preserveState:true, only:['foods'] , data: {q: search.value}});
-}, {debounce: 500})
+    router.reload({preserveState:true, data: {q: search.value}});
+}, {debounce: 300})
 </script>
 <template>
     <Head title="Listado día de no contar" />
