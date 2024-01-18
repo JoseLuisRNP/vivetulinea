@@ -24,8 +24,8 @@ const quantity = ref(noCountDay && props.food &&( props.food.special_no_count ||
 
 const calculatedPoints = computed(() => {
     if(!props.food || (noCountDay.value && props.food.no_count && !(props.food.oil_no_count && oilCount.value >= 2 || props.food.special_no_count && specialCount.value >=3) )) return 0;
-
-    return Math.max(Math.round((quantity.value * props.food.points / props.food.quantity * 2) / 2), 0);
+    const result = (quantity.value * props.food.points) / props.food.quantity;
+    return Math.max(Math.round(result * 2) / 2, 0);
 })
 
 const registerPoints = () => {

@@ -15,7 +15,8 @@ const props = defineProps<{
 const points = computed(() => {
     if(!calories.value || !quantity.value) return '-';
 
-    return Math.max(Math.round((((calories.value * 0.0305) + (fats.value * 0.275) + (sugars.value * 0.12) - (proteins.value * 0.098)) * (quantity.value / 100)) * 2) / 2, 0);
+    const result = ((calories.value * 0.0305) + (fats.value * 0.275) + (sugars.value * 0.12) - (proteins.value * 0.098)) * (quantity.value / 100);
+    return Math.max(Math.round(result * 2) / 2, 0);
 })
 
 const calories = ref(0);
