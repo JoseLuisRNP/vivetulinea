@@ -105,9 +105,10 @@ class PointsController extends Controller
         return Inertia::render('NoCountFoodList', [
             'foods' => Food::query()
                 ->when($search, fn($q) => $q->whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["%$search%"])->where(fn ($q) => $q->where('no_count', true)
-                    ->orWhere('special_no_count', true)))
+                    ->orWhere('special_no_count', true)->orWhere('oil_no_count', true)))
                 ->when(!$search, fn($q) => $q->where('no_count', true)
-                    ->orWhere('special_no_count', true))
+                    ->orWhere('special_no_count', true)->orWhere('oil_no_count', true))
+                ->orderBy('name')
                 ->paginate(10)
                 ->withQueryString(),
         ]);

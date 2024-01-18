@@ -49,7 +49,7 @@ watchDebounced(search, () => {
         <div class="px-6 py-4 sm:py-32 lg:px-8">
             <div class="mx-auto max-w-2xl text-center">
                 <h2 class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Listado día de no contar</h2>
-                <p class="text-base font-semibold leading-7 text-primary">Recuerda los alimentos marcados en rosa máximo 3 al día</p>
+                <p class="text-base font-semibold leading-7 text-primary">Recuerda los alimentos marcados en rosa máximo 3 al día, verde máximo 2 al día</p>
             </div>
         </div>
 
@@ -61,6 +61,7 @@ watchDebounced(search, () => {
             <ul>
                 <li v-for="food in foods.data" :key="food.id" class="flex items-center border-b p-2 w-full" :class="{
                     'bg-pink-100': food.special_no_count || food.oil_no_count,
+                    'bg-green-100': food.oil_no_count,
                 }">
                     <div class="w-2 h-2 rounded-full mr-2 " :class="{
                                     'bg-blue-500': food.color === 'blue',
@@ -71,7 +72,7 @@ watchDebounced(search, () => {
                                 }"></div>
                     <div class="flex justify-between w-full">
                         <div>{{food.name}}</div>
-                        <div v-show="food.special_no_count">{{food.quantity}}{{food.unit}}</div>
+                        <div v-show="food.special_no_count || food.oil_no_count">{{food.quantity}}{{food.unit}}</div>
                     </div>
                 </li>
 
