@@ -251,7 +251,7 @@
                     <br/><br/>
                     Nuestra forma de trabajar es amena, práctica y muy sencilla. Se basa principalmente en charlas semanales, de unos 20 min de duración, en las que tratamos aspectos relacionados con nutrición saludable, cambio de hábitos y  actividad física... Todo ello previo control y registro de tu peso semanal.
                     <br/><br/>
-                    En la actualidad puedes encontrarnos en nuestros centros en  Málaga capital, Alhaurin El Grande, Fuengirola, Mijas Costa, Marbella, Rincón de la Victoria, San Pedro, Algeciras, Guadiaro, Estepona, Coin, La Linea, Castellar, Los Barrios, Alhaurín de la Torre, Cártama Estación y Los Barrios.... pero próximamente  estaremos más cerca de ti!
+                    En la actualidad puedes encontrarnos en nuestros centros en  Málaga capital, Alhaurin El Grande, Mijas Costa, Marbella, Rincón de la Victoria, San Pedro, Algeciras, Estepona, Coin, La Linea, Castellar, y Los Barrios.... pero próximamente  estaremos más cerca de ti!
                     <br/><br/>
                     <b>Si estás interesad@ en asistir a una de nuestras charlas o simplemente tienes curiosidad por saber lo que hacemos.... ¡no dudes en ponerte en contacto con nosotras! <red>info@vivetulinea.es</red></b>
                 </p>
@@ -301,6 +301,10 @@
                         <li>
                             <span class="fa fa-dot-circle-o"></span>
                             <strong>Porque en cada charla semanal</strong> <em>encuentras la motivación y aprendes de tu monitora y del grupo.</em>
+                        </li>
+                        <li>
+                            <span class="fa fa-dot-circle-o"></span>
+                            <strong>Porque con nuestra App gratuita</strong> <em> podrás llevar un seguimiento de tus comidas de manera sencilla.</em>
                         </li>
                     </ul>
 
@@ -432,31 +436,6 @@
 
 
 
-        <div class="col-md-4">
-            <section class="acordeon">
-                <article>
-                    <h2>Guadiaro</h2> CP: 11311 - Cádiz
-                    <div class="block">
-                        <span class="clear padding15"></span>
-
-                        <b>Monitora:</b> Virginia G. Mahiquez.
-                        <br/>
-                        <b>WhatsApp:</b> 606 86 79 85 (solo whatsapp).
-                        <br/>
-                        <b>Email:</b> virginiag@vivetulinea.es
-
-                        <br/><br/>
-
-                        <red><b>CERRADA TEMPORALMENTE</b></red>
-                        <br/>
-                        <b>Dirección:</b> Calle Colón (antigua Guarderia).
-                        <br/><br/>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3215.49255529641!2d-5.303577884995066!3d36.300360703375624!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0cc4a31e16de0f%3A0x4dcf46644ac6a585!2zQ2FsbGUgQ29sw7NuLCAxMTMxMSBHdWFkaWFybywgQ8OhZGl6LCBFc3Bhw7Fh!5e0!3m2!1ses!2ses!4v1504809123229" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
-
-                    </div>
-                </article>
-            </section>
-        </div>
 
 
 
@@ -540,37 +519,6 @@
 
 
 
-
-        <div class="col-md-4">
-            <section class="acordeon">
-                <article>
-                    <h2>Zona Vialia</h2> CP: 29002 - Málaga
-                    <div class="block">
-                        <span class="clear padding15"></span>
-
-                        <b>Monitora:</b> Silvia Ramírez.
-                        <br/>
-                        <b>Email:</b> silviaramirez@vivetulinea.es
-
-                        <br/><br/>
-
-
-
-
-
-
-                        <b>Jueves:</b> Apertura 9:30 Charla 10:00.
-                        <br/>
-                        <b>Viernes:</b> Apertura 9:30 Charla 10:00.
-                        <br/>
-
-                        <b>Dirección:</b> Asociación El Martinete C/ Donoso Cortes 8.
-                        <br/><br/>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3198.5487508175092!2d-4.4313965847067776!3d36.709380079967374!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f78542df173f%3A0xaf7697293582de59!2sA.V.+EL+MARTINETE!5e0!3m2!1ses!2ses!4v1504545852800" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
-                    </div>
-                </article>
-            </section>
-        </div>
 
 
 
@@ -718,68 +666,6 @@
 
 
 
-
-        <div class="col-md-4">
-            <section class="acordeon">
-                <article>
-                    <h2>Alhaurín de la Torre</h2> CP: 29130 - Málaga
-                    <div class="block">
-                        <span class="clear padding15"></span>
-
-                        <b>Monitora:</b> Rosa M. Guerrero Burgos.
-                        <br/>
-                        <b>WhatsApp:</b> 644 47 07 52 (solo whatsapp).
-                        <br/>
-                        <b>Email:</b> rosamguerrero@vivetulinea.es
-
-                        <br/><br/>
-
-
-                        <b>Miércoles:</b> 18:00h pesaje y 18:30h reunión.<br/>
-                        <red>*Esta reunion permanecerán cerrada temporalmente</red>
-
-                        <br/>
-                        <b>Dirección:</b> Avd. Reyes Católicos 33, local F o C/Dátiles 14 local F (tiene dos accesos).
-                        <br/><br/>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3200.634152411589!2d-4.571887884708144!3d36.65925097997781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72e52ef946a719%3A0xf1ed1546a22ac40!2sAv.+Reyes+Cat%C3%B3licos%2C+33%2C+29130+Alhaur%C3%ADn+de+la+Torre%2C+M%C3%A1laga!5e0!3m2!1ses!2ses!4v1504543834561" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
-                    </div>
-                </article>
-            </section>
-        </div>
-
-
-
-
-        <div class="col-md-4">
-            <section class="acordeon">
-                <article>
-                    <h2>Cartama Estación</h2> CP: 29580 - Málaga
-                    <div class="block">
-                        <span class="clear padding15"></span>
-
-                        <b>Monitora:</b> Silvia Ramírez.
-                        <br/>
-                        <b>Emails:</b>silviaramirez@vivetulinea.es
-
-                        <br/><br/>
-
-
-                        <red>*Las reuniones permanecerán cerradas Temporalmente</red>
-                        <br/><br/>
-
-                        <b>Dirección:</b> Casa Castilla y León C/ Marbella 1.
-                        <br/><br/>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3197.552422014537!2d-4.614502484706075!3d36.73330917996237!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72ef02e2df52cd%3A0xdcdac245eb6b3126!2sCalle+Marbella%2C+1%2C+29580+Estaci%C3%B3n+de+C%C3%A1rtama%2C+M%C3%A1laga!5e0!3m2!1ses!2ses!4v1504546068207" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
-                    </div>
-                </article>
-            </section>
-        </div>
-
-
-
-
-
-
         <div class="col-md-4">
             <section class="acordeon">
                 <article>
@@ -828,8 +714,8 @@
 
                         <br/><br/>
 
-                        <red>*(Las reuniones permaneceran cerradas por vacaciones  del 16 al 29 de agosto.)</red>
-                        <br/>
+{{--                        <red>*(Las reuniones permaneceran cerradas por vacaciones  del 16 al 29 de agosto.)</red>--}}
+{{--                        <br/>--}}
 
 
                         <b>Martes:</b> Apertura: 10:00 Charla: 10:30.
@@ -857,42 +743,6 @@
 
 
 
-        <div class="col-md-4">
-            <section class="acordeon">
-                <article>
-                    <h2>Fuengirola Centro</h2> CP: 29640 - Málaga
-                    <div class="block">
-                        <span class="clear padding15"></span>
-
-                        <b>Monitora:</b> Pilar Fornelino Muñiz.
-                        <br/>
-                        <b>WhatsApp:</b> 658 60 80 62 (solo whatsapp).
-                        <br/>
-                        <b>Emails:</b> pilarfornelino@hotmail.com
-
-
-                        <br/><br/>
-
-
-
-
-                        <red>*(Las reuniones permaneceran cerradas por vacaciones  del 16 al 29 de agosto.)</red>
-                        <br/>
-                        <b>Jueves:</b> Apertura 10:00 - Charla 10:30
-                        <br/>
-                        <b>Dirección:</b> Cliniva. Centro estético - médico.
-                        <br/>
-                        C/ Antonio Sedeño Cantos 6. 29640 Fuengirola (Málaga).
-
-                        Cerca del Hotel El Puerto. 
-
-                        <br/><br/>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3205.5810719162105!2d-4.623459384872588!3d36.54009998999749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72e26a5cda33a9%3A0x96016ac12b9efa78!2sCalle%20Antonio%20Sede%C3%B1o%20Cantos%2C%206%2C%2029640%20Fuengirola%2C%20M%C3%A1laga!5e0!3m2!1ses!2ses!4v1613642884931!5m2!1ses!2ses" width="100%" height="350" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe></div>
-                </article>
-            </section>
-        </div>
-
-
 
         <div class="col-md-4">
             <section class="acordeon">
@@ -909,8 +759,8 @@
                         <br/><br/>
 
 
-                        <red>*(Las reuniones permaneceran cerradas por vacaciones  del 16 al 29 de agosto.)</red>
-                        <br/>
+{{--                        <red>*(Las reuniones permaneceran cerradas por vacaciones  del 16 al 29 de agosto.)</red>--}}
+{{--                        <br/>--}}
 
                         <b>Miercoles:</b> Apertura 10:00 Charla 10:30.
                         <br/>
@@ -1022,12 +872,6 @@
 </div>
 
 
-
-
-
-
-
-
 <!-- CONTACTO
 ==========================================-->
 <div id="tf-contact" class="text-center">
@@ -1090,7 +934,7 @@
 <nav id="footer">
     <div class="container">
         <div class="pull-left fnav">
-            <p>&copy; 2017 vivetulinea.es. <br/> <a href="aviso-legal">Aviso Legal</a> | <a href="politica-de-privacidad">Politica de Privacidad</a> | <a href="cookies">Politica de Cookies</a> | <a href="proteccion-de-datos">Información básica y detallada en protección de datos</a> | Diseñada por: <a href="http://www.malagawebs.com/">Diseño Web Málaga</a> </p>
+            <p>&copy; 2017 vivetulinea.es. <br/> <a href="aviso-legal">Aviso Legal</a> | <a href="politica-de-privacidad">Politica de Privacidad</a> | <a href="cookies">Politica de Cookies</a> | <a href="proteccion-de-datos">Información básica y detallada en protección de datos</a></p>
         </div>
         <div class="pull-right fnav">
             <ul class="footer-social">
