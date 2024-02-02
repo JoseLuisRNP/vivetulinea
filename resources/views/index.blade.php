@@ -121,7 +121,7 @@
     <div class="container">
         <div class="row">
 
-            <img src="img/dieta2b.jpg" class="img-responsive">
+{{--            <img src="img/dieta2b.jpg" class="img-responsive">--}}
 
 
             <div class="col-md-6">
@@ -158,23 +158,58 @@
 
 
 
+<div id="tf-app" class="text-center">
+    <div class="overlay">
+        <div class="container">
+            <div class="section-title center">
+                <h2>App gratuita en tu bono</h2>
 
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
 
+                    <ul class="about-list">
+                        <li>
+                            <span class="fa fa-dot-circle-o"></span>
+                            <strong>Guía de puntos.  </strong> <em></em>
+                        </li>
+                        <li>
+                            <span class="fa fa-dot-circle-o"></span>
+                            <strong>Día de no contar.</strong> <em></em>
+                        </li>
+                        <li>
+                            <span class="fa fa-dot-circle-o"></span>
+                            <strong>Calculadora</strong> <em></em>
+                        </li>
+                        <li>
+                            <span class="fa fa-dot-circle-o"></span>
+                            <strong>Registro diario</strong> <em></em>
+                        </li>
+                        <li>
+                            <span class="fa fa-dot-circle-o"></span>
+                            <strong>Control de pautas saludables</strong> <em></em>
+                        </li>
 
+                    </ul>
 
-
-
-
-
-
-
-
-
-<!-- FOTO
-==========================================-->
-<div id="foto" class="text-center">
-
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -203,7 +238,49 @@
         </div>
     </div>
 </div>
+<!-- FOTO
+==========================================-->
+{{--<div id="foto" class="text-center">--}}
 
+{{--</div>--}}
+<div id="tf-online" class="text-center">
+    <div class="overlay">
+        <div class="container">
+            <div class="section-title center">
+                <h2>Plan a distancia, nunca será tan fácil</h2>
+
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+
+                    <ul class="about-list">
+                        <li>
+                            <span class="fa fa-dot-circle-o"></span>
+                            <strong>Te enviamos el material a casa.  </strong> <em></em>
+                        </li>
+                        <li>
+                            <span class="fa fa-dot-circle-o"></span>
+                            <strong>Asesoramiento.</strong> <em></em>
+                        </li>
+                        <li>
+                            <span class="fa fa-dot-circle-o"></span>
+                            <strong>App incluída.</strong> <em></em>
+                        </li>
+                        <li>
+                            <span class="fa fa-dot-circle-o"></span>
+                            <strong>Seguimiento semanal exclusivo.</strong> <em></em>
+                        </li>
+                        <li>
+                            <span class="fa fa-dot-circle-o"></span>
+                            <strong>Infórmate de todo en info@vivetulinea.es</strong> <em></em>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- QUIENES SOMOS
  ==========================================-->
@@ -939,9 +1016,7 @@
         <div class="pull-right fnav">
             <ul class="footer-social">
                 <li><a target="_blank" href="https://www.facebook.com/Vivetulinea/"><i class="fa fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a target="_blank"  href="https://www.instagram.com/vivetulinea/?hl=es"><i class="fa fa-instagram"></i></a></li>
             </ul>
         </div>
     </div>
