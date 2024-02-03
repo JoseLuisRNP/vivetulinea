@@ -162,7 +162,7 @@
     <div class="overlay">
         <div class="container">
             <div class="section-title center">
-                <h2>App gratuita en tu bono</h2>
+                <h2>App gratuita con tu bono</h2>
 
             </div>
             <div class="row">

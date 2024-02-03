@@ -16,7 +16,7 @@ h1 strong{
 }
 h2{
 	text-transform: uppercase;
-	line-height: 20px;
+	/*line-height: 20px;*/
 	margin:  0;
 }
 h3{
@@ -599,12 +599,12 @@ ol.type li a.active { font-weight: 700; }
     color: #ffffff;
 }
 
-#tf-testimonials .overlay, #tf-app .overlay, #tf-online .overlay{
+/*#tf-testimonials .overlay, #tf-app .overlay, #tf-online .overlay{*/
 
-	background: url(../img/transparencia2.png) top repeat;
-	padding: 80px 0;
-	background-attachment: fixed;
-}
+/*	background: url(../img/transparencia2.png) top repeat;*/
+/*	padding: 80px 0;*/
+/*	background-attachment: fixed;*/
+/*}*/
 #testimonial {
 	padding: 30px 0;
 }
