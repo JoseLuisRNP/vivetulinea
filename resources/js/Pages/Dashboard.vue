@@ -185,7 +185,7 @@ const deleteMeal = (meal) => {
                 <div class="flex justify-between w-full  py-4" :class="{'items-center': noCountDay}">
                     <template v-if="!noCountDay">
                         <div class="flex flex-col items-center w-1/3">
-                            <div class="text-4xl">{{ Math.max(remainingPoints, 0) }}</div>
+                            <div class="text-4xl">{{ remainingPoints }}</div>
                             <div class="text-xs">diarios</div>
                             <div class="text-xs">restantes</div>
                         </div>

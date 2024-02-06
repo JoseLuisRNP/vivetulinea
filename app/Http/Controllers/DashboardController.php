@@ -70,12 +70,23 @@ class DashboardController extends Controller
 
         return Inertia::render('Dashboard', [
             'meals' => $meals->groupBy('time_of_day'),
-            'remainingPoints' => $remainingPoints,
-            'weekRemainingPoints' => $weekRemainingPoints,
+            'remainingPoints' => $this->format_number($remainingPoints, 1),
+            'weekRemainingPoints' => $this->format_number($weekRemainingPoints, 1),
             'pointsByColor' => $pointsByColor,
             'resultSearch' => $resultSearch,
             'noCountDay' => !!$noCountDay,
             'guideline' => $guideLine,
         ]);
+    }
+
+    private function format_number($num) {
+        if($num < 0) {
+            return 0;
+        }
+        if ($num == intval($num)) {
+            return intval($num);
+        } else {
+            return number_format($num, 1);
+        }
     }
 }
