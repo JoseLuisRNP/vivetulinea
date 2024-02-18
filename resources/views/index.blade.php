@@ -247,7 +247,7 @@
     <div class="overlay">
         <div class="container">
             <div class="section-title center">
-                <h2>Plan a distancia, nunca será tan fácil</h2>
+                <h2>Plan online, nunca será tan fácil</h2>
 
             </div>
             <div class="row">
@@ -305,7 +305,7 @@
                     <p class="intro">
                         <b>VIVETULINEA</b> está formado por un equipo de profesionales que tiene como unico objetivo: enseñar a comer saludablemente  de una forma sencilla y práctica.
                         <br/><br/>
-                        Todas nuestras monitoras cuentan con más de 8 años de experiencia en el sector del asesoramiento nutricional, con un amplio historial de personas que adelgazaron y que hoy día siguen manteniendo su peso.
+                        Todas nuestras monitoras cuentan con más de 10 años de experiencia en el sector del asesoramiento nutricional, con un amplio historial de personas que adelgazaron y que hoy día siguen manteniendo su peso.
                         <br/><br/>
                         Durante mucho tiempo hemos trabajado para la multinacional Weight Watchers (por todos  conocida como Entulinea o <b>la dieta de los puntos</b>).
 
@@ -315,8 +315,8 @@
             </div>
 
             <div class="col-md-6">
-                <a target= _blank href="img/monitoras.jpg">
-                    <img src="img/monitoras.jpg" class="img-responsive">
+                <a target= _blank href="img/monitoras2.png">
+                    <img src="img/monitoras2.png" class="img-responsive">
                 </a>
             </div>
 
@@ -415,7 +415,7 @@
 
 {{--                    <h4>Inscripción + 4 semanas consecutivas 39,95€. *Seguimiento posterior: 4 semanas consecutivas 34,95€.</h4>--}}
 
-{{--                    <h5>PLAN A DISTANCIA</h5>--}}
+{{--                    <h5>PLAN ONLINE</h5>--}}
 {{--                    <h4>Actuales 4 semanas: 34,95€</h4>--}}
 
 {{--                    <h4>Nuevas 4 semanas: 39,95€</h4>--}}
@@ -965,7 +965,12 @@
                     <div class="clearfix"></div>
                     <small><em>Use nuestro correo <red><b>info@vivetulinea.es</b></red> para cualquier tipo de información que precise.</em></small>
                 </div>
-
+                <div class="center">
+                    <ul class="footer-social">
+                        <li><a target="_blank" href="https://www.facebook.com/Vivetulinea/"><i class="fa fa-facebook"></i></a></li>
+                        <li><a target="_blank"  href="https://www.instagram.com/vivetulinea/?hl=es"><i class="fa fa-instagram"></i></a></li>
+                    </ul>
+                </div>
 
             </div>
         </div>
@@ -1012,12 +1017,6 @@
     <div class="container">
         <div class="pull-left fnav">
             <p>&copy; 2017 vivetulinea.es. <br/> <a href="aviso-legal">Aviso Legal</a> | <a href="politica-de-privacidad">Politica de Privacidad</a> | <a href="cookies">Politica de Cookies</a> | <a href="proteccion-de-datos">Información básica y detallada en protección de datos</a></p>
-        </div>
-        <div class="pull-right fnav">
-            <ul class="footer-social">
-                <li><a target="_blank" href="https://www.facebook.com/Vivetulinea/"><i class="fa fa-facebook"></i></a></li>
-                <li><a target="_blank"  href="https://www.instagram.com/vivetulinea/?hl=es"><i class="fa fa-instagram"></i></a></li>
-            </ul>
         </div>
     </div>
 </nav>

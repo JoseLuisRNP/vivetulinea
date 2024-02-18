@@ -212,11 +212,14 @@ font-weight: 900;
 /* Home Style */
 #tf-home{
 	background: url(../img/01.jpg);
-    background-size: 100% 100%;
+    background-size: cover;
 	background-position: center;
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	color: #fff;
+    -webkit-background-size:cover;
+    -moz-background-size:cover;
+    -o-background-size:cover;
 }
 
 #tf-home .overlay{
@@ -264,12 +267,15 @@ font-weight: 900;
 
 #foto{
 	background: url(../img/01.jpg);
-    background-size: 100% 100%;
+    background-size: cover;
 	background-position: center;
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	color: #ffffff;
 	height: 300px;
+    -webkit-background-size:cover;
+    -moz-background-size:cover;
+    -o-background-size:cover;
 }
 
 
@@ -310,11 +316,13 @@ ul.about-list li span{
 #tf-team{
 	padding:60px 20px 60px 20px;
 	background: transparent;
-    background-size: 100% 100%;
+    background-size: cover;
 	background-position: center;
 	background-attachment: fixed;
 	background-repeat: no-repeat;
-
+    -webkit-background-size:cover;
+    -moz-background-size:cover;
+    -o-background-size:cover;
 }
 #tf-team .overlay{
 	background: -moz-linear-gradient(top,  rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.73) 17%, rgba(0,0,0,0.66) 35%, rgba(0,0,0,0.55) 62%, rgba(0,0,0,0.4) 100%); /* FF3.6+ */
@@ -436,11 +444,14 @@ img.img-circle.team-img {
 /* Clients Section */
 #tf-clients{
 	background: url(../img/04.jpg);
-    background-size: 100% 100%;
+    background-size: cover;
 	background-position: center;
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	color: #ffffff;
+    -webkit-background-size:cover;
+    -moz-background-size:cover;
+    -o-background-size:cover;
 }
 
 #tf-clients .overlay{
@@ -574,28 +585,37 @@ ol.type li a.active { font-weight: 700; }
 /* Testimonials Section */
 #tf-testimonials{
 	background: url(../img/08.jpg);
-    background-size: 100% 100%;
+    background-size: cover;
 	background-position: center;
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	color: #ffffff;
+    -webkit-background-size:cover;
+    -moz-background-size:cover;
+    -o-background-size:cover;
 }
 
 #tf-app{
     background: url(../img/06.jpg);
-    background-size: 100% 100%;
+    background-size: cover;
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
     color: #ffffff;
+    -webkit-background-size:cover;
+    -moz-background-size:cover;
+    -o-background-size:cover;
 }
 #tf-online{
     background: url(../img/07.jpg);
-    background-size: 100% 100%;
+    background-size: cover;
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
     color: #ffffff;
+    -webkit-background-size:cover;
+    -moz-background-size:cover;
+    -o-background-size:cover;
 }
 
 #tf-testimonials .overlay, #tf-app .overlay, #tf-online .overlay{
@@ -696,17 +716,17 @@ nav#footer p{
 	font-size: 12px;
 	margin-top: 10px;
 }
-#footer i.fa {
+.footer-social i.fa {
 	height: 30px;
 	width: 30px;
 	border: 2px solid #fff;
 	font-size: 20px;
 	padding: 4px 5px;
 	border-radius: 50%;
-	color: #fff;
+	color: #c00e82;
 	transition: all 0.5s;
 }
-#footer i.fa:hover{
-	background: #97c62d;
-	border-color: #97c62d;
-	color: #ffffff;
+.footer-social i.fa:hover{
+	background: #c00e82;
+	border-color: #c00e82;
+	color: #97c62d;

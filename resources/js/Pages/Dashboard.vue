@@ -443,7 +443,7 @@ const deleteMeal = (meal) => {
         </div>
         <div>
             <div class="collapse collapse-arrow bg-base-200" v-for="time in times" :key="time">
-                <input type="checkbox" class="peer w-full" />
+                <input type="checkbox" checked class="peer w-full" />
                 <div class="collapse-title bg-primary-content text-primary peer-checked:bg-primary-content peer-checked:text-primary flex justify-between items-center">
                     {{ time }}
                     <Link :href="ziggyRoute('points.show', {time, dayActive, noCountDay})" class="text-primary-content bg-primary rounded-full h-3 w-3 flex items-center justify-center p-3 z-10">+</Link>

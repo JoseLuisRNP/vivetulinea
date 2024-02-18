@@ -89,10 +89,10 @@ class PointsController extends Controller
 
 
         $guideline->update([
-            'water' => \request('water'),
-            'fruit' => \request('fruit'),
-            'vegetable' => \request('vegetable'),
-            'sport' => \request('sport'),
+            'water' => \request('water') > 20 ? 0 : \request('water'),
+            'fruit' => \request('fruit') > 10 ? 0 : \request('fruit'),
+            'vegetable' => \request('vegetable') > 10 ? 0 : \request('vegetable'),
+            'sport' => \request('sport') > 300 ? 0 : \request('sport'),
         ]);
 
         return redirect()->back();

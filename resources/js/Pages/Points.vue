@@ -55,29 +55,29 @@ const registerPoints = () => {
                 <p class="text-base font-semibold leading-7 text-primary">{{ food ? 'Registra puntos del alimento' : 'Añade tus puntos manualmente' }}</p>
             </div>
         </div>
-        <div class="flex flex-col justify-center my-8">
-            <div class="w-full justify-center items-center flex flex-col">
+        <div class="flex flex-col justify-center my-8 text-xl">
+            <div class="w-full justify-center items-center flex flex-col ">
                 <div class="form-control w-full max-w-xs">
                     <label class="label">
-                        <span class="label-text">Nombre</span>
+                        <span class="label-text text-lg">Nombre</span>
                     </label>
-                    <input v-model="name" @focus="$event.target.select()" type="text" placeholder="Alimento" class="input input-bordered  w-full max-w-xs focus:border-primary" :disabled="food"/>
+                    <input v-model="name" @focus="$event.target.select()" type="text" placeholder="Alimento" class="input input-bordered  w-full max-w-xs focus:border-primary" :disabled="food" style="color: #3b424e"/>
                 </div>
                 <div class="form-control w-full max-w-xs" v-if="!food">
                     <label class="label">
-                        <span class="label-text">Puntos</span>
+                        <span class="label-text text-lg">Puntos</span>
                     </label>
                     <input v-model.number="points" @focus="$event.target.select()" type="number" placeholder="Alimento" class="input input-bordered  w-full max-w-xs focus:border-primary" />
                 </div>
                 <div class="form-control w-full max-w-xs" v-if="!(noCountDay && food &&( food.special_no_count || food.oil_no_count))">
                     <label class="label">
-                        <span class="label-text">Cantidad <span v-if="food && food.unit"> en {{food.unit}}</span></span>
+                        <span class="label-text text-lg">Cantidad <span v-if="food && food.unit"> en {{food.unit}}</span></span>
                     </label>
                     <input v-model.number="quantity" @focus="$event.target.select()" type="number" placeholder="0" class="input input-bordered  w-full max-w-xs focus:border-primary" />
                 </div>
                 <div class="form-control w-full max-w-xs" v-if="!food">
                     <label class="label">
-                        <span class="label-text">Color</span>
+                        <span class="label-text text-lg">Color</span>
                     </label>
                     <select v-model="color" class="select select-bordered w-full max-w-xs">
                         <option value="green">🟢 Hidratos de carbono</option>
@@ -88,7 +88,7 @@ const registerPoints = () => {
                 </div>
                 <div class="form-control w-full max-w-xs">
                     <label class="label">
-                        <span class="label-text">Momento</span>
+                        <span class="label-text text-lg">Momento</span>
                     </label>
                     <select v-model="timeOfDay" class="select select-bordered w-full max-w-xs">
                         <option v-for="time in times" :key="time" :value="time">{{time}}</option>
