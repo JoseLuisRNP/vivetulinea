@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
+use STS\FilamentImpersonate\Tables\Actions\Impersonate;
 
 class UserResource extends Resource
 {
@@ -61,6 +62,7 @@ class UserResource extends Resource
                 Tables\Filters\Filter::make('Solo mis socias')->query( fn (Builder $query) => $query->where('dietician_id', auth()->user()->id))->toggle()->label('Solo mis socias'),
             ])
             ->actions([
+                Impersonate::make()->visible(fn (User $user): bool => auth()->id() === 1),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('Cambiar password')
                     ->icon('heroicon-o-key')
