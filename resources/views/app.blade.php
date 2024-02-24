@@ -25,6 +25,5 @@
     </head>
     <body class="font-sans antialiased h-screen">
         @inertia
-        <x-impersonate::banner/>
     </body>
 </html>
