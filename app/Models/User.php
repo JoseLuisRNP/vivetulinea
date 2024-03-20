@@ -36,6 +36,10 @@ class User extends Authenticatable implements FilamentUser
         'password' => 'hashed',
     ];
 
+    public function isSuperAdmin() {
+        return $this->isAdmin() && $this->id === 1;
+    }
+
     public function isAdmin()
     {
         return $this->role === 'admin';
