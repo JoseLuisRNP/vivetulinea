@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -43,6 +43,13 @@ class AuthenticatedSessionController extends Controller
             Session::forget('redirect_to_admin');
             return Inertia::location(\route('filament.admin.pages.dashboard'));
         }
+
+        if(\auth()->user()->isMember()) {
+            \auth()->user()->update([
+                'password' => Hash::make(Str::random(10)),
+            ]);
+        }
+
         return redirect()->route('dashboard');
 
     }
