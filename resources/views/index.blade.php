@@ -618,7 +618,7 @@
 
 
                         <br/><br/>
-                        <b>Martes:</b> Apertura: 19:45 / Reunión: 20:15
+                        <b>Lunes:</b> Apertura: 19:45 / Reunión: 20:15
                         <br/>
 
 
