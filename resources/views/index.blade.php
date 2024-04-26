@@ -762,7 +762,7 @@
 
 
 
-                        <b>Jueves:</b> de 18:30 a 19:30.
+                        <b>Jueves:</b> de 16:30 a 18:00.
                         <br/>
                         <b>Dirección:</b> Calle Sol nº37 (Asociación de vecinos El Barrio). Marbella CP 29601
                         <br/><br/>
@@ -869,6 +869,10 @@
             <section class="acordeon">
                 <article>
                     <h2>San Pedro de Alcántara</h2> CP: 29670 - Málaga
+                    <div>
+                        <red>* Cerrado temporalmente</red>
+                        <br/>
+                    </div>
                     <div class="block">
                         <span class="clear padding15"></span>
 
@@ -898,7 +902,12 @@
         <div class="col-md-4">
             <section class="acordeon">
                 <article>
+
                     <h2>Estepona</h2> CP: 29680 - Málaga
+                    <div>
+                        <red>* Cerrado temporalmente</red>
+                        <br/>
+                    </div>
                     <div class="block">
                         <span class="clear padding15"></span>
 
@@ -918,6 +927,7 @@
                         <br/><br/>
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3210.103444405453!2d-5.152301584845151!3d36.43088129610115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0cd6a3b517f32b%3A0x23b3a8eb08da32e5!2sGustavo+Adolfo+Becquer%2C+29680+Estepona%2C+M%C3%A1laga%2C+Espa%C3%B1a!5e0!3m2!1ses!2sus!4v1531988636213" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
                 </article>
+
             </section>
         </div>
 
