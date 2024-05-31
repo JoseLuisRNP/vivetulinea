@@ -23,7 +23,11 @@ const specialCount = ref(parseInt(urlParams.get('special')))
 const quantity = ref(noCountDay && props.food &&( props.food.special_no_count || props.food.oil_no_count) ? 1 : 0);
 
 const calculatedPoints = computed(() => {
-    if(!props.food || (noCountDay.value && props.food.no_count && !(props.food.oil_no_count && oilCount.value >= 2 || props.food.special_no_count && specialCount.value >=3) )) return 0;
+    const isNoCountDay = noCountDay.value;
+    const isNoCountFood = props.food.no_count || props.food.oil_no_count;
+    const isOverLimitFree = (props.food.oil_no_count && oilCount.value >= 2 || props.food.special_no_count && specialCount.value >=3)
+
+    if(!props.food || (isNoCountDay && isNoCountFood && !isOverLimitFree )) return 0;
     const result = (quantity.value * props.food.points) / props.food.quantity;
     return Math.max(Math.round(result * 2) / 2, 0);
 })
