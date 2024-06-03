@@ -24,7 +24,7 @@
     },
     "dependencies": {
         "@sentry/vue": "^7.109.0",
-        "@vueuse/core": "^10.7.0",
+        "@vueuse/core": "^10.10.0",
         "vue-toastification": "^2.0.0-rc.5"
     }
 }
