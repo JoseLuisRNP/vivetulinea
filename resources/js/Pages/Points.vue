@@ -24,11 +24,16 @@ const quantity = ref(noCountDay && props.food &&( props.food.special_no_count ||
 
 const calculatedPoints = computed(() => {
     const isNoCountDay = noCountDay.value;
-    const isNoCountFood = props.food.no_count || props.food.oil_no_count;
-    const isOverLimitFree = (props.food.oil_no_count && oilCount.value >= 2 || props.food.special_no_count && specialCount.value >=3)
+    const isNoCountFood = props.food.special_no_count || props.food.oil_no_count;
+    let realQuantity = quantity.value;
 
-    if(!props.food || (isNoCountDay && isNoCountFood && !isOverLimitFree )) return 0;
-    const result = (quantity.value * props.food.points) / props.food.quantity;
+    if(!props.food) return 0;
+    if(isNoCountDay && isNoCountFood) {
+        const freeLeft = props.food.oil_no_count ? 2 - oilCount.value : 3 - specialCount.value;
+        realQuantity = Math.max(0, quantity.value - freeLeft);
+    }
+
+    const result = (realQuantity * props.food.points) / props.food.quantity;
     return Math.max(Math.round(result * 2) / 2, 0);
 })
 
@@ -73,7 +78,7 @@ const registerPoints = () => {
                     </label>
                     <input v-model.number="points" @focus="$event.target.select()" type="number" placeholder="Alimento" class="input input-bordered  w-full max-w-xs focus:border-primary" />
                 </div>
-                <div class="form-control w-full max-w-xs" v-if="!(noCountDay && food &&( food.special_no_count || food.oil_no_count))">
+                <div class="form-control w-full max-w-xs">
                     <label class="label">
                         <span class="label-text text-lg">Cantidad <span v-if="food && food.unit"> en {{food.unit}}</span></span>
                     </label>

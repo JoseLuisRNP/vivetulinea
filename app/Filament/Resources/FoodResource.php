@@ -55,7 +55,7 @@ class FoodResource extends Resource
                     ]),
                 Toggle::make('no_count')->label('Alimento día de no contar'),
                 Toggle::make('special_no_count')->label('Alimento max 3 del día de no contar (rosa)'),
-                Toggle::make('oil_no_count')->label('Alimento max 3 del día de no contar (verde)'),
+                Toggle::make('oil_no_count')->label('Alimento max 2 del día de no contar (verde)'),
             ]);
     }
 
