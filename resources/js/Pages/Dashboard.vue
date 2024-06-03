@@ -61,19 +61,19 @@ const getTotalPoints = (array: Meal[]) => array ?  array.reduce((acc, meal) => a
 const oilNoCountQuantity = computed(() => {
     if(!props.noCountDay) return 0;
 
-    return Object.values(props.meals).reduce((acc, meal) => {
+    return Math.min(2, Object.values(props.meals).reduce((acc, meal) => {
         const mealsOil = meal.filter(m => m.oil_no_count);
-        return acc + mealsOil.length
-    }, 0)
+        return acc + mealsOil.reduce((acc, meal) => acc + meal.quantity, 0)
+    }, 0))
 })
 
 const specialNoCountQuantity = computed(() => {
     if(!props.noCountDay) return 0;
 
-    return Object.values(props.meals).reduce((acc, meal) => {
+    return Math.min(3, Object.values(props.meals).reduce((acc, meal) => {
         const mealsSpecial = meal.filter(m => m.special_no_count);
-        return acc + mealsSpecial.length
-    }, 0)
+        return acc + mealsSpecial.reduce((acc, meal) => acc + meal.quantity, 0)
+    }, 0))
 })
 
 const totalPointsPerMeal = computed(() => {
