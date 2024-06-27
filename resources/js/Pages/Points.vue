@@ -24,13 +24,17 @@ const quantity = ref(noCountDay && props.food &&( props.food.special_no_count ||
 
 const calculatedPoints = computed(() => {
     const isNoCountDay = noCountDay.value;
-    const isNoCountFood = props.food.special_no_count || props.food.oil_no_count;
+    const isNoCountFood = props.food.no_count;
+    const isNoCountFoodSpecial = props.food.special_no_count || props.food.oil_no_count;
     let realQuantity = quantity.value;
-
     if(!props.food) return 0;
-    if(isNoCountDay && isNoCountFood) {
+    if(isNoCountDay && isNoCountFoodSpecial) {
         const freeLeft = props.food.oil_no_count ? 2 - oilCount.value : 3 - specialCount.value;
         realQuantity = Math.max(0, quantity.value - freeLeft);
+    }
+
+    if(isNoCountDay && isNoCountFood) {
+        realQuantity = 0;
     }
 
     const result = (realQuantity * props.food.points) / props.food.quantity;
