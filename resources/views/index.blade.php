@@ -481,7 +481,11 @@
         <div class="col-md-4">
             <section class="acordeon">
                 <article>
-                    <h2>La línea</h2> CP: 11300 - Cádiz
+                    <h2>La línea</h2> CP: 11300 -
+                    <div>
+                        <red>* Cerrado por vacaciones de 1 de Agosto al 31 Agosto</red>
+                        <br/>
+                    </div>
                     <div class="block">
                         <span class="clear padding15"></span>
 
@@ -521,6 +525,10 @@
             <section class="acordeon">
                 <article>
                     <h2>Castellar</h2> CP: 11351 - Cádiz
+                    <div>
+                        <red>* Cerrado por vacaciones de 1 de Agosto al 31 Agosto</red>
+                        <br/>
+                    </div>
                     <div class="block">
                         <span class="clear padding15"></span>
 
@@ -556,6 +564,10 @@
             <section class="acordeon">
                 <article>
                     <h2>Los Barrios</h2> CP: 11370 - Cádiz
+                    <div>
+                        <red>* Cerrado por vacaciones de 1 de Agosto al 31 Agosto</red>
+                        <br/>
+                    </div>
                     <div class="block">
                         <span class="clear padding15"></span>
 
@@ -642,6 +654,10 @@
             <section class="acordeon">
                 <article>
                     <h2>Teatinos</h2> CP: 29010 - Málaga Capital
+                    <div>
+                        <red>* Cerrado por vacaciones del 30 Junio al 27 Agosto</red>
+                        <br/>
+                    </div>
                     <div class="block">
                         <span class="clear padding15"></span>
 
