@@ -21,6 +21,7 @@ const noCountDay = ref(!!parseInt(urlParams.get('noCountDay')))
 const oilCount = ref(parseInt(urlParams.get('oil')))
 const specialCount = ref(parseInt(urlParams.get('special')))
 const quantity = ref(noCountDay && props.food &&( props.food.special_no_count || props.food.oil_no_count) ? 1 : 0);
+const isRecipe = ref(urlParams.get('recipe'));
 
 const calculatedPoints = computed(() => {
     const isNoCountDay = noCountDay.value;
@@ -50,7 +51,8 @@ const registerPoints = () => {
         time_of_day: timeOfDay.value,
         consumed_at: dayActive.value.toISOString(),
         special_no_count: noCountDay.value && props.food && props.food.special_no_count,
-        oil_no_count: noCountDay.value && props.food && props.food.oil_no_count
+        oil_no_count: noCountDay.value && props.food && props.food.oil_no_count,
+        recipe_id: isRecipe.value ? props.food.id : null,
     }
 
     router.post(ziggyRoute('points.store'), data)

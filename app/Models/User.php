@@ -89,4 +89,9 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Guideline::class);
     }
 
+    public function recipes()
+    {
+        return $this->hasMany(Recipe::class);
+    }
+
 }

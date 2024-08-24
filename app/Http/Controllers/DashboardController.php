@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Food;
+use App\Models\Meal;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 
@@ -21,10 +22,20 @@ class DashboardController extends Controller
 
         $noCountDay = $noCountDayWeek->contains(fn($d) => $d->date->isSameDay($day));
 
-        $pointsByColor = $meals->groupBy('color')->map(function ($item, $key) {
+        $mealsRecipe = $meals->filter(fn ($meal) => $meal->recipe_id);
+        $mealsFood = $meals->filter(fn ($meal) => !$meal->recipe_id);
+
+        $pointsByColor = $mealsFood->groupBy('color')->map(function ($item, $key) {
             return $item->sum('points');
         });
 
+        $mealsRecipe->each(function (Meal $meal) use ($pointsByColor){
+            $recipe = $meal->recipe;
+            $quantityMultiplier = $meal->quantity / $recipe->quantity;
+            $pointsByColor->put('blue', $pointsByColor->get('blue', 0) + $recipe->proteins * $quantityMultiplier);
+            $pointsByColor->put('red', $pointsByColor->get('red', 0) + $recipe->fats * $quantityMultiplier);
+            $pointsByColor->put('green', $pointsByColor->get('green', 0) + $recipe->sugars * $quantityMultiplier);
+        });
 
         $remainingPoints = auth()->user()->daily_points - $meals->filter(fn ($meal) => !$noCountDayWeek->contains(fn($d) => $d->date->isSameDay($meal->consumed_at)) )->sum('points');
 

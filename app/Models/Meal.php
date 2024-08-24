@@ -13,4 +13,9 @@ class Meal extends Model
     protected $casts = [
         'consumed_at' => 'datetime',
     ];
+
+    public function recipe()
+    {
+        return $this->belongsTo(Recipe::class);
+    }
 }

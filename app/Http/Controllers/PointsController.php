@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Food;
 use App\Models\Guideline;
-use Illuminate\Http\Request;
+use App\Models\Recipe;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -14,7 +14,7 @@ class PointsController extends Controller
     public function show($food = null)
     {
         if ($food) {
-            $food = Food::find($food);
+            $food = \request('recipe') ? Recipe::find($food) : Food::find($food);
         }
 
         return Inertia::render('Points', [
@@ -42,9 +42,10 @@ class PointsController extends Controller
             'consumed_at' => Carbon::parse(\request('consumed_at')),
             'special_no_count' => \request('special_no_count') ?? false,
             'oil_no_count' => \request('oil_no_count') ?? false,
+            'recipe_id' => \request('recipe_id'),
         ]);
 
-        return redirect()->back()->with('success', 'Puntos registrados correctamente');
+        return redirect()->route('dashboard')->with('success', 'Puntos registrados correctamente');
     }
 
     public function destroy($meal)
