@@ -101,7 +101,6 @@ const createRecipe = () => {
             }
         })
     }
-    console.log(recipe);
 
     router.post(ziggyRoute('recipes.create'), recipe)
 }
