@@ -32,7 +32,7 @@ class InvitationResource extends Resource
                     ->label('Nombre'),
                 Forms\Components\TextInput::make('email')
                     ->required()
-                    ->rules('required', 'numeric', 'digits:9')
+                    ->rules('required', 'numeric')
                     ->label('Teléfono'),
                 Forms\Components\TextInput::make('daily_points')->default(30)->numeric()->inputMode('decimal')->label('Puntos diarios'),
                 Forms\Components\TextInput::make('sugars')->default(13.5)->numeric()->inputMode('decimal')->label('Hidratos'),
