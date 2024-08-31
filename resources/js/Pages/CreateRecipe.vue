@@ -97,7 +97,7 @@ const createRecipe = () => {
                 food_id: food.id,
                 quantity: food.recipeQuantity,
                 unit: food.unit,
-                points: calculatedPointsPerFood.value[index]
+                // points: calculatedPointsPerFood.value[index]
             }
         })
     }

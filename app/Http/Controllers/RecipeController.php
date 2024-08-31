@@ -15,6 +15,7 @@ class RecipeController extends Controller
             ->with(['foods.food:name,id,color'])
             ->when($search, fn($q) => $q->whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["%$search%"])
                 ->orderByRaw("CASE WHEN LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?) THEN 1 ELSE 0 END DESC", ["$search%"]))
+            ->when(!$search, fn($q) => $q->orderBy('name'))
             ->paginate(10);
 
         return Inertia::render('Recipes', ['foods' => $foods]);
@@ -57,6 +58,6 @@ class RecipeController extends Controller
 
         $recipe->foods()->createMany($validated['foods']);
 
-        return redirect()->back()->with('success', 'Receta creada correctamente');
+        return redirect()->route('recipes.index')->with('success', 'Receta creada correctamente');
     }
 }
