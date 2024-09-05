@@ -34,7 +34,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'email' => 'required|numeric|digits:9|unique:'.User::class,
+            'email' => 'required|numeric|unique:'.User::class,
         ]);
 
         $invitation = Invitation::firstWhere('email', $request->email);
