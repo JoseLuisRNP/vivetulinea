@@ -4,6 +4,7 @@ import {ref} from "vue";
 import {watchDebounced} from "@vueuse/core";
 import {Head, router, Link} from "@inertiajs/vue3";
 import ziggyRoute from "ziggy-js";
+import {roundedPoints} from "../helpers";
 
 interface Paginate<T> {
     data: T[],
@@ -69,12 +70,19 @@ watchDebounced(search, () => {
                 <li class="collapse collapse-arrow bg-base-200" v-for="food in foods.data" :key="food.id">
                     <input type="checkbox" class="peer w-full" />
                     <div class="collapse-title bg-primary-content text-primary peer-checked:bg-primary-content peer-checked:text-primary flex justify-between items-center">
-                        {{ food.name }}
+                        <div class="flex justify-between w-full items-center">
+                            <div>
+                                <div class="text-sm">{{ food.name }}</div>
+                                <div class="text-xs text-neutral" >{{roundedPoints(food.points / food.quantity)}} puntos por {{food.unit}}</div>
+                            </div>
+
+                        </div>
                         <div class="flex">
                             <Link :href="ziggyRoute('points.show', {food:food.id, time, dayActive, recipe:true})" class="text-primary-content bg-primary rounded-full h-3 w-3 flex items-center justify-center p-3 z-10">+</Link>
                         </div>
                     </div>
                     <div class="collapse-content bg-primary-content text-primary peer-checked:bg-primary-content peer-checked:text-primary">
+
                         <ul class="ml-4 text-neutral">
                             <li class="border-b py-2"  v-for="f in food.foods" :key="f.id" >
                                 <div class="flex items-center mt-2 ">
@@ -88,7 +96,7 @@ watchDebounced(search, () => {
                                     <div class="flex justify-between w-full items-center">
                                         <div>
                                             <div class="text-sm">{{ f.food.name }}</div>
-                                            <div class="text-xs" > {{ f.quantity }} {{f.unit}}</div>
+                                            <div class="text-xs" > {{ f.quantity }} {{f.unit}} - {{roundedPoints((f.quantity * f.food.points) / f.food.quantity)}} puntos</div>
                                         </div>
 
                                     </div>

@@ -5,6 +5,7 @@ import {Head, router} from "@inertiajs/vue3";
 import {computed, ref, watch} from "vue";
 import {onClickOutside, watchDebounced} from "@vueuse/core";
 import ziggyRoute from "ziggy-js";
+import {roundedPoints} from "@/helpers";
 
 interface Food {
     id: number,
@@ -32,7 +33,7 @@ const foods = ref<Food[]>([]);
 const calculatedPointsPerFood = computed(() =>
     foods.value.map(food => {
         const result = (food.recipeQuantity * food.points) / food.quantity;
-        return Math.max(Math.round(result * 2) / 2, 0);
+        return roundedPoints(result);
     })
 )
 
@@ -90,8 +91,9 @@ const createRecipe = () => {
         ration: ration.value,
         points: totalRecipePoints.value,
         proteins: totalRecipePointsByColor.value.blue,
-        sugars: totalRecipePointsByColor.value.yellow,
+        sugars: totalRecipePointsByColor.value.green,
         fats: totalRecipePointsByColor.value.red,
+        empty_points: totalRecipePointsByColor.value.yellow,
         foods: foods.value.map((food, index) => {
             return {
                 food_id: food.id,

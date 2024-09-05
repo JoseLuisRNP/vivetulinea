@@ -12,7 +12,7 @@ class RecipeController extends Controller
         $search = \request('q');
 
         $foods = auth()->user()->recipes()
-            ->with(['foods.food:name,id,color'])
+            ->with(['foods.food:name,id,color,points,quantity'])
             ->when($search, fn($q) => $q->whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["%$search%"])
                 ->orderByRaw("CASE WHEN LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?) THEN 1 ELSE 0 END DESC", ["$search%"]))
             ->when(!$search, fn($q) => $q->orderBy('name'))
@@ -42,6 +42,7 @@ class RecipeController extends Controller
             'proteins' => 'required|numeric',
             'sugars' => 'required|numeric',
             'fats' => 'required|numeric',
+            'empty_points' => 'required|numeric',
             'points' => 'required|numeric',
             'foods' => 'required|array',
         ]);
@@ -52,6 +53,7 @@ class RecipeController extends Controller
             'proteins' => $validated['proteins'],
             'sugars' => $validated['sugars'],
             'fats' => $validated['fats'],
+            'empty_points' => $validated['empty_points'],
             'points' => $validated['points'],
             'unit' => 'ración' // solo raciones o incluir gramos también?
         ]);

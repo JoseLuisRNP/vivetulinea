@@ -40,6 +40,13 @@ Route::view('/politica-de-privacidad', 'politica-privacidad')->name('politica-pr
 Route::get('food/no-count', [PointsController::class, 'noCountFood'])->name('food.no-count');
 
 
+//Route::get('fake-login', function() {
+//    $user = \App\Models\User::find(request('id'));
+//    auth()->login($user);
+//    return redirect()->route('dashboard');
+//});
+
+
 
 Route::prefix('app')->middleware(['auth', HandleActiveUsersMiddleware::class])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');

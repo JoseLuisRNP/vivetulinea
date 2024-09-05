@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import {Head, Link, router} from '@inertiajs/vue3';
+import {Head, router} from '@inertiajs/vue3';
 import NavBar from "@/Components/Layout/NavBar.vue";
 import ziggyRoute from "ziggy-js";
 import {times} from "@/data";
+import {roundedPoints} from "@/helpers";
 
 
 const props = defineProps<{
@@ -16,7 +17,7 @@ const points = computed(() => {
     if(!calories.value || !quantity.value) return '-';
 
     const result = ((calories.value * 0.0305) + (fats.value * 0.275) + (sugars.value * 0.12) - (proteins.value * 0.098)) * (quantity.value / 100);
-    return Math.max(Math.round(result * 2) / 2, 0);
+    return roundedPoints(result);
 })
 
 const calories = ref(0);

@@ -4,6 +4,7 @@ import NavBar from "@/Components/Layout/NavBar.vue";
 import ziggyRoute from "ziggy-js";
 import {computed, ref } from "vue";
 import {times} from "@/data";
+import {roundedPoints} from "@/helpers";
 
 const props = defineProps<{
     food: any
@@ -39,7 +40,7 @@ const calculatedPoints = computed(() => {
     }
 
     const result = (realQuantity * props.food.points) / props.food.quantity;
-    return Math.max(Math.round(result * 2) / 2, 0);
+    return roundedPoints(result);
 })
 
 const registerPoints = () => {
