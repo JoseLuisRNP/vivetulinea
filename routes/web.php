@@ -55,6 +55,7 @@ Route::prefix('app')->middleware(['auth', HandleActiveUsersMiddleware::class])->
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('calculator', [CalculatorController::class, 'show'])->name('calculator');
     Route::get('recipes', [RecipeController::class, 'index'])->name('recipes.index');
+    Route::delete('recipes/{recipe}', [RecipeController::class, 'delete'])->name('recipes.destroy');
     Route::get('recipes/create', [RecipeController::class, 'new'])->name('recipes.new');
     Route::post('recipes/create', [RecipeController::class, 'create'])->name('recipes.create');
     Route::get('menu', MenuAppController::class)->name('menu');

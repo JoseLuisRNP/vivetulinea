@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Food;
+use App\Models\Recipe;
 use Inertia\Inertia;
 
 class RecipeController extends Controller
@@ -61,5 +62,11 @@ class RecipeController extends Controller
         $recipe->foods()->createMany($validated['foods']);
 
         return redirect()->route('recipes.index')->with('success', 'Receta creada correctamente');
+    }
+
+    public function delete(Recipe $recipe)
+    {
+        $recipe->delete();
+        return redirect()->route('recipes.index')->with('success', 'Receta eliminada correctamente');
     }
 }

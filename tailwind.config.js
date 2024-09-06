@@ -66,5 +66,6 @@ export default {
                 },
             },
         ],
+        darkTheme: 'light',
     },
 };

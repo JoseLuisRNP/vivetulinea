@@ -47,6 +47,10 @@ const time = ref(urlParams.get('time') || 'Desayuno');
 watchDebounced(search, () => {
     router.reload({preserveState:true, data: {q: search.value}});
 }, {debounce: 300})
+
+const deleteRecipe = (recipe) => {
+    router.delete(ziggyRoute('recipes.destroy', {id: recipe.id}))
+}
 </script>
 <template>
     <Head title="Tus recetas - ViveTuLinea" />
@@ -105,9 +109,9 @@ watchDebounced(search, () => {
                             </li>
                         </ul>
 <!--                        <div class="text-neutral text-right py-2">Total: <span class="font-bold">{{totalPointsPerMeal[time]}} puntos</span> </div>-->
-                        <div class="text-neutral text-right py-2">
-                            <button class="btn btn-xs btn-error btn-outline">Borrar receta</button>
-                        </div>
+                        <button @click="deleteRecipe(food)" class="text-neutral text-right py-2">
+                            <span class="btn btn-xs btn-error btn-outline">Borrar receta</span>
+                        </button>
                     </div>
                 </li>
 
