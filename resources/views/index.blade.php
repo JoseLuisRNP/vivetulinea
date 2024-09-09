@@ -482,10 +482,10 @@
             <section class="acordeon">
                 <article>
                     <h2>La línea</h2> CP: 11300 -
-                    <div>
-                        <red>* Cerrado por vacaciones de 1 de Agosto al 31 Agosto</red>
-                        <br/>
-                    </div>
+{{--                    <div>--}}
+{{--                        <red>* Cerrado por vacaciones de 1 de Agosto al 31 Agosto</red>--}}
+{{--                        <br/>--}}
+{{--                    </div>--}}
                     <div class="block">
                         <span class="clear padding15"></span>
 
@@ -499,7 +499,7 @@
 
 
 
-                        <b>Martes Tarde:</b> De 16:15 a 18:15.
+                        <b>Martes Tarde:</b> De 17:00 a 18:30.
                         <br/>
                         <b>Dirección:</b> Círculo Social de la Mujer Linense, C/ Rocío s/n.
                         <br/><br/>
@@ -525,10 +525,10 @@
             <section class="acordeon">
                 <article>
                     <h2>Castellar</h2> CP: 11351 - Cádiz
-                    <div>
-                        <red>* Cerrado por vacaciones de 1 de Agosto al 31 Agosto</red>
-                        <br/>
-                    </div>
+{{--                    <div>--}}
+{{--                        <red>* Cerrado por vacaciones de 1 de Agosto al 31 Agosto</red>--}}
+{{--                        <br/>--}}
+{{--                    </div>--}}
                     <div class="block">
                         <span class="clear padding15"></span>
 
@@ -543,7 +543,7 @@
 
 
 
-                        <b>Jueves:</b> De 16:30 a 17:45.
+                        <b>Miércoles:</b> De 17:00 a 18:30.
                         <br/>
                         <b>Dirección:</b> C/ Iryda 4 (carnicería Manoli).
                         <br/><br/>
@@ -564,10 +564,10 @@
             <section class="acordeon">
                 <article>
                     <h2>Los Barrios</h2> CP: 11370 - Cádiz
-                    <div>
-                        <red>* Cerrado por vacaciones de 1 de Agosto al 31 Agosto</red>
-                        <br/>
-                    </div>
+{{--                    <div>--}}
+{{--                        <red>* Cerrado por vacaciones de 1 de Agosto al 31 Agosto</red>--}}
+{{--                        <br/>--}}
+{{--                    </div>--}}
                     <div class="block">
                         <span class="clear padding15"></span>
 
@@ -581,7 +581,7 @@
 
 
 
-                        <b>Miercoles Mañana:</b> De 9:00 a 11:00.
+                        <b>Miercoles Mañana:</b> De 8:15 a 11:00.
                         <br/>
                         <b>Miercoles Tarde:</b> Con cita previa.
                         <br/>
