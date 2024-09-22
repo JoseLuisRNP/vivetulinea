@@ -24,6 +24,10 @@ class RecipeController extends Controller
 
     public function new()
     {
+        $recipeId = request('id');
+        if($recipeId) {
+            $recipe = auth()->user()->recipes()->with(['foods', 'foods.food'])->find($recipeId);
+        }
         $resultSearch = collect();
         $search = \request('q');
         if($search) {
@@ -31,13 +35,15 @@ class RecipeController extends Controller
                 ->orderByRaw("CASE WHEN LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?) THEN 1 ELSE 0 END DESC", ["$search%"])
                 ->get();
         }
-        return Inertia::render('CreateRecipe', ['resultSearch' => $resultSearch]);
+
+        return Inertia::render('CreateRecipe', ['resultSearch' => $resultSearch, 'recipe' => $recipe ?? null]);
     }
 
     public function create()
     {
 
         $validated = $this->validate(\request(), [
+            'id' => 'nullable|exists:recipes,id',
             'name' => 'required|string',
             'ration' => 'required|numeric',
             'proteins' => 'required|numeric',
@@ -48,7 +54,10 @@ class RecipeController extends Controller
             'foods' => 'required|array',
         ]);
 
-        $recipe = auth()->user()->recipes()->create([
+
+        $recipe = auth()->user()->recipes()->updateOrCreate(
+            ['id' => $validated['id'] ?? null],
+            [
             'name' => $validated['name'],
             'quantity' => $validated['ration'],
             'proteins' => $validated['proteins'],
@@ -59,9 +68,11 @@ class RecipeController extends Controller
             'unit' => 'ración' // solo raciones o incluir gramos también?
         ]);
 
+        $recipe->foods()->delete();
+
         $recipe->foods()->createMany($validated['foods']);
 
-        return redirect()->route('recipes.index')->with('success', 'Receta creada correctamente');
+        return redirect()->route('recipes.index')->with('success', $validated['id'] ?? null ? 'Receta actualizada correctamente' : 'Receta creada correctamente');
     }
 
     public function delete(Recipe $recipe)

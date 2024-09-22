@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import NavBar from "@/Components/Layout/NavBar.vue";
-import {Head, router} from "@inertiajs/vue3";
+import {Head, router, Link} from "@inertiajs/vue3";
 import {computed, ref, watch} from "vue";
 import {onClickOutside, watchDebounced} from "@vueuse/core";
 import ziggyRoute from "ziggy-js";
@@ -19,6 +19,7 @@ interface Food {
 
 const props = defineProps<{
     resultSearch: any,
+    recipe: any,
 }>();
 
 const search = ref('');
@@ -27,9 +28,12 @@ watchDebounced(search, () => {
     router.reload({preserveState:true, only:['resultSearch'] , data: {q: search.value}});
 }, {debounce: 500})
 
-const name = ref('')
-const ration = ref(1);
-const foods = ref<Food[]>([]);
+const name = ref(props.recipe?.name || '')
+const ration = ref(props.recipe?.quantity || 1);
+const foods = ref( props.recipe?.foods?.map(food => {
+    food.food.recipeQuantity = food.quantity;
+    return food.food as Food;
+}) || []);
 const calculatedPointsPerFood = computed(() =>
     foods.value.map(food => {
         const result = (food.recipeQuantity * food.points) / food.quantity;
@@ -87,6 +91,7 @@ onClickOutside(resultsWrapper, () => {
 
 const createRecipe = () => {
     const recipe = {
+        id: props.recipe?.id,
         name: name.value,
         ration: ration.value,
         points: totalRecipePoints.value,
@@ -199,10 +204,14 @@ const createRecipe = () => {
                     </span>
                 </div>
                 <div class="text-neutral text-right py-2">Total: <span class="font-bold">{{totalRecipePoints}} puntos</span> </div>
+                <div class="text-neutral text-right py-2">Por ración: <span class="font-bold">{{totalRecipePoints / ration}} puntos</span> </div>
             </div>
         </div>
         <div class="flex justify-center">
-            <button @click="createRecipe" class="btn btn-primary mt-4 w-2/4 m-auto" :disabled="!(name && ration && foods.length)">Crear receta</button>
+            <button @click="createRecipe" class="btn btn-primary mt-4 w-2/4 m-auto" :disabled="!(name && ration && foods.length)">{{ props.recipe ? 'Actualizar' : 'Crear'}} receta</button>
+        </div>
+        <div class="flex justify-center">
+            <Link :href="ziggyRoute(props.recipe ? 'recipes.index' : 'dashboard')" class="btn btn-primary btn-outline mt-4 w-2/4 m-auto">Volver</Link>
         </div>
 
     </div>

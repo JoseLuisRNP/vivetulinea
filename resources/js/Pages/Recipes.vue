@@ -51,6 +51,10 @@ watchDebounced(search, () => {
 const deleteRecipe = (recipe) => {
     router.delete(ziggyRoute('recipes.destroy', {id: recipe.id}))
 }
+
+const editRecipe = (recipe) => {
+    router.get(ziggyRoute('recipes.new', {id: recipe.id}))
+}
 </script>
 <template>
     <Head title="Tus recetas - ViveTuLinea" />
@@ -109,6 +113,9 @@ const deleteRecipe = (recipe) => {
                             </li>
                         </ul>
 <!--                        <div class="text-neutral text-right py-2">Total: <span class="font-bold">{{totalPointsPerMeal[time]}} puntos</span> </div>-->
+                        <button @click="editRecipe(food)" class="text-neutral text-right py-2 mr-2">
+                            <span class="btn btn-xs btn-secondary btn-outline">Editar receta</span>
+                        </button>
                         <button @click="deleteRecipe(food)" class="text-neutral text-right py-2">
                             <span class="btn btn-xs btn-error btn-outline">Borrar receta</span>
                         </button>
