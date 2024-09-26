@@ -457,18 +457,16 @@
 
                         <b>Monitora:</b> Lorena Luque Calderón.
                         <br/>
-                        <b>Email:</b> lorenaluque@vivetulinea.es
+                        <b>Email:</b> lorelu@hotmail.es
                         <br/><br/>
 
 
 
-                        <b>Lunes:</b> Apertura 10:30 Charla 11:00.
+                        <b>Miércoles:</b> 10:15 reunión.
                         <br/>
-                        <b>Lunes:</b> Apertura 17:00 Charla 17:30.
-                        <br/>
-                        <b>Dirección:</b> Asociación de Vecinos Parque Alemán, (junto recinto ferial).
+                        <b>Dirección:</b> Urbanización Maria Pineda, 5.
                         <br/><br/>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3222.616064250069!2d-5.4530739847229555!3d36.127210380092656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0c94c5e6ed2063%3A0xc7fa4431d8e8e2ab!2zQXYuIEFndXN0w61uIELDoWxzYW1vLCBBbGdlY2lyYXMsIEPDoWRpeg!5e0!3m2!1ses!2ses!4v1504543087672" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6444.313752784267!2d-5.456038200000001!3d36.1383934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0c94caaae01e5d%3A0x7125f66e5baf6a97!2sUrbanizacion%20Mariana%20Pineda%2C%205%2C%2011204%20Algeciras%2C%20C%C3%A1diz!5e0!3m2!1ses!2ses!4v1727371328056!5m2!1ses!2ses" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </article>
             </section>
