@@ -204,7 +204,7 @@ const createRecipe = () => {
                     </span>
                 </div>
                 <div class="text-neutral text-right py-2">Total: <span class="font-bold">{{totalRecipePoints}} puntos</span> </div>
-                <div class="text-neutral text-right py-2">Por ración: <span class="font-bold">{{totalRecipePoints / ration}} puntos</span> </div>
+                <div class="text-neutral text-right py-2">Por ración: <span class="font-bold">{{roundedPoints(totalRecipePoints / ration)}} puntos</span> </div>
             </div>
         </div>
         <div class="flex justify-center">
