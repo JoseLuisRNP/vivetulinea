@@ -475,7 +475,15 @@ const deleteMeal = (meal) => {
                                 <div class="flex justify-between w-full items-center">
                                     <div>
                                         <div class="text-sm">{{meal.name}}</div>
-                                        <div class="text-xs" v-if="meal.quantity">{{  meal.quantity }} <span v-if="meal.recipe_id">{{meal.quantity === 1 ? 'ración' : 'raciones'}}</span></div>
+                                        <div class="flex text-xs">
+                                            <div class="text-xs mr-4" v-if="meal.quantity">{{  meal.quantity }} <span v-if="meal.recipe_id">{{meal.quantity === 1 ? 'ración' : 'raciones'}}</span></div>
+                                            <div  class="flex items-center" v-if="meal.recipe_id">
+                                                <span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span> {{ roundedPoints((meal.recipe.sugars * meal.points) / meal.recipe.points)}}
+                                                <span class="w-2 h-2 rounded-full bg-blue-500 mr-2 ml-2"></span> {{ roundedPoints((meal.recipe.proteins * meal.points) / meal.recipe.points)}}
+                                                <span class="w-2 h-2 rounded-full bg-red-500 mr-2 ml-2"></span> {{ roundedPoints((meal.recipe.fats * meal.points) / meal.recipe.points)}}
+                                                <span class="w-2 h-2 rounded-full bg-yellow-500 mr-2 ml-2"></span> {{ roundedPoints((meal.recipe.empty_points * meal.points) / meal.recipe.points)}}
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="flex ">
                                         <div class="text-sm mr-2">{{meal.points}} puntos</div>

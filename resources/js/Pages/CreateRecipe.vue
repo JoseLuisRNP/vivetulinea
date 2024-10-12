@@ -52,10 +52,10 @@ const totalRecipePointsByColor = computed(() => {
         acc[food.color] += calculatedPointsPerFood.value[currentIndex];
         return acc;
     }, {
-        blue: 0,
         green: 0,
-        yellow: 0,
+        blue: 0,
         red: 0,
+        yellow: 0,
         black: 0,
     })
 });
@@ -192,7 +192,7 @@ const createRecipe = () => {
                     </li>
                 </ul>
                 <div class="w-full flex justify-evenly mt-4">
-                    <span class="flex items-center" v-for="(quantity, color) in totalRecipePointsByColor" >
+                    <span class="flex items-center" v-for="(quantity, color) in totalRecipePointsByColor" :class="color === 'black' ? 'hidden' : ''" >
                         <span class="w-2 h-2  rounded-full mr-2" :class="{
                                     'bg-blue-500': color === 'blue',
                                     'bg-green-500': color === 'green',
