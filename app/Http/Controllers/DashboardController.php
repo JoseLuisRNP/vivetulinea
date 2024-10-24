@@ -13,7 +13,7 @@ class DashboardController extends Controller
     {
         $search = \request('q');
         $day = \request('dayActive') ? Carbon::parse(\request('dayActive')) : Carbon::now();
-        $meals = auth()->user()->meals()->whereDate('consumed_at', $day->toDateString())->get();
+        $meals = auth()->user()->meals()->with('recipe')->whereDate('consumed_at', $day->toDateString())->get();
 
         $from =$day->clone()
             ->startOfWeek(auth()->user()->created_at->addDay()->dayOfWeek)->startOfDay();

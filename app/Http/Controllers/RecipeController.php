@@ -77,6 +77,7 @@ class RecipeController extends Controller
 
     public function delete(Recipe $recipe)
     {
+        $recipe->meals()->delete();
         $recipe->delete();
         return redirect()->route('recipes.index')->with('success', 'Receta eliminada correctamente');
     }

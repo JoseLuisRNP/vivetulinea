@@ -13,6 +13,11 @@ class Recipe extends Model
         return $this->hasMany(RecipeFood::class);
     }
 
+    public function meals()
+    {
+        return $this->hasMany(Meal::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
