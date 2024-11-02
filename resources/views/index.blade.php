@@ -751,6 +751,33 @@
             </section>
         </div>
 
+        <div class="col-md-4">
+            <section class="acordeon">
+                <article>
+                    <h2>Alhaurin de la torre</h2> CP: 29130 - Málaga
+                    <div class="block">
+                        <span class="clear padding15"></span>
+
+                        <b>Monitora:</b> Rosa M. Guerrero Burgos.
+                        <br/>
+                        <b>WhatsApp:</b> 644 47 07 52 (solo whatsapp).
+                        <br/>
+                        <b>Email:</b> rosamguerrero@vivetulinea.es
+
+                        <br/><br/>
+
+
+
+                        <b>Miércoles:</b> 19:00h pesaje y 19:30h reunión.
+                        <br/>
+                        <b>Dirección:</b> Avenida de la vega 2, centro Dannails
+                        (Frente al parque de los patos y junto a la Peña del Barcelona).
+                        <br/><br/>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3200.4434729320938!2d-4.5624658!3d36.663836999999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72fb1167b002e1%3A0xc0fd286962b2c423!2sDannails14!5e0!3m2!1ses!2ses!4v1730537277981!5m2!1ses!2ses" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>                    </div>
+                </article>
+            </section>
+        </div>
+
 
 
         <div class="col-md-4">
