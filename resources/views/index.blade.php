@@ -614,7 +614,7 @@
 
 
 
-        <div class="col-md-4">
+        {{-- <div class="col-md-4">
             <section class="acordeon">
                 <article>
                     <h2>Avd La Paloma</h2> CP: 29003 - Málaga Capital
@@ -638,7 +638,7 @@
                     </div>
                 </article>
             </section>
-        </div>
+        </div> --}}
 
 
 
