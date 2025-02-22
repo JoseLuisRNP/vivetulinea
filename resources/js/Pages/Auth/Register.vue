@@ -3,10 +3,14 @@ import Logo from '@/assets/logo.png'
 import {Head, Link, useForm, usePage} from '@inertiajs/vue3';
 import ziggyRoute from "ziggy-js";
 
+const route = (name: string) => ziggyRoute(name);
+const urlParams = new URLSearchParams(window.location.search);
+const referer = urlParams.get('referer');
 const page = usePage();
 const form = useForm({
     name: '',
     email: '',
+    referer: referer,
 });
 
 const submit = () => {
@@ -35,6 +39,9 @@ const submit = () => {
                     <div class="mt-2">
                         <input v-model="form.email" id="email" name="email" type="text"  required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6">
                     </div>
+                    <label class="label">
+                        <span v-if="Object.keys(page.props.errors).length" class="label-text-alt text-error"> {{ Object.values(page.props.errors)[0] }}</span>
+                    </label>
                 </div>
                 <div>
                     <button type="submit" class="btn btn-primary w-full mt-6">Registrarse</button>

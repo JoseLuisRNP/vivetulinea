@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MenuAppController;
@@ -46,7 +47,8 @@ Route::get('food/no-count', [PointsController::class, 'noCountFood'])->name('foo
 //    return redirect()->route('dashboard');
 //});
 
-
+Route::get('campaign', [RegisteredUserController::class, 'create'])
+                ->name('campaign');
 
 Route::prefix('app')->middleware(['auth', HandleActiveUsersMiddleware::class])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');

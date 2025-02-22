@@ -13,6 +13,10 @@ class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const DEFAULTS_PROTEINS = 1.2;
+    const DEFAULTS_FATS = 0.8;
+    const DEFAULTS_SUGARS = 2.5;
+
     protected $guarded = [];
 
     /**
@@ -91,6 +95,11 @@ class User extends Authenticatable implements FilamentUser
     public function recipes()
     {
         return $this->hasMany(Recipe::class);
+    }
+
+    public function campaign()
+    {
+        return $this->belongsTo(Campaign::class);
     }
 
 }
