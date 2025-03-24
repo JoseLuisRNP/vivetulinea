@@ -7,6 +7,11 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Toast, {POSITION} from "vue-toastification";
 import * as Sentry from "@sentry/vue";
+import VCalendar from 'v-calendar';
+import 'v-calendar/style.css';
+
+
+
 
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
@@ -26,6 +31,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(Toast, {position: POSITION.BOTTOM_LEFT})
+            .use(VCalendar, {})
             .mount(el);
     },
     progress: {

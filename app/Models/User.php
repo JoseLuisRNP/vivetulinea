@@ -102,4 +102,9 @@ class User extends Authenticatable implements FilamentUser
         return $this->belongsTo(Campaign::class);
     }
 
+    public function weights()
+    {
+        return $this->hasMany(Weight::class);
+    }
+
 }

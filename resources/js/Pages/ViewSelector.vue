@@ -5,7 +5,27 @@ import ziggyRoute from "ziggy-js";
 import { Link } from '@inertiajs/vue3';
 import Capital from "@/Components/Capital.vue";
 import Pautas from "@/Components/Pautas.vue";
+import { VisXYContainer, VisLine, VisTooltip, VisScatter, VisAxis } from '@unovis/vue'
+import { Line, Scatter, StackedBar, } from '@unovis/ts'
+import { computed, ref } from "vue";
 
+const props = defineProps({
+  weights: {
+    type: Array,
+    required: true,
+  },
+})
+
+const x = (d) =>  d.index
+const y = (d) =>  d.value
+
+const triggers = {
+  [Scatter.selectors.point]: d => `Fecha: ${d.date}<br/>Peso: ${(d.value)} kg`,
+}
+
+const currentWeight = computed(() => props.weights[props.weights.length - 1])
+
+const tabSelected = ref('capital');
 </script>
 <template>
     <Head title="Menu" />
@@ -14,7 +34,21 @@ import Pautas from "@/Components/Pautas.vue";
         <NavBar></NavBar>
         <div class="w-full h-5/6 flex flex-col justify-between items-center">
             <div class="flex w-full h-full flex-col content-between justify-between">
-                <Capital/>
+                <div class="mx-auto max-w-2xl text-center" v-if="currentWeight">
+                    <h2 class="mt-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">{{ currentWeight.value }} <span class="text-sm">kg</span></h2>
+                    <p class="text-base font-semibold leading-7 text-primary">{{ currentWeight.date }}</p>
+                </div>
+                <div v-else class="mx-auto max-w-2xl text-center">
+                    <h2 class="mt-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Sin datos</h2>
+                    <p class="text-base font-semibold leading-7 text-primary">Registra tu peso</p>
+                </div>
+                <VisXYContainer :data="weights" :preventEmptyDomain="true" >
+                    <VisAxis type="y"/>
+                    <VisLine  color="#c11387" :lineWidth="3" :x="x" :y="y" />
+                    <VisTooltip :triggers="triggers" />
+                    <VisScatter color="#c11387" :x="x" :y="y"/>
+                </VisXYContainer>
+
 
                 <div class="flex w-full justify-between my-6">
                     <div class="grid h-20 flex-grow card rounded-box place-items-center basis-1/2">
@@ -35,8 +69,39 @@ import Pautas from "@/Components/Pautas.vue";
                             <span class="text-xl">Calculadora</span>
                         </Link>
                     </div>
+                    <div class="divider divider-horizontal "></div>
+                    <div class="grid h-20 flex-grow card rounded-box place-items-center basis-1/2">
+                        <Link :href="ziggyRoute('weight.show')" class="text-primary flex flex-col justify-center items-center">
+                            <svg class="w-12 h-12" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 512 512" fill="none" stroke="currentColor">
+                                <g>
+                                    <line style="stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="256" y1="59.627" x2="256" y2="92.691"/>
+                                    <line style="stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="167.829" y1="83.253" x2="184.361" y2="111.887"/>
+                                    <line style="stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="103.284" y1="147.798" x2="131.918" y2="164.33"/>
+                                    <line style="stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="408.716" y1="147.798" x2="380.082" y2="164.33"/>
+                                    <line style="stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="344.171" y1="83.253" x2="327.639" y2="111.887"/>
+                                    <path style="stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="M400.08,502H111.92c-30.345,0-55.953-22.569-59.767-52.673L10.811,123.029C3.212,63.046,49.961,10,110.423,10h291.153c60.463,0,107.211,53.046,99.612,113.029l-41.341,326.299C456.034,479.431,430.425,502,400.08,502z"/>
+                                    <line style="stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="256" y1="180.575" x2="291.275" y2="140.229"/>
+                                    <path style="stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="M80.266,220.857c2.129-24.982,9.649-49.913,23.024-73.047c48.688-84.353,156.526-113.24,240.879-64.552c51.831,29.922,82.736,82.184,87.526,137.599H80.266z"/>
+                                    <path style="stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="M312.025,446.727L312.025,446.727c21.426,10.092,46.87,4.793,62.596-13.037l0,0c24.917-28.25,41.081-63.265,46.489-100.705v0c3.413-23.63-8.923-46.724-30.349-56.816h0c-32.501-15.309-70.421,5.358-75.598,41.203v0c-2.383,16.497-9.505,31.926-20.484,44.374l0,0C270.822,388.791,279.524,431.418,312.025,446.727z"/>
+                                    <path style="stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="M199.975,446.727L199.975,446.727c-21.426,10.092-46.87,4.793-62.596-13.037l0,0c-24.917-28.25-41.081-63.265-46.489-100.705v0c-3.413-23.63,8.923-46.724,30.349-56.816h0c32.501-15.309,70.421,5.358,75.598,41.203v0c2.383,16.497,9.505,31.926,20.485,44.374l0,0C241.178,388.791,232.476,431.418,199.975,446.727z"/>
+                                    <path style="stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="M256,180.694L256,180.694c-19.409,0-35.143,15.734-35.143,35.143v5.02h70.286v-5.02C291.143,196.428,275.409,180.694,256,180.694z"/>
+                                </g>
+                            </svg>
+                            <span class="text-xl">Peso</span>
+                        </Link>
+                    </div>
                 </div>
-                <Pautas/>
+                <div class="mt-4">
+                    <div class="flex w-full justify-around">
+                        <button class="text-xl font-medium" :class="tabSelected === 'capital' ? 'text-primary' : 'text-gray-900'" @click="tabSelected = 'capital'">Mi capital</button>
+                        <button class="text-xl font-medium" :class="tabSelected === 'pautas' ? 'text-primary' : 'text-gray-900'" @click="tabSelected = 'pautas'">Pautas</button>
+
+
+                    </div>
+
+                            <Capital v-if="tabSelected === 'capital'"/>
+                            <Pautas v-if="tabSelected === 'pautas'"/>
+                </div>
 
             </div>
         </div>

@@ -3,7 +3,6 @@
 </script>
 <template>
     <div class="mt-4">
-        <h2 class="text-xl font-medium text-gray-500">Pautas saludables</h2>
         <ul role="list" class="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
             <li class="col-span-1 flex rounded-md shadow-sm">
                 <div class="flex w-16 flex-shrink-0 items-center justify-center bg-primary rounded-l-md text-sm font-medium text-white">Agua</div>

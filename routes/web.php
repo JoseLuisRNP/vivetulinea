@@ -7,6 +7,7 @@ use App\Http\Controllers\MenuAppController;
 use App\Http\Controllers\PointsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\WeightController;
 use App\Http\Middleware\HandleActiveUsersMiddleware;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -56,6 +57,9 @@ Route::prefix('app')->middleware(['auth', HandleActiveUsersMiddleware::class])->
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('calculator', [CalculatorController::class, 'show'])->name('calculator');
+    Route::get('weight', [WeightController::class, 'show'])->name('weight.show');
+    Route::post('weight', [WeightController::class, 'store'])->name('weight.store');
+
     Route::get('recipes', [RecipeController::class, 'index'])->name('recipes.index');
     Route::delete('recipes/{recipe}', [RecipeController::class, 'delete'])->name('recipes.destroy');
     Route::get('recipes/create', [RecipeController::class, 'new'])->name('recipes.new');

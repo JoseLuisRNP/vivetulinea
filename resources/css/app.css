@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 
+
+@import './node_modules/pikaday/css/pikaday.css';
+
 #app {
     @apply h-screen; /* feel free to add more classes */
 }
