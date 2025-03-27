@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('image')->nullable();
             $table->date('end_date');
+            $table->integer('free_days')->default(3);
             $table->timestamps();
         });
     }

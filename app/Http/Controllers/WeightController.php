@@ -10,7 +10,19 @@ class WeightController extends Controller
 {
     public function show()
     {
-        return Inertia::render('Weight');
+        $weightId = request('weight');
+        $weight = null;
+        if ($weightId) {
+            $weight = Weight::where('user_id', auth()->id())->where('id', $weightId)->first();
+        }
+
+        return Inertia::render('Weight', [
+            'weight' => $weight ? [
+                'id' => $weight->id,
+                'value' => $weight->value,
+                'date' => $weight->date,
+            ] : null,
+        ]);
     }
 
     public function store(Request $request)
@@ -26,6 +38,28 @@ class WeightController extends Controller
             'date' => $request->date,
         ]);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('weights.show');
+    }
+
+    public function destroy(Weight $weight)
+    {
+        $weight->delete();
+
+        return redirect()->back();
+    }
+
+    public function update(Request $request, Weight $weight)
+    {
+        $request->validate([
+            'weight' => 'required|numeric',
+            'date' => 'required|date',
+        ]);
+
+        $weight->update([
+            'value' => $request->weight,
+            'date' => $request->date,
+        ]);
+
+        return redirect()->route('weights.show');
     }
 }

@@ -37,6 +37,7 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('proteins')->numeric()->label('Proteínas'),
                 Forms\Components\TextInput::make('fats')->numeric()->label('Grasas'),
                 Forms\Components\TextInput::make('weekly_points')->numeric()->label('Extras semanales'),
+                Forms\Components\TextInput::make('target_weight')->numeric()->label('Peso objetivo'),
                 Forms\Components\Checkbox::make('is_actived')->label('Activo')
                     ->label('Activo'),
                 Forms\Components\DatePicker::make('created_at')->native(false)->displayFormat('d/m/Y')->label('Fecha de alta'),

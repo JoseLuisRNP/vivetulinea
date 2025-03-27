@@ -12,7 +12,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-// HACER ACTION PARA CAMBIAR DIETICIAN
 class CampaignCompleteResource extends Resource
 {
     protected static ?string $model = Campaign::class;
@@ -20,6 +19,11 @@ class CampaignCompleteResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Campañas';
     protected static ?string $pluralLabel = 'Campañas';
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->isAdmin();
+    }
 
     public static function form(Form $form): Form
     {
@@ -31,6 +35,12 @@ class CampaignCompleteResource extends Resource
                     ->label('Nombre'),
                 Forms\Components\TextInput::make('description')
                     ->label('Descripción'),
+                Forms\Components\TextInput::make('free_days')
+                    ->label('Días gratis')
+                    ->default(3)
+                    ->numeric()
+                    ->minValue(0)
+                    ->required(),
                 Forms\Components\DatePicker::make('end_date')->native(false)->displayFormat('d/m/Y')->label('Fecha de finalización'),
                 Forms\Components\Placeholder::make('url')
                     ->label('URL')
@@ -53,11 +63,13 @@ class CampaignCompleteResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(fn () => auth()->user()->isAdmin()),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn () => auth()->user()->isAdmin()),
                 ]),
             ]);
     }

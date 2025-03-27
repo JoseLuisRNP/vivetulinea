@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Actions\Action;
 use App\Models\User;
 use Filament\Forms\Components\Select;
+use Illuminate\Support\Collection;
 
 // Action Cambiar dietician
 class UsersRelationManager extends RelationManager
@@ -47,6 +48,7 @@ class UsersRelationManager extends RelationManager
             ->actions([
                 Action::make('assignDietician')
                     ->label('Asignar Dietista')
+                    ->visible(fn () => auth()->user()->isAdmin())
                     ->form([
                         Select::make('dietician_id')
                             ->label('Dietista')
@@ -65,6 +67,7 @@ class UsersRelationManager extends RelationManager
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\BulkAction::make('assignDietician')
                         ->label('Asignar Dietista')
+                        ->visible(fn () => auth()->user()->isAdmin())
                         ->form([
                             Select::make('dietician_id')
                                 ->label('Dietista')
