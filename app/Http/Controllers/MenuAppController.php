@@ -9,6 +9,7 @@ class MenuAppController extends Controller
 {
     public function __invoke()
     {
+    
         return Inertia::render('ViewSelector');
     }
 }

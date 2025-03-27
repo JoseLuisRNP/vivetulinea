@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Campaign;
 use App\Models\Invitation;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -37,31 +38,51 @@ class RegisteredUserController extends Controller
             'email' => 'required|numeric|unique:'.User::class,
         ]);
 
-        $invitation = Invitation::firstWhere('email', $request->email);
+        $referer = request('referer');
 
-        if(!$invitation) {
-            return redirect()->back()->withErrors([
-                'email' => 'No se ha encontrado ninguna invitación para este número de teléfono.',
-            ]);
+        $invitation = null;
+        if($referer) {
+            $campaign = Campaign::firstWhere('slug', $referer);
+
+            if(!$campaign || $campaign->end_date < now()) {
+                return redirect()->back()->withErrors([
+                    'referer' => 'Campaña expirada.',
+                ]);
+            }
         }
 
-        $user = User::create([
-            'name' => $invitation->name,
+        if(!$referer) {
+            $invitation = Invitation::firstWhere('email', $request->email);
+
+            if(!$invitation) {
+                return redirect()->back()->withErrors([
+                    'email' => 'No se ha encontrado ninguna invitación para este número de teléfono.',
+                ]);
+            }
+        }
+
+
+
+        $user = User::create(array_filter([
+            'name' => $invitation->name ?? 'user-'.Str::random(5),
             'email' => $request->email,
-            'daily_points' => $invitation->daily_points,
-            'sugars' => $invitation->sugars,
-            'proteins' => $invitation->proteins,
-            'fats' => $invitation->fats,
-            'weekly_points' => $invitation->weekly_points,
+            'daily_points' => $invitation?->daily_points ?? null,
+            'sugars' => $invitation?->sugars ?? null,
+            'proteins' => $invitation?->proteins ?? null,
+            'fats' => $invitation?->fats ?? null,
+            'weekly_points' => $invitation?->weekly_points ?? null,
             'password' => Hash::make(Str::password(8)),
-            'dietician_id' => $invitation->dietician_id ?? '',
-        ]);
+            'dietician_id' => $invitation?->dietician_id ?? 1,
+            'campaign_id' => $campaign?->id ?? null,
+        ]));
 
         event(new Registered($user));
 
         Auth::login($user, true);
 
-        $invitation->delete();
+        if($invitation) {
+            $invitation->delete();
+        }
 
         return redirect(RouteServiceProvider::HOME);
     }

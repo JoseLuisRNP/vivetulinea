@@ -26,6 +26,6 @@ class DeleteMealsData extends Command
      */
     public function handle()
     {
-        Meal::where('created_at', '<=', now()->subMonth())->delete();
+        Meal::where('created_at', '<=', now()->subMonths(3))->delete();
     }
 }

@@ -1,7 +1,1 @@
-export const times = [
-    'Desayuno',
-    'Media mañana',
-    'Almuerzo',
-    'Merienda',
-    'Cena',
-]
+export const times = ['Desayuno', 'Media mañana', 'Almuerzo', 'Merienda', 'Cena'];

@@ -1,130 +1,175 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import {Head, router} from '@inertiajs/vue3';
-import NavBar from "@/Components/Layout/NavBar.vue";
-import ziggyRoute from "ziggy-js";
-import {times} from "@/data";
-import {roundedPoints} from "@/helpers";
+  import { computed, ref } from 'vue';
+  import { Head, router } from '@inertiajs/vue3';
+  import NavBar from '@/Components/Layout/NavBar.vue';
+  import ziggyRoute from 'ziggy-js';
+  import { times } from '@/data';
+  import { roundedPoints } from '@/helpers';
 
+  const props = defineProps<{
+    backTo: string;
+    dayActive: string;
+    errors: any;
+  }>();
 
-const props = defineProps<{
-    backTo: string,
-    dayActive: string,
-    errors: any
-}>();
+  const points = computed(() => {
+    if (!calories.value || !quantity.value) return '-';
 
-const points = computed(() => {
-    if(!calories.value || !quantity.value) return '-';
-
-    const result = ((calories.value * 0.0305) + (fats.value * 0.275) + (sugars.value * 0.12) - (proteins.value * 0.098)) * (quantity.value / 100);
+    const result =
+      (calories.value * 0.0305 +
+        fats.value * 0.275 +
+        sugars.value * 0.12 -
+        proteins.value * 0.098) *
+      (quantity.value / 100);
     return roundedPoints(result);
-})
+  });
 
-const calories = ref(0);
-const fats = ref(0);
-const sugars = ref(0);
-const proteins = ref(0);
-const quantity = ref(0);
-const name = ref('');
-const color = ref('yellow');
-const timeOfDay = ref('Desayuno');
+  const calories = ref(0);
+  const fats = ref(0);
+  const sugars = ref(0);
+  const proteins = ref(0);
+  const quantity = ref(0);
+  const name = ref('');
+  const color = ref('yellow');
+  const timeOfDay = ref('Desayuno');
 
-const registerPoints = () => {
-    if(!calories.value || !quantity.value) return;
+  const registerPoints = () => {
+    if (!calories.value || !quantity.value) return;
 
     const data = {
-        quantity: quantity.value,
-        points: points.value,
-        name: name.value,
-        color: color.value,
-        time_of_day: timeOfDay.value,
-        consumed_at: props.dayActive || new Date().toISOString()
-    }
+      quantity: quantity.value,
+      points: points.value,
+      name: name.value,
+      color: color.value,
+      time_of_day: timeOfDay.value,
+      consumed_at: props.dayActive || new Date().toISOString(),
+    };
 
-    router.post(ziggyRoute('points.store'), data)
-}
+    router.post(ziggyRoute('points.store'), data);
+  };
 </script>
 <template>
-    <div>
-        <Head title="Calculadora" />
-        <NavBar>
-
-        </NavBar>
-        <div class="px-6 py-4 sm:py-32 lg:px-8">
-            <div class="mx-auto max-w-2xl text-center">
-                <h2 class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Calculadora</h2>
-                <p class="text-base font-semibold leading-7 text-primary">Introducir información nutricional para 100g/ml</p>
-            </div>
-        </div>
-        <div class="mx-8 my-2 md:flex md:justify-between">
-            <div class="form-control w-full max-w-xs">
-                <label class="label">
-                    <span class="label-text">Calorías</span>
-                </label>
-                <input v-model.number="calories" @focus="$event.target.select()" type="number" placeholder="0" class="input input-bordered  w-full max-w-xs focus:border-primary" />
-            </div>
-            <div class="form-control w-full max-w-xs">
-                <label class="label">
-                    <span class="label-text">Grasas saturadas</span>
-                </label>
-                <input v-model.number="fats" @focus="$event.target.select()" type="number" class="input input-bordered  w-full max-w-xs focus:border-primary" />
-            </div>
-            <div class="form-control w-full max-w-xs">
-                <label class="label">
-                    <span class="label-text">Azúcares</span>
-                </label>
-                <input v-model.number="sugars" @focus="$event.target.select()" type="number" class="input input-bordered  w-full max-w-xs focus:border-primary" />
-            </div>
-            <div class="form-control w-full max-w-xs">
-                <label class="label">
-                    <span class="label-text">Proteínas</span>
-                </label>
-                <input v-model.number="proteins" @focus="$event.target.select()" type="number" class="input input-bordered  w-full max-w-xs focus:border-primary" />
-            </div>
-            <div class="form-control w-full max-w-xs">
-                <label class="label">
-                    <span class="label-text">Cantidad consumida</span>
-                </label>
-                <input v-model.number="quantity" @focus="$event.target.select()" type="number" class="input input-bordered  w-full max-w-xs focus:border-primary" />
-            </div>
-        </div>
-        <div class="flex flex-col justify-center my-8">
-            <div class="avatar placeholder ">
-                <div class="bg-primary text-primary-content rounded-full w-16 m-auto">
-                    <span class="text-xl">{{ points }}</span>
-                </div>
-            </div>
-            <div class="w-full justify-center items-center flex flex-col">
-                <div class="form-control w-full max-w-xs">
-                    <label class="label">
-                        <span class="label-text">Nombre</span>
-                    </label>
-                    <input v-model="name" @focus="$event.target.select()" type="text" placeholder="Alimento" class="input input-bordered  w-full max-w-xs focus:border-primary" :class="errors.name ? 'border-error' : ''"/>
-                    <span v-if="errors.name" class="text-xs text-error">{{errors.name}}</span>
-                </div>
-                <div class="form-control w-full max-w-xs">
-                    <label class="label">
-                        <span class="label-text">Color</span>
-                    </label>
-                    <select v-model="color" class="select select-bordered w-full max-w-xs">
-                        <option value="green">🟢 Hidratos de carbono</option>
-                        <option value="blue">🔵 Proteínas</option>
-                        <option value="red">🔴 Grasas</option>
-                        <option value="yellow">🟡 Sin identificar</option>
-                    </select>
-                </div>
-                <div class="form-control w-full max-w-xs">
-                    <label class="label">
-                        <span class="label-text">Momento</span>
-                    </label>
-                    <select v-model="timeOfDay" class="select select-bordered w-full max-w-xs">
-                        <option v-for="time in times" :key="time" :value="time">{{time}}</option>
-                    </select>
-                </div>
-                <button class="btn btn-primary  mt-4 w-2/4 m-auto" :disabled="!points || !quantity" @click="registerPoints">Añadir puntos al diario</button>
-            </div>
-            </div>
-
+  <div>
+    <Head title="Calculadora" />
+    <NavBar />
+    <div class="px-6 py-4 sm:py-32 lg:px-8">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+          Calculadora
+        </h2>
+        <p class="text-base font-semibold leading-7 text-primary">
+          Introducir información nutricional para 100g/ml
+        </p>
+      </div>
     </div>
+    <div class="mx-8 my-2 md:flex md:justify-between">
+      <div class="form-control w-full max-w-xs">
+        <label class="label">
+          <span class="label-text">Calorías</span>
+        </label>
+        <input
+          v-model.number="calories"
+          type="number"
+          placeholder="0"
+          class="input input-bordered w-full max-w-xs focus:border-primary"
+          @focus="$event.target.select()"
+        />
+      </div>
+      <div class="form-control w-full max-w-xs">
+        <label class="label">
+          <span class="label-text">Grasas saturadas</span>
+        </label>
+        <input
+          v-model.number="fats"
+          type="number"
+          class="input input-bordered w-full max-w-xs focus:border-primary"
+          @focus="$event.target.select()"
+        />
+      </div>
+      <div class="form-control w-full max-w-xs">
+        <label class="label">
+          <span class="label-text">Azúcares</span>
+        </label>
+        <input
+          v-model.number="sugars"
+          type="number"
+          class="input input-bordered w-full max-w-xs focus:border-primary"
+          @focus="$event.target.select()"
+        />
+      </div>
+      <div class="form-control w-full max-w-xs">
+        <label class="label">
+          <span class="label-text">Proteínas</span>
+        </label>
+        <input
+          v-model.number="proteins"
+          type="number"
+          class="input input-bordered w-full max-w-xs focus:border-primary"
+          @focus="$event.target.select()"
+        />
+      </div>
+      <div class="form-control w-full max-w-xs">
+        <label class="label">
+          <span class="label-text">Cantidad consumida</span>
+        </label>
+        <input
+          v-model.number="quantity"
+          type="number"
+          class="input input-bordered w-full max-w-xs focus:border-primary"
+          @focus="$event.target.select()"
+        />
+      </div>
+    </div>
+    <div class="flex flex-col justify-center my-8">
+      <div class="avatar placeholder">
+        <div class="bg-primary text-primary-content rounded-full w-16 m-auto">
+          <span class="text-xl">{{ points }}</span>
+        </div>
+      </div>
+      <div class="w-full justify-center items-center flex flex-col">
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text">Nombre</span>
+          </label>
+          <input
+            v-model="name"
+            type="text"
+            placeholder="Alimento"
+            class="input input-bordered w-full max-w-xs focus:border-primary"
+            :class="errors.name ? 'border-error' : ''"
+            @focus="$event.target.select()"
+          />
+          <span v-if="errors.name" class="text-xs text-error">{{ errors.name }}</span>
+        </div>
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text">Color</span>
+          </label>
+          <select v-model="color" class="select select-bordered w-full max-w-xs">
+            <option value="green">🟢 Hidratos de carbono</option>
+            <option value="blue">🔵 Proteínas</option>
+            <option value="red">🔴 Grasas</option>
+            <option value="yellow">🟡 Sin identificar</option>
+          </select>
+        </div>
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text">Momento</span>
+          </label>
+          <select v-model="timeOfDay" class="select select-bordered w-full max-w-xs">
+            <option v-for="time in times" :key="time" :value="time">
+              {{ time }}
+            </option>
+          </select>
+        </div>
+        <button
+          class="btn btn-primary mt-4 w-2/4 m-auto"
+          :disabled="!points || !quantity"
+          @click="registerPoints"
+        >
+          Añadir puntos al diario
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
-

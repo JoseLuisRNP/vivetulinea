@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 #app {
-    @apply h-screen; /* feel free to add more classes */
+  @apply h-screen; /* feel free to add more classes */
 }
