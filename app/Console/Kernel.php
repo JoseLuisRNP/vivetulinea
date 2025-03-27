@@ -14,8 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-         $schedule->command(DeleteMealsData::class)->daily();
-         $schedule->command(CheckExpiredCampaigns::class)->daily();
+         $schedule->command(DeleteMealsData::class)->daily()->at('14:00');
+         $schedule->command(CheckExpiredCampaigns::class)->daily()->at('19:00');
     }
 
     /**
