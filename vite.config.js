@@ -30,16 +30,10 @@ export default defineConfig({
             workbox: {
                 cleanupOutdatedCaches: true,
                 directoryIndex: null,
-                globPatterns: ['**/*.{js,css,html,svg,png,ico,txt,woff2}'],
+                globPatterns: ['**/*.{css,js,html,svg,png,ico,txt,woff2}'],
                 maximumFileSizeToCacheInBytes: 4194304,
                 navigateFallback: null,
                 navigateFallbackDenylist: [/\/[api,admin,livewire]+\/.*/],
-                globDirectory: 'public/build',
-                globIgnores: [
-                    '**/node_modules/**/*',
-                    'sw.js',
-                    'workbox-*.js'
-                ]
             },
             manifest: {
                 name: 'ViveTuLinea',
@@ -406,8 +400,8 @@ export default defineConfig({
                     {
                         "src": "/windows11/Square44x44Logo.altform-unplated_targetsize-60.png",
                         "sizes": "60x60",
-                        type: 'image/png',
                         purpose: 'any maskable',
+                        type: 'image/png',
                     },
                     {
                         "src": "/windows11/Square44x44Logo.altform-unplated_targetsize-64.png",
@@ -731,43 +725,4 @@ export default defineConfig({
             },
         }),
     ],
-    build: {
-        rollupOptions: {
-            output: {
-                manualChunks: (id) => {
-                    if (id.includes('node_modules')) {
-                        if (id.includes('vue')) {
-                            return 'vue-vendor';
-                        }
-                        if (id.includes('@headlessui') || id.includes('@heroicons')) {
-                            return 'ui-vendor';
-                        }
-                        return 'vendor';
-                    }
-                },
-                chunkFileNames: 'assets/js/[name]-[hash].js',
-                entryFileNames: 'assets/js/[name]-[hash].js',
-                assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'
-            }
-        },
-        chunkSizeWarningLimit: 1000,
-        minify: 'terser',
-        terserOptions: {
-            compress: {
-                drop_console: true,
-                drop_debugger: true
-            }
-        },
-        target: 'esnext',
-        sourcemap: false,
-        reportCompressedSize: false,
-        cssCodeSplit: true,
-        assetsInlineLimit: 4096,
-        emptyOutDir: true,
-        workers: {
-            minify: {
-                workers: 2
-            }
-        }
-    }
 });
