@@ -2,13 +2,15 @@
   import Logo from '@/assets/logo.png';
   import { useToast } from 'vue-toastification';
   import { usePage, Link } from '@inertiajs/vue3';
-  import { watch } from 'vue';
+  import { watch, computed } from 'vue';
   import ziggyRoute from 'ziggy-js';
 
   const toast = useToast();
+  const page = usePage();
+
 
   watch(
-    () => usePage().props.flash,
+    () => page.props.flash,
     (flash) => {
       let toastId = null;
 
@@ -26,7 +28,7 @@
         setTimeout(() => toast.dismiss(toastId), 3000);
       }
     },
-    { deep: true }
+    { deep: true, immediate: true }
   );
 </script>
 <template>

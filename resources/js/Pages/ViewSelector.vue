@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
   import NavBar from '@/Components/Layout/NavBar.vue';
   import ziggyRoute from 'ziggy-js';
   import { Link, usePage } from '@inertiajs/vue3';
@@ -8,19 +8,26 @@
   import { computed, ref, onMounted } from 'vue';
   import { Head } from '@inertiajs/vue3';
   import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+  import { useToast } from 'vue-toastification';
+  import WeightToast from '@/Components/WeightToast.vue';
 
-  const props = defineProps({
-    weights: {
-      type: Array,
-      required: true,
-    },
-    targetWeight: {
-      type: Number,
-      required: true,
-    },
-  });
+  const props = defineProps<{
+    shouldShowToast: boolean;
+  }>();
+
+  const toast = useToast();
 
   const role = usePage().props.auth.user.role;
+
+  if(props.shouldShowToast) {
+    toast(WeightToast, {
+      toastClassName: ['!bg-primary', '!text-white'],
+      closeButtonClassName: '!text-white',
+      timeout: false
+    });
+  }
+
+
 </script>
 <template>
   <Head title="Menu" />
