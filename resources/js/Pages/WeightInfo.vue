@@ -28,6 +28,15 @@
 
   const currentWeight = computed(() => props.weights[props.weights.length - 1]);
 
+  const yDomain = computed(() => {
+    if (props.weights.length === 0) return [40, 120];
+    const minWeight = Math.min(...props.weights.map(w => w.value));
+    const maxWeight = Math.max(...props.weights.map(w => w.value));
+
+    if(!minWeight || !maxWeight) return [50, 110];
+    return [minWeight - 5, maxWeight + 5];
+  });
+
   const showDeleteModal = ref(false);
   const weightToDelete = ref<number | null>(null);
 
@@ -90,7 +99,7 @@
     </div>
    
     
-    <VisXYContainer :data="weights" :prevent-empty-domain="true" :y-domain="[40, 120]">
+    <VisXYContainer :data="weights" :prevent-empty-domain="true" :y-domain="yDomain">
       <VisAxis type="y" />
       <VisLine color="#c11387" :line-width="3" :x="x" :y="y" />
       <VisLine v-if="targetWeight" color="#28a745" :line-width="2" :x="targetX" :y="targetY" />
