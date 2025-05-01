@@ -30,11 +30,11 @@
 
   const yDomain = computed(() => {
     if (props.weights.length === 0) return [40, 120];
-    const minWeight = Math.min(...props.weights.map(w => w.value));
-    const maxWeight = Math.max(...props.weights.map(w => w.value));
+    const minWeight = Math.min(...props.weights.map(w => w.value), props.targetWeight);
+    const maxWeight = Math.max(...props.weights.map(w => w.value), props.targetWeight);
 
     if(!minWeight || !maxWeight) return [50, 110];
-    return [minWeight - 5, maxWeight + 5];
+    return [minWeight - 2, maxWeight + 2];
   });
 
   const showDeleteModal = ref(false);
@@ -72,16 +72,25 @@
     <NavBar />
     <div class="flex items-center justify-between">
         <div v-if="currentWeight" class="mx-auto max-w-2xl text-center">
-      <h2 class="mt-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+      <h2 class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
         {{ currentWeight.value }} <span class="text-sm">kg</span>
       </h2>
-      <p class="text-base font-semibold leading-7 text-primary">
+      <p class="text-sm font-semibold leading-7 text-primary">
         {{ currentWeight.date }}
       </p>
     </div>
     <div v-else class="mx-auto max-w-2xl text-center">
-      <h2 class="mt-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Sin datos</h2>
-      <p class="text-base font-semibold leading-7 text-primary">Registra tu peso</p>
+      <h2 class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Sin datos</h2>
+      <p class="text-sm font-semibold leading-7 text-primary">Registra tu peso</p>
+    </div>
+
+    <div v-if="targetWeight" class="mx-auto max-w-2xl text-center">
+      <h2 class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        {{ targetWeight }} <span class="text-sm">kg</span>
+      </h2>
+      <p class="text-sm font-semibold leading-7 text-secondary">
+        Peso objetivo
+      </p>
     </div>
 
     <div class="flex justify-end px-4 mb-4 self-end">
@@ -102,7 +111,7 @@
     <VisXYContainer :data="weights" :prevent-empty-domain="true" :y-domain="yDomain">
       <VisAxis type="y" />
       <VisLine color="#c11387" :line-width="3" :x="x" :y="y" />
-      <VisLine v-if="targetWeight" color="#28a745" :line-width="2" :x="targetX" :y="targetY" />
+      <VisLine v-if="targetWeight" color="#9ec151" :line-width="1" :x="targetX" :y="targetY" />
       <VisTooltip :triggers="triggers" />
       <VisScatter color="#c11387" :x="x" :y="y" />
     </VisXYContainer>

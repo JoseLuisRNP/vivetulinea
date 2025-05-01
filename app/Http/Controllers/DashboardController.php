@@ -82,8 +82,8 @@ class DashboardController extends Controller
 
         return Inertia::render('Dashboard', [
             'meals' => $meals->groupBy('time_of_day'),
-            'remainingPoints' => $this->format_number($remainingPoints, 1),
-            'weekRemainingPoints' => $this->format_number($weekRemainingPoints, 1),
+            'remainingPoints' => $this->format_number($remainingPoints, false),
+            'weekRemainingPoints' => $this->format_number($weekRemainingPoints, true),
             'pointsByColor' => $pointsByColor,
             'resultSearch' => $resultSearch,
             'noCountDay' => !!$noCountDay,
@@ -91,8 +91,8 @@ class DashboardController extends Controller
         ]);
     }
 
-    private function format_number($num) {
-        if($num < 0) {
+    private function format_number($num, $allowNegative = false) {
+        if($num < 0 && !$allowNegative) {
             return 0;
         }
         if ($num == intval($num)) {
