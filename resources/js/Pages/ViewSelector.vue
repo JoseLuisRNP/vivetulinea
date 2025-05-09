@@ -84,8 +84,8 @@
               <span class="text-xl">Calculadora</span>
             </Link>
           </div>
-          <div class="divider divider-horizontal" v-if="['admin', 'dietician'].includes(role)"/>
-          <div class="grid h-20 flex-grow card rounded-box place-items-center basis-1/2" v-if="['admin', 'dietician'].includes(role)">
+          <div class="divider divider-horizontal"/>
+          <div class="grid h-20 flex-grow card rounded-box place-items-center basis-1/2">
             <Link
               :href="ziggyRoute('weights.show')"
               class="text-primary flex flex-col justify-center items-center"
