@@ -14,12 +14,7 @@ class Campaign extends Model
 {
     use HasFactory, HasSlug;
 
-    protected $fillable = [
-        'name',
-        'description',
-        'image',
-        'end_date',
-    ];
+    protected $guarded = [];
 
      /**
      * Get the options for generating the slug.
