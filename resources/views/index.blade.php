@@ -52,6 +52,7 @@
 
 
 <body>
+<a href="https://vivetulinea.es/campaign?referer=app-gratuita-mayo" target="_blank" class="app-banner">¡Prueba nuestra app gratis! <div class="app-banner-date">*Oferta disponible hasta el 25 de mayo</div></a>
 <!-- Navigation
 ==========================================-->
 <nav id="tf-menu" class="navbar navbar-default navbar-fixed-top">
@@ -166,7 +167,7 @@
 
             </div>
             <div class="row">
-                <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-8 col-md-offset-2 ">
 
                     <ul class="about-list">
                         <li>
@@ -192,6 +193,8 @@
 
                     </ul>
 
+                    <a href="https://vivetulinea.es/campaign?referer=app-gratuita-mayo" target="_blank" class="btn btn-primary btn-vivatulinea" style="margin-top: 20px;">¡Prueba gratis ahora!</a>
+                    <p class="text-white" style="margin-top: 10px;">*Solo nuevos usuarios de ViveTuLinea, promoción valida hasta el 25 de mayo de 2025</p>
                 </div>
             </div>
         </div>

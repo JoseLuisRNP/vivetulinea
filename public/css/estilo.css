@@ -265,6 +265,16 @@ font-weight: 900;
 	background: url(../img/rosa.png) top center repeat-y;
 }
 
+.btn-vivatulinea{
+	background-color: #c11387;
+	border-color: #c11387;
+}
+
+.btn-vivatulinea:hover{
+	background-color: #AD0B71;
+	border-color: #AD0B71;
+}
+
 #foto{
 	background: url(../img/01.jpg);
     background-size: cover;
@@ -730,3 +740,32 @@ nav#footer p{
 	background: #c00e82;
 	border-color: #c00e82;
 	color: #97c62d;
+}
+
+.app-banner {
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	bottom: 20px;
+	right: 20px;
+	background-color: #c00e82;
+	color: white;
+	padding: 10px 20px;
+	border-radius: 5px;
+	z-index: 99999999000;
+	text-decoration: none;
+	font-weight: bold;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+	transition: all 0.3s ease;
+
+}
+.app-banner:hover {
+	background-color: #97c62d;
+	color: #c00e82;
+	text-decoration: none;
+}
+
+.app-banner-date {
+	font-size: 10px;
+	font-weight: normal;
+}
