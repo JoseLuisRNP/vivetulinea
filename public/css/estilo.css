@@ -752,7 +752,7 @@ nav#footer p{
 	color: white;
 	padding: 10px 20px;
 	border-radius: 5px;
-	z-index: 99999999000;
+	z-index: 9998;
 	text-decoration: none;
 	font-weight: bold;
 	box-shadow: 0 2px 5px rgba(0,0,0,0.2);
