@@ -28,7 +28,7 @@
 
     <!-- Stylesheet
     ================================================== -->
-    <link rel="stylesheet" type="text/css"  href="css/estilo.css">
+    <link rel="stylesheet" type="text/css"  href="css/estilo.css?v2">
     <link rel="stylesheet" type="text/css" href="css/responsive.css">
 
     <link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
