@@ -759,11 +759,6 @@ nav#footer p{
 	transition: all 0.3s ease;
 
 }
-.app-banner:hover {
-	background-color: #97c62d;
-	color: #c00e82;
-	text-decoration: none;
-}
 
 .app-banner-date {
 	font-size: 10px;
