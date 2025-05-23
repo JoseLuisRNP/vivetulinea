@@ -13,6 +13,7 @@ use Filament\Tables\Actions\Action;
 use App\Models\User;
 use Filament\Forms\Components\Select;
 use Illuminate\Support\Collection;
+use Filament\Tables\Filters\SelectFilter;
 
 // Action Cambiar dietician
 class UsersRelationManager extends RelationManager
@@ -34,14 +35,33 @@ class UsersRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->columns([
-                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('email')->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de registro')
                     ->date('d/m/Y'),
-
+                Tables\Columns\TextColumn::make('dietician.name')
+                    ->label('Dietista')
             ])
             ->filters([
-                //
+                SelectFilter::make('dietician_id')
+                    ->label('Dietista')
+                    ->options(
+                        collect(['sin_asignar' => 'Sin asignar'])
+                            ->union(User::whereIn('role', ['dietician', 'admin'])->pluck('name', 'id'))
+                    )
+                    ->query(function (Builder $query, array $data): Builder {
+                        // dd($data);
+                        if (!isset($data['value']) || $data['value'] === null || !$data['value']) {
+                            return $query;
+                        }
+                        
+                        if ($data['value'] === 'sin_asignar') {
+                            return $query->whereNull('dietician_id');
+                        }
+                        
+                        return $query->where('dietician_id', $data['value']);
+                    })
+                    ->preload()
             ])
             ->headerActions([
             ])
