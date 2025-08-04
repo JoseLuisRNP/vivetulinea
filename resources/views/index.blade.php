@@ -655,6 +655,10 @@
             <section class="acordeon">
                 <article>
                     <h2>Teatinos</h2> CP: 29010 - Málaga Capital
+                    <div>
+                        <red>* Cerrado por vacaciones de 1 de Agosto al 31 Agosto</red>
+                        <br/>
+                    </div>
                     <div class="block">
                         <span class="clear padding15"></span>
 
