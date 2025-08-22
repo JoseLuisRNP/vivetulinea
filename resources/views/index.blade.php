@@ -750,9 +750,9 @@
                         <br/>
                         <b>Jueves:</b> 19:00h pesaje y 19:30h reunión.
                         <br/>
-                        <b>Dirección:</b> C/ Felicidad, local 1 (encima del juzgado de Paz).
+                        <b>Dirección:</b> Avenida de Andalucía, N/50. Peña Hargasfal(Detrás de las máquinas Torres)
                         <br/><br/>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3201.197087736127!2d-4.684093084708542!3d36.64570897998074!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72e6ff362a5cd3%3A0xed5fd676ad5192f5!2sCalle+la+Felicidad%2C+1%2C+29120+Alhaur%C3%ADn+el+Grande%2C+M%C3%A1laga!5e0!3m2!1ses!2ses!4v1504543970784" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3201.494603963591!2d-4.699443724178286!3d36.63855017679517!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72e70f7fa65641%3A0x111f4404095981ec!2sAv.%20de%20Andaluc%C3%ADa%2C%2050%2C%2029120%20Alhaur%C3%ADn%20el%20Grande%2C%20M%C3%A1laga!5e0!3m2!1ses!2ses!4v1755893064763!5m2!1ses!2ses" width="100%" height="350" frameborder="0" style="border:0;" allowfullscreen></iframe>
                     </div>
                 </article>
             </section>
