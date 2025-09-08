@@ -52,7 +52,7 @@
 
 
 <body>
-{{-- <a href="https://vivetulinea.es/campaign?referer=app-gratuita-mayo" target="_blank" class="app-banner">¡Prueba nuestra app gratis! <div class="app-banner-date">*Oferta disponible hasta el 25 de mayo</div></a> --}}
+<a href="https://vivetulinea.es/campaign?referer=app-gratuita-septiembre" target="_blank" class="app-banner">¡Prueba nuestra app gratis! <div class="app-banner-date">*Oferta disponible hasta el 21 de septiembre</div></a>
 <!-- Navigation
 ==========================================-->
 <nav id="tf-menu" class="navbar navbar-default navbar-fixed-top">
@@ -193,8 +193,8 @@
 
                     </ul>
 
-                    {{-- <a href="https://vivetulinea.es/campaign?referer=app-gratuita-mayo" target="_blank" class="btn btn-primary btn-vivatulinea" style="margin-top: 20px;">¡Prueba gratis ahora!</a>
-                    <p class="text-white" style="margin-top: 10px;">*Solo nuevos usuarios de ViveTuLinea, promoción valida hasta el 25 de mayo de 2025</p> --}}
+                    <a href="https://vivetulinea.es/campaign?referer=app-gratuita-septiembre" target="_blank" class="btn btn-primary btn-vivatulinea" style="margin-top: 20px;">¡Prueba gratis ahora!</a>
+                    <p class="text-white" style="margin-top: 10px;">*Solo nuevos usuarios de ViveTuLinea, promoción valida hasta el 21 de septiembre de 2025</p>
                 </div>
             </div>
         </div>
