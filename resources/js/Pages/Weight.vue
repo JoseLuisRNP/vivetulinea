@@ -52,25 +52,21 @@
     </div>
     <div class="flex flex-col justify-center my-8 text-xl">
       <div class="w-full justify-center items-center flex flex-col">
-        <div class="form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text text-lg">Peso en kg</span>
-          </label>
+        <div class="fieldset max-w-xs">
+          <label class="label text-lg">Peso en kg</label>
           <input
             v-model="weight"
             type="number"
             placeholder="Peso en kg"
-            class="input input-bordered w-full max-w-xs focus:border-primary"
+            class="input focus:border-primary"
             @focus="$event.target.select()"
           />
         </div>
-        <div class="form-control w-full max-w-xs relative">
-          <label class="label">
-            <span class="label-text text-lg">Fecha</span>
-          </label>
+        <div class="fieldset max-w-xs relative">
+          <label class="label text-lg">Fecha</label>
           <button
             type="button"
-            class="input input-bordered w-full max-w-xs focus:border-primary text-left"
+            class="input focus:border-primary text-left"
             @click="showDatePicker = !showDatePicker"
           >
             {{ formattedDate }}

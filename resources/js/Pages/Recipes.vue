@@ -73,15 +73,15 @@
       </div>
     </div>
 
-    <label class="form-control w-full max-w-xs mt-4">
+    <div class="fieldset max-w-xs mt-4">
       <!--            <Link :href="ziggyRoute('recipes.new')" class="btn btn-outline text-base mb-2 font-semibold text-primary">Crear receta</Link>-->
       <input
         v-model="search"
         type="text"
         placeholder="Buscar alimento"
-        class="input input-bordered"
+        class="input"
       />
-    </label>
+    </div>
 
     <div class="mt-4 w-full p-4">
       <ul>

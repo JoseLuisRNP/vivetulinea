@@ -1,6 +1,61 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@plugin "@tailwindcss/forms";
+
+@plugin "daisyui" {
+  themes: light --default;
+}
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  prefersdark: false;
+  color-scheme: "light";
+  
+  --color-primary: #c11387;
+  --color-primary-focus: #AD0B71;
+  --color-primary-content: #ffffff;
+  
+  --color-secondary: #9ec151;
+  --color-secondary-focus: #94B143;
+  --color-secondary-content: #ffffff;
+  
+  --color-accent: #37cdbe;
+  --color-accent-focus: #2ba69a;
+  --color-accent-content: #ffffff;
+  
+  --color-neutral: #3b424e;
+  --color-neutral-focus: #2a2e37;
+  --color-neutral-content: #ffffff;
+  
+  --color-base-100: #ffffff;
+  --color-base-200: #f9fafb;
+  --color-base-300: #ced3d9;
+  --color-base-content: #1e2734;
+  
+  --color-info: #1c92f2;
+  --color-success: #9ec151;
+  --color-warning: #ff9900;
+  --color-error: #ff5724;
+  
+  --radius-selector: 1.9rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  
+  --border: 1px;
+  
+  --depth: 1;
+  --noise: 0;
+}
+
+@theme {
+  --font-family-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --color-primary-focus: #AD0B71;
+  --color-secondary-focus: #94B143;
+}
 
 #app {
   @apply h-screen; /* feel free to add more classes */

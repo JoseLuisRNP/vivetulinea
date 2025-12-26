@@ -32,11 +32,11 @@
   );
 </script>
 <template>
-  <div class="navbar bg-base-100 border-b-[1px] border-b-base">
+  <div class="navbar bg-base-100 border-b border-b-base-300">
     <Link :href="ziggyRoute('menu')" class="flex-1">
       <img :src="Logo" class="btn btn-ghost text-xl" alt="ViveTuLinea Logo" />
     </Link>
-    <div class="flex-none">
+    <div class="flex">
       <slot />
       <Link
         v-if="!route().current('menu') && !route().current('no-active')"

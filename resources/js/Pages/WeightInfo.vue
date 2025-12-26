@@ -95,7 +95,7 @@
 
     <div class="flex justify-end px-4 mb-4 self-end">
       <select 
-        class="select select-bordered w-full max-w-xs" 
+        class="select" 
         :value="selectedRange"
         @change="handleRangeChange"
       >

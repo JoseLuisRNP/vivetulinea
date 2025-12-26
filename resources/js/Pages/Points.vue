@@ -76,74 +76,64 @@
       </div>
     </div>
     <div class="flex flex-col justify-center my-8 text-xl">
-      <div class="w-full justify-center items-center flex flex-col">
-        <div class="form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text text-lg">Nombre</span>
-          </label>
+      <div class="mx-8 my-2 md:flex md:justify-between">
+        <div class="fieldset max-w-xs">
+          <label class="label text-lg">Nombre</label>
           <input
             v-model="name"
             type="text"
             placeholder="Alimento"
-            class="input input-bordered w-full max-w-xs focus:border-primary"
+            class="input focus:border-primary"
             :disabled="food"
             style="color: #3b424e"
             @focus="$event.target.select()"
           />
         </div>
-        <div v-if="!food" class="form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text text-lg">Puntos</span>
-          </label>
+        <div v-if="!food" class="fieldset max-w-xs">
+          <label class="label text-lg">Puntos</label>
           <input
             v-model.number="points"
             type="number"
             placeholder="Alimento"
-            class="input input-bordered w-full max-w-xs focus:border-primary"
+            class="input focus:border-primary"
             @focus="$event.target.select()"
           />
         </div>
-        <div class="form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text text-lg"
-              >Cantidad <span v-if="food && food.unit"> en {{ food.unit }}</span></span
-            >
-          </label>
+        <div class="fieldset max-w-xs">
+          <label class="label text-lg"
+            >Cantidad <span v-if="food && food.unit"> en {{ food.unit }}</span></label
+          >
           <input
             v-model.number="quantity"
             type="number"
             placeholder="0"
-            class="input input-bordered w-full max-w-xs focus:border-primary"
+            class="input focus:border-primary"
             @focus="$event.target.select()"
           />
         </div>
-        <div v-if="!food" class="form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text text-lg">Color</span>
-          </label>
-          <select v-model="color" class="select select-bordered w-full max-w-xs">
+        <div v-if="!food" class="fieldset max-w-xs">
+          <label class="label text-lg">Color</label>
+          <select v-model="color" class="select">
             <option value="green">🟢 Hidratos de carbono</option>
             <option value="blue">🔵 Proteínas</option>
             <option value="red">🔴 Grasas</option>
             <option value="yellow">🟡 Sin identificar</option>
           </select>
         </div>
-        <div class="form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text text-lg">Momento</span>
-          </label>
-          <select v-model="timeOfDay" class="select select-bordered w-full max-w-xs">
+        <div class="fieldset max-w-xs">
+          <label class="label text-lg">Momento</label>
+          <select v-model="timeOfDay" class="select">
             <option v-for="time in times" :key="time" :value="time">
               {{ time }}
             </option>
           </select>
         </div>
-        <div v-if="food" class="avatar placeholder mt-6">
-          <div class="bg-primary text-primary-content rounded-full w-16 m-auto">
+        <div v-if="food" class="avatar-placeholder mt-6">
+          <div class="bg-primary text-primary-content rounded-full size-16 m-auto">
             <span class="text-xl">{{ calculatedPoints }}</span>
           </div>
         </div>
-        <button class="btn btn-primary mt-4 w-2/4 m-auto" @click="registerPoints">
+        <button class="btn btn-primary mt-4 w-2/4 m-auto w-full" @click="registerPoints">
           Añadir puntos al diario
         </button>
       </div>

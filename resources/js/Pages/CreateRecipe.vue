@@ -124,38 +124,32 @@
       <p class="text-base font-semibold leading-7 text-primary">Añade los alimentos de tu receta</p>
     </div>
     <div class="mx-8 my-2 md:flex md:justify-between">
-      <div class="form-control w-full max-w-xs">
-        <label class="label">
-          <span class="label-text">Nombre</span>
-        </label>
+      <div class="fieldset max-w-xs">
+        <label class="label">Nombre</label>
         <input
           v-model="name"
           type="text"
           placeholder="Tu receta"
-          class="input input-bordered w-full max-w-xs focus:border-primary"
+          class="input focus:border-primary"
           @focus="$event.target.select()"
         />
       </div>
-      <div class="form-control w-full max-w-xs">
-        <label class="label">
-          <span class="label-text">Número de raciones</span>
-        </label>
+      <div class="fieldset max-w-xs">
+        <label class="label">Número de raciones</label>
         <input
           v-model.number="ration"
           type="number"
           placeholder="1"
-          class="input input-bordered w-full max-w-xs focus:border-primary"
+          class="input focus:border-primary"
           @focus="$event.target.select()"
         />
       </div>
-      <div class="form-control w-full max-w-xs">
-        <label class="label">
-          <span class="label-text">Alimentos</span>
-        </label>
+      <div class="fieldset max-w-xs">
+        <label class="label">Alimentos</label>
         <input
           v-model="search"
           placeholder="Buscar alimento"
-          class="input input-bordered w-full max-w-xs focus:border-primary"
+          class="input focus:border-primary"
           @focus="$event.target.select()"
         />
         <div class="relative">
@@ -215,7 +209,7 @@
                       v-model.number="food.recipeQuantity"
                       type="number"
                       placeholder="0"
-                      class="input input-bordered input-xs w-12 max-w-xs focus:border-primary"
+                      class="input input-xs w-12 focus:border-primary"
                     />
                     <span class="text-xs ml-2">Cantidad</span>
                   </div>

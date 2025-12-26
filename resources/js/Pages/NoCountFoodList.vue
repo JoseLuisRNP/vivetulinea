@@ -61,14 +61,14 @@
       </div>
     </div>
 
-    <label class="form-control w-full max-w-xs mt-4">
+    <div class="fieldset max-w-xs mt-4">
       <input
         v-model="search"
         type="text"
         placeholder="Buscar alimento"
-        class="input input-bordered w-full max-w-xs"
+        class="input"
       />
-    </label>
+    </div>
 
     <div class="mt-4 w-full p-4">
       <ul>

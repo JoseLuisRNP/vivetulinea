@@ -75,11 +75,9 @@
             />
           </div>
         </div>
-        <label class="label">
-          <span v-if="page.props.errors.email" class="label-text-alt text-error">{{
-            page.props.errors.email
-          }}</span>
-        </label>
+        <span v-if="page.props.errors.email" class="text-error text-sm">{{
+          page.props.errors.email
+        }}</span>
         <div>
           <button type="submit" class="btn btn-primary w-full">Iniciar sesión</button>
         </div>
