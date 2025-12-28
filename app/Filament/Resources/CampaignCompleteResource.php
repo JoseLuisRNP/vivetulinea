@@ -2,12 +2,22 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Placeholder;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\CampaignCompleteResource\Pages\ListCampaignCompletes;
+use App\Filament\Resources\CampaignCompleteResource\Pages\CreateCampaignComplete;
+use App\Filament\Resources\CampaignCompleteResource\Pages\EditCampaignComplete;
 use App\Filament\Resources\CampaignCompleteResource\Pages;
 use App\Filament\Resources\CampaignResource\RelationManagers\UsersRelationManager;
 use App\Models\Campaign;
 use App\Models\CampaignComplete;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -16,7 +26,7 @@ class CampaignCompleteResource extends Resource
 {
     protected static ?string $model = Campaign::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Campañas';
     protected static ?string $pluralLabel = 'Campañas';
 
@@ -25,24 +35,24 @@ class CampaignCompleteResource extends Resource
         return auth()->user()->isAdmin();
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
+        return $schema
+            ->components([
+                TextInput::make('name')
                     ->autofocus()
                     ->required()
                     ->label('Nombre'),
-                Forms\Components\TextInput::make('description')
+                TextInput::make('description')
                     ->label('Descripción'),
-                Forms\Components\TextInput::make('free_days')
+                TextInput::make('free_days')
                     ->label('Días gratis')
                     ->default(3)
                     ->numeric()
                     ->minValue(0)
                     ->required(),
-                Forms\Components\DatePicker::make('end_date')->native(false)->displayFormat('d/m/Y')->label('Fecha de finalización'),
-                Forms\Components\Placeholder::make('url')
+                DatePicker::make('end_date')->native(false)->displayFormat('d/m/Y')->label('Fecha de finalización'),
+                Placeholder::make('url')
                     ->label('URL')
                     ->content(fn ($record): string => $record->url ?? '-'),
             ]);
@@ -52,9 +62,9 @@ class CampaignCompleteResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('Nombre')->searchable(),
-                Tables\Columns\TextColumn::make('url')->label('URL')->copyable(),
-                Tables\Columns\TextColumn::make('end_date')
+                TextColumn::make('name')->label('Nombre')->searchable(),
+                TextColumn::make('url')->label('URL')->copyable(),
+                TextColumn::make('end_date')
                     ->label('Fecha de finalización')
                     ->date('d/m/Y'),
 
@@ -62,13 +72,13 @@ class CampaignCompleteResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()
+            ->recordActions([
+                EditAction::make()
                     ->visible(fn () => auth()->user()->isAdmin()),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()
                         ->visible(fn () => auth()->user()->isAdmin()),
                 ]),
             ]);
@@ -84,9 +94,9 @@ class CampaignCompleteResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCampaignCompletes::route('/'),
-            'create' => Pages\CreateCampaignComplete::route('/create'),
-            'edit' => Pages\EditCampaignComplete::route('/{record}/edit'),
+            'index' => ListCampaignCompletes::route('/'),
+            'create' => CreateCampaignComplete::route('/create'),
+            'edit' => EditCampaignComplete::route('/{record}/edit'),
         ];
     }
 }

@@ -2,14 +2,18 @@
 
 namespace App\Filament\Resources\CampaignResource\RelationManagers;
 
+use Filament\Schemas\Schema;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\BulkAction;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Tables\Actions\Action;
 use App\Models\User;
 use Filament\Forms\Components\Select;
 use Illuminate\Support\Collection;
@@ -20,11 +24,11 @@ class UsersRelationManager extends RelationManager
 {
     protected static string $relationship = 'users';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('email')
+        return $schema
+            ->components([
+                TextInput::make('email')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -35,11 +39,11 @@ class UsersRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->columns([
-                Tables\Columns\TextColumn::make('email')->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('email')->searchable(),
+                TextColumn::make('created_at')
                     ->label('Fecha de registro')
                     ->date('d/m/Y'),
-                Tables\Columns\TextColumn::make('dietician.name')
+                TextColumn::make('dietician.name')
                     ->label('Dietista')
             ])
             ->filters([
@@ -65,11 +69,11 @@ class UsersRelationManager extends RelationManager
             ])
             ->headerActions([
             ])
-            ->actions([
+            ->recordActions([
                 Action::make('assignDietician')
                     ->label('Asignar Dietista')
                     ->visible(fn () => auth()->user()->isAdmin())
-                    ->form([
+                    ->schema([
                         Select::make('dietician_id')
                             ->label('Dietista')
                             ->options(
@@ -83,9 +87,9 @@ class UsersRelationManager extends RelationManager
                         ]);
                     })
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('assignDietician')
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    BulkAction::make('assignDietician')
                         ->label('Asignar Dietista')
                         ->visible(fn () => auth()->user()->isAdmin())
                         ->form([

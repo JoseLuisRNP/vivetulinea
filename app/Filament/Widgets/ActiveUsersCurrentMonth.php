@@ -2,14 +2,15 @@
 
 namespace App\Filament\Widgets;
 
+use DB;
 use App\Models\User;
 use Carbon\Carbon;
 use Filament\Widgets\ChartWidget;
 
 class ActiveUsersCurrentMonth extends ChartWidget
 {
-    protected static ?string $heading = 'Usuarios activos mes actual';
-    protected static ?string $pollingInterval = null;
+    protected ?string $heading = 'Usuarios activos mes actual';
+    protected ?string $pollingInterval = null;
 
     protected function getData(): array
     {
@@ -21,7 +22,7 @@ class ActiveUsersCurrentMonth extends ChartWidget
             ->groupBy('dietician_id')
             ->get([
                 'dietician_id',
-                \DB::raw('COUNT(*) as total_users')
+                DB::raw('COUNT(*) as total_users')
             ])->map(fn ($d) => [
                 'dietician' => $d->dietician->name,
                 'total_users' => $d->total_users
