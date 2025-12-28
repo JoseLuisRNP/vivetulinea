@@ -4,7 +4,8 @@ import path from 'path';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import { VitePWA } from 'vite-plugin-pwa';
-import vueDevTools from 'vite-plugin-vue-devtools'
+import vueDevTools from 'vite-plugin-vue-devtools';
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 
 export default defineConfig({
@@ -37,6 +38,10 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
+        }),
+        createSvgIconsPlugin({
+            iconDirs: [path.resolve(process.cwd(), 'resources/js/assets/icons')],
+            symbolId: 'icon-[dir]-[name]',
         }),
         VitePWA({
             outDir: 'public/build',
