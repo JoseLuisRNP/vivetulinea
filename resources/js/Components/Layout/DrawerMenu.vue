@@ -30,6 +30,16 @@
       icon: 'recipe-book',
       label: 'Recetas',
     },
+    {
+      route: 'foods.index',
+      icon: 'search',
+      label: 'Listado de alimentos',
+    },
+    {
+      route: 'food.no-count',
+      icon: 'no-count-day',
+      label: 'Alimentos día de no contar',
+    },
   ];
 
   const isActiveRoute = (routeName) => {
@@ -40,9 +50,14 @@
 <template>
   <div class="bg-base-200 min-h-full w-80 flex flex-col">
     <div class="p-4 border-b border-base-300">
-      <Link :href="ziggyRoute('menu')" class="flex items-center gap-2">
-        <img :src="Logo" class="h-8 w-auto" alt="ViveTuLinea Logo" />
-      </Link>
+      <div class="flex items-center justify-between">
+        <Link :href="ziggyRoute('menu')" class="flex items-center gap-2">
+          <img :src="Logo" class="h-8 w-auto" alt="ViveTuLinea Logo" />
+        </Link>
+        <label for="nav-drawer" class="btn btn-ghost btn-square h-8 w-8 min-h-8 drawer-button flex items-center justify-center p-0 mt-3">
+          <SvgIcon name="close-x" class="w-5 h-5" />
+        </label>
+      </div>
     </div>
     <ul class="menu p-4 text-base-content flex-1">
       <li v-for="item in menuItems" :key="item.route">

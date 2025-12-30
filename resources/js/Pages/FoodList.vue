@@ -5,6 +5,7 @@
   import { ref } from 'vue';
   import { watchDebounced } from '@vueuse/core';
   import { Head, router, Link, usePage } from '@inertiajs/vue3';
+  import ziggyRoute from 'ziggy-js';
 
   interface Paginate<T> {
     data: T[];
@@ -25,13 +26,13 @@
     to: number;
     total: number;
   }
+
   interface Food {
     id: number;
     name: string;
     color: string;
-    special_no_count: boolean;
-    oil_no_count: boolean;
-    quantity?: number;
+    points: number;
+    quantity: number;
     unit?: string;
   }
 
@@ -76,23 +77,27 @@
     },
     { debounce: 300 }
   );
+
+  const handleFoodClick = (foodId: number) => {
+    router.visit(ziggyRoute('points.show', { food: foodId }));
+  };
 </script>
+
 <template>
-  <Head title="Listado día de no contar" />
+  <Head title="Listado de alimentos" />
   <NavBar />
 
   <div class="flex flex-col content-center items-center h-full">
     <div class="px-6 py-4 sm:py-32 lg:px-8">
       <div class="mx-auto max-w-2xl text-center">
         <h2 class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-          Listado día de no contar
+          Listado de alimentos
         </h2>
         <p class="text-base font-semibold leading-7 text-primary">
-          Recuerda los alimentos marcados en rosa máximo 3 al día, verde máximo 2 al día
+          Selecciona un alimento para registrar puntos
         </p>
       </div>
     </div>
-
     <div class="flex gap-4 items-end justify-center mt-4">
       <div class="fieldset max-w-xs">
         <input
@@ -112,16 +117,12 @@
           v-for="food in foods.data"
           :key="food.id"
           :food="food"
-          :show-no-count-highlight="true"
-        >
-          <template #extra>
-            <div v-show="food.special_no_count || food.oil_no_count">
-              {{ food.quantity }}{{ food.unit }}
-            </div>
-          </template>
-        </FoodListItem>
+          :clickable="true"
+          @click="handleFoodClick"
+        />
       </ul>
     </div>
+
     <div
       v-if="foods.prev_page_url || foods.next_page_url"
       class="join justify-self-end sticky bottom-0"
@@ -157,3 +158,4 @@
     </div>
   </div>
 </template>
+

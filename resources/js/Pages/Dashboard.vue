@@ -34,6 +34,7 @@
   const props = defineProps<{
     meals: Meals;
     remainingPoints: number;
+    weekPointsConsumedThisDay: number;
     weekRemainingPoints: number;
     pointsByColor: Record<string, number>;
     resultSearch: any[];
@@ -258,7 +259,13 @@
           }}</span>
         </button>
         <div class="flex flex-col items-center w-1/3">
-          <div class="text-4xl">
+          <div class="relative text-4xl">
+            <div
+v-if="weekPointsConsumedThisDay"
+class="text-xs absolute -top-2 -right-4 rounded-full w-5 h-5 flex items-center justify-center"
+            :class="!noCountDay ? 'bg-secondary-focus' : 'bg-primary-focus'">
+{{ weekPointsConsumedThisDay }}
+            </div>
             {{ weekRemainingPoints }}
           </div>
           <div class="text-xs">extras</div>

@@ -83,6 +83,7 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'meals' => $meals->groupBy('time_of_day'),
             'remainingPoints' => $this->format_number($remainingPoints, false),
+            'weekPointsConsumedThisDay' => $remainingPoints < 0 ? $remainingPoints * -1 : null,
             'weekRemainingPoints' => $this->format_number($weekRemainingPoints, true),
             'pointsByColor' => $pointsByColor,
             'resultSearch' => $resultSearch,
