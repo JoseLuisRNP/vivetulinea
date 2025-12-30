@@ -108,4 +108,9 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Weight::class);
     }
 
+    public function favoriteFoods()
+    {
+        return $this->belongsToMany(Food::class, 'food_user')->withTimestamps();
+    }
+
 }

@@ -102,6 +102,7 @@ class PointsController extends Controller
     {
         $search = \request('q');
         $color = \request('color');
+        $user = auth()->user();
 
         return Inertia::render('NoCountFoodList', [
             'foods' => Food::query()
@@ -112,6 +113,10 @@ class PointsController extends Controller
                 })
                 ->when($search, fn ($q) => $q->whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["%$search%"]))
                 ->when($color, fn ($q) => $q->where('color', $color))
+                ->withExists(['favoritedByUsers as is_favorite' => function ($query) use ($user) {
+                    $query->where('users.id', $user->id);
+                }])
+                ->orderByDesc('is_favorite')
                 ->orderBy('name')
                 ->paginate(100)
                 ->withQueryString(),

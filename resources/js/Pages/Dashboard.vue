@@ -2,13 +2,13 @@
   import { Head, router, usePage } from '@inertiajs/vue3';
   import NavBar from '@/Components/Layout/NavBar.vue';
   import { Link } from '@inertiajs/vue3';
-  import ziggyRoute from 'ziggy-js';
   import { computed, ref, watch } from 'vue';
   import { times } from '@/data';
   import { watchDebounced, onClickOutside } from '@vueuse/core';
   import { useToast } from 'vue-toastification';
   import { roundedPoints } from '../helpers';
   import SvgIcon from '@/Components/SvgIcon.vue';
+  import ziggyRoute from 'ziggy-js';
 
   interface Meal {
     id: number;
@@ -150,6 +150,18 @@
   const deleteMeal = (meal) => {
     router.delete(ziggyRoute('points.destroy', { id: meal.id }));
   };
+
+  const handleToggleFavorite = (foodId: number) => {
+    router.post(
+      ziggyRoute('favorites.toggle', { food: foodId }),
+      {},
+      {
+        preserveState: true,
+        preserveScroll: true,
+        only: ['resultSearch'],
+      }
+    );
+  };
 </script>
 
 <template>
@@ -199,41 +211,53 @@
           ref="resultsWrapper"
           class="absolute w-full bg-primary-content text-neutral max-h-48 overflow-auto"
         >
-          <Link
+          <div
             v-for="result in resultSearch"
             :key="result.id"
-            :href="
-              ziggyRoute('points.show', {
-                food: result.id,
-                dayActive,
-                noCountDay,
-                special: specialNoCountQuantity,
-                oil: oilNoCountQuantity,
-              })
-            "
             class="hover:bg-primary hover:text-primary-content flex items-center p-1"
             :class="{
               'bg-pink-100': noCountDay && result.special_no_count,
               'bg-green-100': noCountDay && result.oil_no_count,
             }"
           >
-            <div
-              class="w-2 h-2 rounded-full mr-2"
-              :class="{
-                'bg-blue-500': result.color === 'blue',
-                'bg-green-500': result.color === 'green',
-                'bg-yellow-500': result.color === 'yellow',
-                'bg-red-500': result.color === 'red',
-                'bg-black': result.color === 'black',
-              }"
-            />
-            <div :class="noCountDay && result.no_count ? 'font-bold' : ''">
-              {{ result.name }}
-            </div>
-            <div class="ml-4 text-xs text-gray-400">
-              {{ result.points }} puntos / {{ result.quantity }} {{ result.unit.toLowerCase() }}
-            </div>
-          </Link>
+            <Link
+              :href="
+                ziggyRoute('points.show', {
+                  food: result.id,
+                  dayActive,
+                  noCountDay,
+                  special: specialNoCountQuantity,
+                  oil: oilNoCountQuantity,
+                })
+              "
+              class="flex items-center flex-1 min-w-0"
+            >
+              <div
+                class="w-2 h-2 rounded-full mr-2"
+                :class="{
+                  'bg-blue-500': result.color === 'blue',
+                  'bg-green-500': result.color === 'green',
+                  'bg-yellow-500': result.color === 'yellow',
+                  'bg-red-500': result.color === 'red',
+                  'bg-black': result.color === 'black',
+                }"
+              />
+              <div :class="noCountDay && result.no_count ? 'font-bold' : ''">
+                {{ result.name }}
+              </div>
+              <div class="ml-4 text-xs text-gray-400">
+                {{ result.points }} puntos / {{ result.quantity }} {{ result.unit?.toLowerCase() }}
+              </div>
+            </Link>
+            <button
+              v-if="result.is_favorite !== undefined"
+              @click.stop="handleToggleFavorite(result.id)"
+              class="shrink-0 flex items-center justify-center w-5 h-5 hover:opacity-70 transition-opacity text-yellow-500 ml-2"
+              type="button"
+            >
+              <SvgIcon :name="result.is_favorite ? 'star-filled' : 'star'" class="w-5 h-5" />
+            </button>
+          </div>
         </div>
       </div>
 

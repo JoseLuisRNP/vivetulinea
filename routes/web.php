@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FavoriteFoodController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\MenuAppController;
 use App\Http\Controllers\PointsController;
@@ -75,6 +76,7 @@ Route::prefix('app')->middleware(['auth', HandleActiveUsersMiddleware::class])->
     Route::post('guideline/update/{guideline}', [PointsController::class, 'storeGuideline'])->name('guidelines.store');
     Route::post('no-count', [PointsController::class, 'noCountDay'])->name('points.no-count');
     Route::post('cancel-no-count', [PointsController::class, 'cancelNoCountDay'])->name('points.cancel-no-count');
+    Route::post('favorites/{food}', [FavoriteFoodController::class, 'toggle'])->name('favorites.toggle');
     Route::get('no-active', function () {
         $isCampaignUser = auth()->user()->campaign_id !== null && auth()->user()->dietician_id === 1;
 

@@ -34,9 +34,10 @@
     points: number;
     quantity: number;
     unit?: string;
+    is_favorite?: boolean;
   }
 
-  defineProps<{
+  const props = defineProps<{
     foods: Paginate<Food>;
   }>();
 
@@ -81,6 +82,17 @@
   const handleFoodClick = (foodId: number) => {
     router.visit(ziggyRoute('points.show', { food: foodId }));
   };
+
+  const handleToggleFavorite = (foodId: number) => {
+    router.post(
+      ziggyRoute('favorites.toggle', { food: foodId }),
+      {},
+      {
+        preserveState: true,
+        preserveScroll: true,
+      }
+    );
+  };
 </script>
 
 <template>
@@ -114,22 +126,23 @@
     <div class="mt-4 w-full p-4">
       <ul>
         <FoodListItem
-          v-for="food in foods.data"
+          v-for="food in props.foods.data"
           :key="food.id"
           :food="food"
           :clickable="true"
           @click="handleFoodClick"
+          @toggle-favorite="handleToggleFavorite"
         />
       </ul>
     </div>
 
     <div
-      v-if="foods.prev_page_url || foods.next_page_url"
+      v-if="props.foods.prev_page_url || props.foods.next_page_url"
       class="join justify-self-end sticky bottom-0"
     >
       <Link
-        v-if="foods.prev_page_url"
-        :href="foods.prev_page_url"
+        v-if="props.foods.prev_page_url"
+        :href="props.foods.prev_page_url"
         class="join-item btn bg-primary text-primary-content"
       >
         Anterior
@@ -142,8 +155,8 @@
         Anterior
       </button>
       <Link
-        v-if="foods.next_page_url"
-        :href="foods.next_page_url"
+        v-if="props.foods.next_page_url"
+        :href="props.foods.next_page_url"
         class="join-item btn bg-primary text-primary-content"
       >
         Siguiente

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useSlots } from 'vue';
+import SvgIcon from '@/Components/SvgIcon.vue';
 
   interface Food {
     id: number;
@@ -10,6 +11,7 @@ import { useSlots } from 'vue';
     unit?: string;
     special_no_count?: boolean;
     oil_no_count?: boolean;
+    is_favorite?: boolean;
   }
 
   const props = defineProps<{
@@ -20,12 +22,18 @@ import { useSlots } from 'vue';
 
   const emit = defineEmits<{
     click: [foodId: number];
+    toggleFavorite: [foodId: number];
   }>();
 
   const handleClick = () => {
     if (props.clickable) {
       emit('click', props.food.id);
     }
+  };
+
+  const handleStarClick = (e: Event) => {
+    e.stopPropagation();
+    emit('toggleFavorite', props.food.id);
   };
 
   const colorClasses = {
@@ -53,8 +61,18 @@ import { useSlots } from 'vue';
       class="w-2 h-2 rounded-full mr-2"
       :class="colorClasses[food.color as keyof typeof colorClasses] || 'bg-gray-500'"
     />
-    <div class="flex justify-between w-full min-w-0 gap-2">
-      <div class="line-clamp-2 min-w-0 wrap-break-word">{{ food.name }}</div>
+      <div class="flex justify-between w-full min-w-0 gap-2">
+      <div class="flex items-center gap-2 min-w-0">
+        <button
+          v-if="food.is_favorite !== undefined"
+          @click="handleStarClick"
+          class="shrink-0 flex items-center justify-center w-5 h-5 hover:opacity-70 transition-opacity text-yellow-500"
+          type="button"
+        >
+          <SvgIcon :name="food.is_favorite ? 'star-filled' : 'star'" class="w-5 h-5" />
+        </button>
+        <div class="line-clamp-2 min-w-0 wrap-break-word">{{ food.name }}</div>
+      </div>
       <div class="flex items-center gap-2 shrink-0 whitespace-nowrap">
         <slot name="extra"></slot>
         <template v-if="!slots.extra">
