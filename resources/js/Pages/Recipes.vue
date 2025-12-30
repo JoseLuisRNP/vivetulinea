@@ -25,16 +25,30 @@
     to: number;
     total: number;
   }
-  interface Food {
+  interface RecipeFood {
+    id: number;
+    quantity: number;
+    unit: string;
+    food: {
+      id: number;
+      name: string;
+      color: string;
+      points: number;
+      quantity: number;
+    };
+  }
+
+  interface Recipe {
     id: number;
     name: string;
-    color: string;
-    special_no_count: boolean;
-    oil_no_count: boolean;
+    points: number;
+    quantity: number;
+    unit: string;
+    foods: RecipeFood[];
   }
 
   const props = defineProps<{
-    foods: Paginate<Food>;
+    foods: Paginate<Recipe>;
   }>();
 
   const search = ref('');
@@ -42,6 +56,18 @@
   const dayActiveParam = urlParams.get('dayActive') || new Date().toISOString();
   const dayActive = ref(new Date(dayActiveParam));
   const time = ref(urlParams.get('time') || 'Desayuno');
+
+  const getPointsUrl = (recipeId: number) => {
+    const dayActiveDate = dayActive.value instanceof Date && !isNaN(dayActive.value.getTime())
+      ? dayActive.value
+      : new Date();
+    return ziggyRoute('points.show', {
+      food: recipeId,
+      time: time.value || 'Desayuno',
+      dayActive: dayActiveDate.toISOString(),
+      recipe: true,
+    });
+  };
 
   watchDebounced(
     search,
@@ -102,7 +128,7 @@
             </div>
             <div class="flex">
               <Link
-                :href="ziggyRoute('points.show', { food: food.id, time, dayActive, recipe: true })"
+                :href="getPointsUrl(food.id)"
                 class="text-primary-content bg-primary rounded-full h-3 w-3 flex items-center justify-center p-3 z-10"
               >
                 +
@@ -155,23 +181,33 @@
       class="join justify-self-end sticky bottom-0"
     >
       <Link
+        v-if="foods.prev_page_url"
         :href="foods.prev_page_url"
-        class="join-item btn"
-        :class="
-          foods.prev_page_url ? 'bg-primary text-primary-content' : 'bg-gray-100 text-neutral'
-        "
+        class="join-item btn bg-primary text-primary-content"
       >
         Anterior
       </Link>
+      <button
+        v-else
+        disabled
+        class="join-item btn bg-gray-100 text-neutral"
+      >
+        Anterior
+      </button>
       <Link
+        v-if="foods.next_page_url"
         :href="foods.next_page_url"
-        class="join-item btn"
-        :class="
-          foods.next_page_url ? 'bg-primary text-primary-content' : 'bg-gray-100 text-neutral'
-        "
+        class="join-item btn bg-primary text-primary-content"
       >
         Siguiente
       </Link>
+      <button
+        v-else
+        disabled
+        class="join-item btn bg-gray-100 text-neutral"
+      >
+        Siguiente
+      </button>
     </div>
   </div>
 </template>
