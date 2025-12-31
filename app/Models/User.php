@@ -113,4 +113,9 @@ class User extends Authenticatable implements FilamentUser
         return $this->belongsToMany(Food::class, 'food_user')->withTimestamps();
     }
 
+    public function userFoods()
+    {
+        return $this->hasMany(UserFood::class);
+    }
+
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\PointsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\ShowWeightsController;
+use App\Http\Controllers\UserFoodController;
 use App\Http\Controllers\WeightController;
 use App\Http\Middleware\HandleActiveUsersMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -77,6 +78,11 @@ Route::prefix('app')->middleware(['auth', HandleActiveUsersMiddleware::class])->
     Route::post('no-count', [PointsController::class, 'noCountDay'])->name('points.no-count');
     Route::post('cancel-no-count', [PointsController::class, 'cancelNoCountDay'])->name('points.cancel-no-count');
     Route::post('favorites/{food}', [FavoriteFoodController::class, 'toggle'])->name('favorites.toggle');
+    Route::get('my-foods', [UserFoodController::class, 'index'])->name('my-foods.index');
+    Route::post('my-foods', [UserFoodController::class, 'store'])->name('my-foods.store');
+    Route::put('my-foods/{userFood}', [UserFoodController::class, 'update'])->name('my-foods.update');
+    Route::delete('my-foods/{userFood}', [UserFoodController::class, 'destroy'])->name('my-foods.destroy');
+    Route::post('my-foods/{userFood}/add-meal', [UserFoodController::class, 'addAsMeal'])->name('my-foods.add-meal');
     Route::get('no-active', function () {
         $isCampaignUser = auth()->user()->campaign_id !== null && auth()->user()->dietician_id === 1;
 

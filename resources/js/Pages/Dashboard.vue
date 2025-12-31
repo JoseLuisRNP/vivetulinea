@@ -6,7 +6,7 @@
   import { times } from '@/data';
   import { watchDebounced, onClickOutside } from '@vueuse/core';
   import { useToast } from 'vue-toastification';
-  import { roundedPoints } from '../helpers';
+  import { roundedPoints, getCurrentTimeOfDay } from '../helpers';
   import SvgIcon from '@/Components/SvgIcon.vue';
   import ziggyRoute from 'ziggy-js';
 
@@ -34,7 +34,7 @@
   const props = defineProps<{
     meals: Meals;
     remainingPoints: number;
-    weekPointsConsumedThisDay: number;
+    weekPointsConsumedThisDay: number | null;
     weekRemainingPoints: number;
     pointsByColor: Record<string, number>;
     resultSearch: any[];
@@ -544,7 +544,7 @@ class="text-xs absolute -top-2 -right-4 rounded-full w-5 h-5 flex items-center j
               </div>
             </Link>
             <Link
-              :href="ziggyRoute('points.show', { time, dayActive, noCountDay })"
+              :href="ziggyRoute('my-foods.index', { time: time || getCurrentTimeOfDay(), dayActive: dayActive.toISOString(), noCountDay })"
               class="text-primary-content bg-primary rounded-full h-3 w-3 flex items-center justify-center p-3 z-10"
             >
               +

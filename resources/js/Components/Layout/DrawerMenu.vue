@@ -31,6 +31,11 @@
       label: 'Recetas',
     },
     {
+      route: 'my-foods.index',
+      icon: 'recipe-book',
+      label: 'Mis alimentos',
+    },
+    {
       route: 'foods.index',
       icon: 'search',
       label: 'Listado de alimentos',

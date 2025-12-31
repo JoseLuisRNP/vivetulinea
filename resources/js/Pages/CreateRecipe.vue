@@ -131,7 +131,7 @@
           v-model="name"
           type="text"
           placeholder="Tu receta"
-          class="input focus:border-primary"
+          class="input"
           @focus="$event.target.select()"
         />
       </div>
@@ -141,7 +141,7 @@
           v-model.number="ration"
           type="number"
           placeholder="1"
-          class="input focus:border-primary"
+          class="input"
           @focus="$event.target.select()"
         />
       </div>
@@ -150,7 +150,7 @@
         <input
           v-model="search"
           placeholder="Buscar alimento"
-          class="input focus:border-primary"
+          class="input"
           @focus="$event.target.select()"
         />
         <div class="relative">
@@ -210,7 +210,7 @@
                       v-model.number="food.recipeQuantity"
                       type="number"
                       placeholder="0"
-                      class="input input-xs w-12 focus:border-primary"
+                      class="input input-xs w-12"
                     />
                     <span class="text-xs ml-2">Cantidad</span>
                   </div>
