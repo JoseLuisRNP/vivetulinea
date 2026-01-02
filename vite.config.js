@@ -1,20 +1,36 @@
 import { defineConfig } from 'vite';
+import path from 'path';
 
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import { VitePWA } from 'vite-plugin-pwa';
-import vueDevTools from 'vite-plugin-vue-devtools'
+import vueDevTools from 'vite-plugin-vue-devtools';
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 
 export default defineConfig({
+    server: {
+        host: '0.0.0.0',
+        port: 5173,
+        hmr: {
+            host: 'localhost',
+        },
+    },
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, 'resources/js'),
+            'ziggy-js': path.resolve(__dirname, 'vendor/tightenco/ziggy/dist/index.m.js'),
+        },
+    },
     plugins: [
-        vueDevTools({
-            appendTo: 'resources/js/app.ts'
-          }),
         laravel({
             input: 'resources/js/app.ts',
             refresh: true,
+            detectTty: false,
         }),
+        vueDevTools({
+            appendTo: 'resources/js/app.ts'
+          }),
         vue({
             template: {
                 transformAssetUrls: {
@@ -22,6 +38,10 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
+        }),
+        createSvgIconsPlugin({
+            iconDirs: [path.resolve(process.cwd(), 'resources/js/assets/icons')],
+            symbolId: 'icon-[dir]-[name]',
         }),
         VitePWA({
             outDir: 'public/build',

@@ -63,107 +63,91 @@
       </div>
     </div>
     <div class="mx-8 my-2 md:flex md:justify-between">
-      <div class="form-control w-full max-w-xs">
-        <label class="label">
-          <span class="label-text">Calorías</span>
-        </label>
+      <div class="fieldset max-w-xs">
+        <label class="label">Calorías</label>
         <input
           v-model.number="calories"
           type="number"
           placeholder="0"
-          class="input input-bordered w-full max-w-xs focus:border-primary"
+          class="input focus:border-primary"
           @focus="$event.target.select()"
         />
       </div>
-      <div class="form-control w-full max-w-xs">
-        <label class="label">
-          <span class="label-text">Grasas saturadas</span>
-        </label>
+      <div class="fieldset max-w-xs">
+        <label class="label">Grasas saturadas</label>
         <input
           v-model.number="fats"
           type="number"
-          class="input input-bordered w-full max-w-xs focus:border-primary"
+          class="input focus:border-primary"
           @focus="$event.target.select()"
         />
       </div>
-      <div class="form-control w-full max-w-xs">
-        <label class="label">
-          <span class="label-text">Azúcares</span>
-        </label>
+      <div class="fieldset max-w-xs">
+        <label class="label">Azúcares</label>
         <input
           v-model.number="sugars"
           type="number"
-          class="input input-bordered w-full max-w-xs focus:border-primary"
+          class="input focus:border-primary"
           @focus="$event.target.select()"
         />
       </div>
-      <div class="form-control w-full max-w-xs">
-        <label class="label">
-          <span class="label-text">Proteínas</span>
-        </label>
+      <div class="fieldset max-w-xs">
+        <label class="label">Proteínas</label>
         <input
           v-model.number="proteins"
           type="number"
-          class="input input-bordered w-full max-w-xs focus:border-primary"
+          class="input focus:border-primary"
           @focus="$event.target.select()"
         />
       </div>
-      <div class="form-control w-full max-w-xs">
-        <label class="label">
-          <span class="label-text">Cantidad consumida</span>
-        </label>
+      <div class="fieldset max-w-xs">
+        <label class="label">Cantidad consumida</label>
         <input
           v-model.number="quantity"
           type="number"
-          class="input input-bordered w-full max-w-xs focus:border-primary"
+          class="input focus:border-primary"
           @focus="$event.target.select()"
         />
       </div>
     </div>
     <div class="flex flex-col justify-center my-8">
-      <div class="avatar placeholder">
-        <div class="bg-primary text-primary-content rounded-full w-16 m-auto">
+      <div class="avatar-placeholder">
+        <div class="bg-primary text-primary-content rounded-full size-16 m-auto">
           <span class="text-xl">{{ points }}</span>
         </div>
       </div>
-      <div class="w-full justify-center items-center flex flex-col">
-        <div class="form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text">Nombre</span>
-          </label>
+      <div class="mx-8 my-2 md:flex md:justify-between">
+        <div class="fieldset max-w-xs">
+          <label class="label">Nombre</label>
           <input
             v-model="name"
             type="text"
             placeholder="Alimento"
-            class="input input-bordered w-full max-w-xs focus:border-primary"
+            class="input focus:border-primary"
             :class="errors.name ? 'border-error' : ''"
             @focus="$event.target.select()"
           />
           <span v-if="errors.name" class="text-xs text-error">{{ errors.name }}</span>
         </div>
-        <div class="form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text">Color</span>
-          </label>
-          <select v-model="color" class="select select-bordered w-full max-w-xs">
+        <div class="fieldset max-w-xs">
+          <label class="label">Color</label>
+          <select v-model="color" class="select">
             <option value="green">🟢 Hidratos de carbono</option>
             <option value="blue">🔵 Proteínas</option>
             <option value="red">🔴 Grasas</option>
             <option value="yellow">🟡 Sin identificar</option>
           </select>
         </div>
-        <div class="form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text">Momento</span>
-          </label>
-          <select v-model="timeOfDay" class="select select-bordered w-full max-w-xs">
+        <div class="fieldset max-w-xs">
+          <label class="label">Momento</label>
+          <select v-model="timeOfDay" class="select">
             <option v-for="time in times" :key="time" :value="time">
               {{ time }}
             </option>
           </select>
         </div>
         <button
-          class="btn btn-primary mt-4 w-2/4 m-auto"
+          class="btn btn-primary mt-4 w-2/4 m-auto w-full"
           :disabled="!points || !quantity"
           @click="registerPoints"
         >

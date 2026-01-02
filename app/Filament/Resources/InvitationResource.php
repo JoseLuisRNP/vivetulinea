@@ -2,12 +2,21 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\InvitationResource\Pages\ListInvitations;
+use App\Filament\Resources\InvitationResource\Pages\CreateInvitation;
+use App\Filament\Resources\InvitationResource\Pages\EditInvitation;
 use App\Filament\Resources\InvitationResource\Pages;
 use App\Filament\Resources\InvitationResource\RelationManagers;
 use App\Models\Invitation;
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -18,27 +27,27 @@ class InvitationResource extends Resource
 {
     protected static ?string $model = Invitation::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Sin activar App';
     protected static ?string $pluralLabel = 'Sin activar App';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
+        return $schema
+            ->components([
+                TextInput::make('name')
                     ->autofocus()
                     ->required()
                     ->label('Nombre'),
-                Forms\Components\TextInput::make('email')
+                TextInput::make('email')
                     ->required()
                     ->rules('required', 'numeric')
                     ->label('Teléfono'),
-                Forms\Components\TextInput::make('daily_points')->default(30)->numeric()->inputMode('decimal')->label('Puntos diarios'),
-                Forms\Components\TextInput::make('sugars')->default(13.5)->numeric()->inputMode('decimal')->label('Hidratos'),
-                Forms\Components\TextInput::make('proteins')->default(10.5)->numeric()->inputMode('decimal')->label('Proteínas'),
-                Forms\Components\TextInput::make('fats')->default(6)->numeric()->inputMode('decimal')->label('Grasas'),
-                Forms\Components\TextInput::make('weekly_points')->default(30)->numeric()->inputMode('decimal')->label('Extras semanales'),
+                TextInput::make('daily_points')->default(30)->numeric()->inputMode('decimal')->label('Puntos diarios'),
+                TextInput::make('sugars')->default(13.5)->numeric()->inputMode('decimal')->label('Hidratos'),
+                TextInput::make('proteins')->default(10.5)->numeric()->inputMode('decimal')->label('Proteínas'),
+                TextInput::make('fats')->default(6)->numeric()->inputMode('decimal')->label('Grasas'),
+                TextInput::make('weekly_points')->default(30)->numeric()->inputMode('decimal')->label('Extras semanales'),
             ]);
     }
 
@@ -46,19 +55,19 @@ class InvitationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('email')->label('Teléfono')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('dietician.name')->label('Dietista'),
+                TextColumn::make('email')->label('Teléfono')->searchable()->sortable(),
+                TextColumn::make('dietician.name')->label('Dietista'),
 
             ])
             ->filters([
-                Tables\Filters\Filter::make('Solo mis invitaciones')->query( fn (Builder $query) => $query->where('dietician_id', auth()->user()->id))->toggle()->label('Solo mis invitaciones'),
+                Filter::make('Solo mis invitaciones')->query( fn (Builder $query) => $query->where('dietician_id', auth()->user()->id))->toggle()->label('Solo mis invitaciones'),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -73,9 +82,9 @@ class InvitationResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListInvitations::route('/'),
-            'create' => Pages\CreateInvitation::route('/create'),
-            'edit' => Pages\EditInvitation::route('/{record}/edit'),
+            'index' => ListInvitations::route('/'),
+            'create' => CreateInvitation::route('/create'),
+            'edit' => EditInvitation::route('/{record}/edit'),
         ];
     }
 

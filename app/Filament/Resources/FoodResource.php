@@ -2,6 +2,15 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ColorColumn;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\FoodResource\Pages\ListFood;
+use App\Filament\Resources\FoodResource\Pages\CreateFood;
+use App\Filament\Resources\FoodResource\Pages\EditFood;
 use App\Filament\Resources\FoodResource\Pages;
 use App\Filament\Resources\FoodResource\RelationManagers;
 use App\Models\Food;
@@ -9,7 +18,6 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -18,12 +26,12 @@ class FoodResource extends Resource
 {
     protected static ?string $model = Food::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('name')
                     ->name('Nombre')
                     ->autofocus()
@@ -63,21 +71,21 @@ class FoodResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('points')->alignCenter()->label('Puntos'),
-                Tables\Columns\TextColumn::make('quantity')->alignCenter()->label('Cantidad en gramos'),
-                Tables\Columns\TextColumn::make('unit')->alignCenter()->label('Unidad'),
-                Tables\Columns\ColorColumn::make('color')->alignCenter()
+                TextColumn::make('name')->searchable()->sortable(),
+                TextColumn::make('points')->alignCenter()->label('Puntos'),
+                TextColumn::make('quantity')->alignCenter()->label('Cantidad en gramos'),
+                TextColumn::make('unit')->alignCenter()->label('Unidad'),
+                ColorColumn::make('color')->alignCenter()
             ])
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -92,9 +100,9 @@ class FoodResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFood::route('/'),
-            'create' => Pages\CreateFood::route('/create'),
-            'edit' => Pages\EditFood::route('/{record}/edit'),
+            'index' => ListFood::route('/'),
+            'create' => CreateFood::route('/create'),
+            'edit' => EditFood::route('/{record}/edit'),
         ];
     }
 

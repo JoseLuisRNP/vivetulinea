@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Food;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -10,7 +11,7 @@ class SearchController extends Controller
     {
         $search = $request->input('search');
 
-        $foods = \App\Models\Food::whereRaw('LOWER(name) COLLATE utf8_general_ci LIKE LOWER(?)', ["%$search%"])
+        $foods = Food::whereRaw('LOWER(name) COLLATE utf8_general_ci LIKE LOWER(?)', ["%$search%"])
         ->get();
 
         return response()->json($foods);

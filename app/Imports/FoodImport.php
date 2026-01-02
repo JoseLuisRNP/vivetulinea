@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Food;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -13,10 +14,10 @@ class FoodImport implements ToModel, WithProgressBar, WithHeadingRow
     use Importable;
 
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return Model|null
+     */
     public function model(array $row)
     {
         if(!$row["nombre"]) {

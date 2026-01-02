@@ -61,14 +61,14 @@
       </div>
     </div>
 
-    <label class="form-control w-full max-w-xs mt-4">
+    <div class="fieldset max-w-xs mt-4">
       <input
         v-model="search"
         type="text"
         placeholder="Buscar alimento"
-        class="input input-bordered w-full max-w-xs"
+        class="input"
       />
-    </label>
+    </div>
 
     <div class="mt-4 w-full p-4">
       <ul>
@@ -105,23 +105,33 @@
       class="join justify-self-end sticky bottom-0"
     >
       <Link
+        v-if="foods.prev_page_url"
         :href="foods.prev_page_url"
-        class="join-item btn"
-        :class="
-          foods.prev_page_url ? 'bg-primary text-primary-content' : 'bg-gray-100 text-neutral'
-        "
+        class="join-item btn bg-primary text-primary-content"
       >
         Anterior
       </Link>
+      <button
+        v-else
+        disabled
+        class="join-item btn bg-gray-100 text-neutral"
+      >
+        Anterior
+      </button>
       <Link
+        v-if="foods.next_page_url"
         :href="foods.next_page_url"
-        class="join-item btn"
-        :class="
-          foods.next_page_url ? 'bg-primary text-primary-content' : 'bg-gray-100 text-neutral'
-        "
+        class="join-item btn bg-primary text-primary-content"
       >
         Siguiente
       </Link>
+      <button
+        v-else
+        disabled
+        class="join-item btn bg-gray-100 text-neutral"
+      >
+        Siguiente
+      </button>
     </div>
   </div>
 </template>
