@@ -74,11 +74,14 @@ class ViewUserDiary extends Page
         $mealsRecipe->each(function ($meal) use ($pointsByColor) {
             $recipe = $meal->recipe;
             if ($recipe) {
-                $quantityMultiplier = $meal->quantity / $recipe->quantity;
-                $pointsByColor->put('blue', $pointsByColor->get('blue', 0) + $recipe->proteins * $quantityMultiplier);
-                $pointsByColor->put('red', $pointsByColor->get('red', 0) + $recipe->fats * $quantityMultiplier);
-                $pointsByColor->put('green', $pointsByColor->get('green', 0) + $recipe->sugars * $quantityMultiplier);
-                $pointsByColor->put('yellow', $pointsByColor->get('yellow', 0) + $recipe->empty_points * $quantityMultiplier);
+                if ($recipe->quantity > 0) {
+                    $quantityMultiplier = $meal->quantity / $recipe->quantity;
+                    $pointsByColor->put('blue', $pointsByColor->get('blue', 0) + $recipe->proteins * $quantityMultiplier);
+                    $pointsByColor->put('red', $pointsByColor->get('red', 0) + $recipe->fats * $quantityMultiplier);
+                    $pointsByColor->put('green', $pointsByColor->get('green', 0) + $recipe->sugars * $quantityMultiplier);
+                    $pointsByColor->put('yellow', $pointsByColor->get('yellow', 0) + $recipe->empty_points * $quantityMultiplier);
+                }
+                // Si quantity es 0, simplemente no sumamos nada (ya está en 0 por defecto)
             }
         });
 

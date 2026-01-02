@@ -89,15 +89,22 @@
                                                                             </span>
                                                                         @endif
                                                                         @if($meal->recipe_id && $meal->recipe)
+                                                                            @php
+                                                                                $recipePoints = $meal->recipe->points > 0 ? $meal->recipe->points : 1;
+                                                                                $sugarsPoints = $meal->recipe->points > 0 ? ($meal->recipe->sugars * $meal->points) / $meal->recipe->points : 0;
+                                                                                $proteinsPoints = $meal->recipe->points > 0 ? ($meal->recipe->proteins * $meal->points) / $meal->recipe->points : 0;
+                                                                                $fatsPoints = $meal->recipe->points > 0 ? ($meal->recipe->fats * $meal->points) / $meal->recipe->points : 0;
+                                                                                $emptyPoints = $meal->recipe->points > 0 ? ($meal->recipe->empty_points * $meal->points) / $meal->recipe->points : 0;
+                                                                            @endphp
                                                                             <div class="flex items-center gap-2 flex-wrap">
                                                                                 <span class="w-2 h-2 rounded-full" style="background-color: #22c55e;"></span>
-                                                                                <span>{{ $this->formatPoints(($meal->recipe->sugars * $meal->points) / $meal->recipe->points) }}</span>
+                                                                                <span>{{ $this->formatPoints($sugarsPoints) }}</span>
                                                                                 <span class="w-2 h-2 rounded-full ml-2" style="background-color: #3b82f6;"></span>
-                                                                                <span>{{ $this->formatPoints(($meal->recipe->proteins * $meal->points) / $meal->recipe->points) }}</span>
+                                                                                <span>{{ $this->formatPoints($proteinsPoints) }}</span>
                                                                                 <span class="w-2 h-2 rounded-full ml-2" style="background-color: #ef4444;"></span>
-                                                                                <span>{{ $this->formatPoints(($meal->recipe->fats * $meal->points) / $meal->recipe->points) }}</span>
+                                                                                <span>{{ $this->formatPoints($fatsPoints) }}</span>
                                                                                 <span class="w-2 h-2 rounded-full ml-2" style="background-color: #eab308;"></span>
-                                                                                <span>{{ $this->formatPoints(($meal->recipe->empty_points * $meal->points) / $meal->recipe->points) }}</span>
+                                                                                <span>{{ $this->formatPoints($emptyPoints) }}</span>
                                                                             </div>
                                                                         @endif
                                                                     </div>

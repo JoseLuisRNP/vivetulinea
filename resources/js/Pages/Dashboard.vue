@@ -2,13 +2,14 @@
   import { Head, router, usePage } from '@inertiajs/vue3';
   import NavBar from '@/Components/Layout/NavBar.vue';
   import { Link } from '@inertiajs/vue3';
-  import ziggyRoute from 'ziggy-js';
   import { computed, ref, watch } from 'vue';
   import { times } from '@/data';
   import { watchDebounced, onClickOutside } from '@vueuse/core';
   import { useToast } from 'vue-toastification';
   import { roundedPoints } from '../helpers';
   import SvgIcon from '@/Components/SvgIcon.vue';
+  import ziggyRoute from 'ziggy-js';
+import { useUser } from '@/composables/useUser';
 
   interface Meal {
     id: number;
@@ -40,6 +41,8 @@
     noCountDay: boolean;
     guideline: Guideline;
   }>();
+
+  const { isAdminOrDietician } = useUser();
 
   const oneDay = 24 * 60 * 60 * 1000;
   const dayActive = ref(new Date());
@@ -157,6 +160,7 @@
 
     <NavBar>
       <Link
+        v-if="!isAdminOrDietician"
         :href="ziggyRoute('recipes.new')"
         class="btn btn-ghost flex items-end text-primary -mr-2"
       >
