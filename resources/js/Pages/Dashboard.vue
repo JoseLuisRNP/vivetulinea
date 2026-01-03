@@ -9,6 +9,7 @@
   import { roundedPoints, getCurrentTimeOfDay } from '../helpers';
   import SvgIcon from '@/Components/SvgIcon.vue';
   import ziggyRoute from 'ziggy-js';
+import { useUser } from '@/composables/useUser';
 
   interface Meal {
     id: number;
@@ -41,6 +42,8 @@
     noCountDay: boolean;
     guideline: Guideline;
   }>();
+
+  const { isAdminOrDietician } = useUser();
 
   const oneDay = 24 * 60 * 60 * 1000;
   const dayActive = ref(new Date());
@@ -170,6 +173,7 @@
 
     <NavBar>
       <Link
+        v-if="!isAdminOrDietician"
         :href="ziggyRoute('recipes.new')"
         class="btn btn-ghost flex items-end text-primary -mr-2"
       >
