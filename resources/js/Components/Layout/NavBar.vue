@@ -7,8 +7,10 @@
   import SvgIcon from '@/Components/SvgIcon.vue';
   import Drawer from '@/Components/Layout/Drawer.vue';
   import DrawerMenu from '@/Components/Layout/DrawerMenu.vue';
+  import { useUser } from '@/composables/useUser';
 
   const toast = useToast();
+  const { isAdminOrDietician } = useUser();
   const page = usePage();
 
   watch(
@@ -50,7 +52,7 @@
           >
             <SvgIcon name="arrow-back" class="w-6 h-6" />
           </Link>
-          <label for="nav-drawer" class="btn btn-square btn-ghost flex items-end text-primary drawer-button">
+          <label v-if="isAdminOrDietician" for="nav-drawer" class="btn btn-square btn-ghost flex items-end text-primary drawer-button">
             <SvgIcon name="burger-menu" class="w-6 h-6" />
           </label>
         </div>
