@@ -21,9 +21,14 @@
       label: 'Calculadora',
     },
     {
-      route: 'weights.show',
-      icon: 'weight-scale',
-      label: 'Peso',
+      route: 'foods.index',
+      icon: 'search',
+      label: 'Listado de alimentos',
+    },
+    {
+      route: 'my-foods.index',
+      icon: 'my-foods',
+      label: 'Mis alimentos',
     },
     {
       route: 'recipes.index',
@@ -31,19 +36,17 @@
       label: 'Recetas',
     },
     {
-      route: 'my-foods.index',
-      icon: 'recipe-book',
-      label: 'Mis alimentos',
+      route: 'weights.show',
+      icon: 'weight-scale',
+      label: 'Peso',
     },
-    {
-      route: 'foods.index',
-      icon: 'search',
-      label: 'Listado de alimentos',
-    },
+
+
+    
     {
       route: 'food.no-count',
       icon: 'no-count-day',
-      label: 'Alimentos día de no contar',
+      label: 'Listado del día de no contar',
     },
   ];
 
