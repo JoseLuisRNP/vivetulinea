@@ -64,7 +64,12 @@ class DashboardController extends Controller
 
         $resultSearch = collect();
         if($search) {
+            $user = auth()->user();
             $resultSearch = Food::whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["%$search%"])
+                ->withExists(['favoritedByUsers as is_favorite' => function ($query) use ($user) {
+                    $query->where('users.id', $user->id);
+                }])
+                ->orderByDesc('is_favorite')
                 ->orderByRaw("CASE WHEN LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?) THEN 1 ELSE 0 END DESC", ["$search%"])
                 ->get();
         }
@@ -83,6 +88,7 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'meals' => $meals->groupBy('time_of_day'),
             'remainingPoints' => $this->format_number($remainingPoints, false),
+            'weekPointsConsumedThisDay' => $remainingPoints < 0 ? $remainingPoints * -1 : null,
             'weekRemainingPoints' => $this->format_number($weekRemainingPoints, true),
             'pointsByColor' => $pointsByColor,
             'resultSearch' => $resultSearch,

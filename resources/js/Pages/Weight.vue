@@ -52,7 +52,7 @@
     </div>
     <div class="flex flex-col justify-center my-8 text-xl">
       <div class="w-full justify-center items-center flex flex-col">
-        <div class="fieldset max-w-xs">
+        <div class="fieldset max-w-xs w-full">
           <label class="label text-lg">Peso en kg</label>
           <input
             v-model="weight"
@@ -62,7 +62,7 @@
             @focus="$event.target.select()"
           />
         </div>
-        <div class="fieldset max-w-xs relative">
+        <div class="fieldset max-w-xs relative w-full">
           <label class="label text-lg">Fecha</label>
           <button
             type="button"
