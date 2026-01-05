@@ -431,7 +431,7 @@ class="text-xs absolute -top-2 -right-4 rounded-full w-5 h-5 flex items-center j
               </div>
             </Link>
             <Link
-              :href="!isAdminOrDietician ? ziggyRoute('my-foods.index', { time: time || getCurrentTimeOfDay(), dayActive: dayActive.toISOString(), noCountDay }) : ziggyRoute('points.show', { time, dayActive, noCountDay })"
+              :href="isAdminOrDietician ? ziggyRoute('my-foods.index', { time: time || getCurrentTimeOfDay(), dayActive: dayActive.toISOString(), noCountDay }) : ziggyRoute('points.show', { time, dayActive, noCountDay })"
               class="text-primary-content bg-primary rounded-full h-3 w-3 flex items-center justify-center p-3 z-10"
             >
               +
