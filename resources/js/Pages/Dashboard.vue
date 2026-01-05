@@ -254,7 +254,7 @@ import { useUser } from '@/composables/useUser';
               </div>
             </Link>
             <button
-              v-if="result.is_favorite !== undefined"
+              v-if="result.is_favorite !== undefined && isAdminOrDietician"
               @click.stop="handleToggleFavorite(result.id)"
               class="shrink-0 flex items-center justify-center w-5 h-5 hover:opacity-70 transition-opacity text-yellow-500 ml-2"
               type="button"

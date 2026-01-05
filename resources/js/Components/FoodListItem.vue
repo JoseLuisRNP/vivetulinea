@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useSlots } from 'vue';
 import SvgIcon from '@/Components/SvgIcon.vue';
+import { useUser } from '@/composables/useUser';
 
   interface Food {
     id: number;
@@ -45,6 +46,8 @@ import SvgIcon from '@/Components/SvgIcon.vue';
   };
 
   const slots = useSlots();
+
+  const { isAdminOrDietician } = useUser();
 </script>
 
 <template>
@@ -64,7 +67,7 @@ import SvgIcon from '@/Components/SvgIcon.vue';
       <div class="flex justify-between w-full min-w-0 gap-2">
       <div class="flex items-center gap-2 min-w-0">
         <button
-          v-if="food.is_favorite !== undefined"
+          v-if="food.is_favorite !== undefined && isAdminOrDietician"
           @click="handleStarClick"
           class="shrink-0 flex items-center justify-center w-5 h-5 hover:opacity-70 transition-opacity text-yellow-500"
           type="button"
