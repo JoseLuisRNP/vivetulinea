@@ -2,7 +2,7 @@
   import NavBar from '@/Components/Layout/NavBar.vue';
   import { ref } from 'vue';
   import { watchDebounced } from '@vueuse/core';
-  import { Head, router, Link } from '@inertiajs/vue3';
+  import { Head, router, Link, usePage } from '@inertiajs/vue3';
   import ziggyRoute from 'ziggy-js';
   import { roundedPoints } from '../helpers';
 
@@ -51,6 +51,7 @@
     foods: Paginate<Recipe>;
   }>();
 
+  const page = usePage();
   const search = ref('');
   const urlParams = new URLSearchParams(window.location.search);
   const dayActiveParam = urlParams.get('dayActive') || new Date().toISOString();
@@ -72,16 +73,16 @@
   watchDebounced(
     search,
     () => {
-      router.reload({ preserveState: true, data: { q: search.value } });
+      router.get(page.url, { q: search.value }, { preserveState: true });
     },
     { debounce: 300 }
   );
 
-  const deleteRecipe = (recipe) => {
+  const deleteRecipe = (recipe: Recipe) => {
     router.delete(ziggyRoute('recipes.destroy', { id: recipe.id }));
   };
 
-  const editRecipe = (recipe) => {
+  const editRecipe = (recipe: Recipe) => {
     router.get(ziggyRoute('recipes.new', { id: recipe.id }));
   };
 </script>
@@ -99,20 +100,24 @@
       </div>
     </div>
 
-    <div class="fieldset max-w-xs mt-4">
-      <!--            <Link :href="ziggyRoute('recipes.new')" class="btn btn-outline text-base mb-2 font-semibold text-primary">Crear receta</Link>-->
-      <input
-        v-model="search"
-        type="text"
-        placeholder="Buscar alimento"
-        class="input"
-      />
+    <div class="flex gap-4 items-center justify-center mt-4 w-full px-4">
+      <div class="fieldset max-w-xs flex-1">
+        <input
+          v-model="search"
+          type="text"
+          placeholder="Buscar receta"
+          class="input"
+        />
+      </div>
+      <Link :href="ziggyRoute('recipes.new')" class="btn btn-primary">
+        + Crear receta
+      </Link>
     </div>
 
     <div class="mt-4 w-full p-4">
       <ul>
         <li v-for="food in foods.data" :key="food.id" class="collapse collapse-arrow bg-base-200">
-          <input type="checkbox" class="peer w-full" />
+          <input type="checkbox" class="peer w-full h-full" />
           <div
             class="collapse-title bg-primary-content text-primary peer-checked:bg-primary-content peer-checked:text-primary flex justify-between items-center"
           >

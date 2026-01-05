@@ -10,4 +10,9 @@ class Food extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function favoritedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'food_user')->withTimestamps();
+    }
 }

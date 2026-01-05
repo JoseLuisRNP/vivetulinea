@@ -6,7 +6,7 @@
   import { times } from '@/data';
   import { watchDebounced, onClickOutside } from '@vueuse/core';
   import { useToast } from 'vue-toastification';
-  import { roundedPoints } from '../helpers';
+  import { roundedPoints, getCurrentTimeOfDay } from '../helpers';
   import SvgIcon from '@/Components/SvgIcon.vue';
   import ziggyRoute from 'ziggy-js';
 import { useUser } from '@/composables/useUser';
@@ -35,6 +35,7 @@ import { useUser } from '@/composables/useUser';
   const props = defineProps<{
     meals: Meals;
     remainingPoints: number;
+    weekPointsConsumedThisDay: number | null;
     weekRemainingPoints: number;
     pointsByColor: Record<string, number>;
     resultSearch: any[];
@@ -152,6 +153,18 @@ import { useUser } from '@/composables/useUser';
   const deleteMeal = (meal) => {
     router.delete(ziggyRoute('points.destroy', { id: meal.id }));
   };
+
+  const handleToggleFavorite = (foodId: number) => {
+    router.post(
+      ziggyRoute('favorites.toggle', { food: foodId }),
+      {},
+      {
+        preserveState: true,
+        preserveScroll: true,
+        only: ['resultSearch'],
+      }
+    );
+  };
 </script>
 
 <template>
@@ -202,41 +215,53 @@ import { useUser } from '@/composables/useUser';
           ref="resultsWrapper"
           class="absolute w-full bg-primary-content text-neutral max-h-48 overflow-auto"
         >
-          <Link
+          <div
             v-for="result in resultSearch"
             :key="result.id"
-            :href="
-              ziggyRoute('points.show', {
-                food: result.id,
-                dayActive,
-                noCountDay,
-                special: specialNoCountQuantity,
-                oil: oilNoCountQuantity,
-              })
-            "
             class="hover:bg-primary hover:text-primary-content flex items-center p-1"
             :class="{
               'bg-pink-100': noCountDay && result.special_no_count,
               'bg-green-100': noCountDay && result.oil_no_count,
             }"
           >
-            <div
-              class="w-2 h-2 rounded-full mr-2"
-              :class="{
-                'bg-blue-500': result.color === 'blue',
-                'bg-green-500': result.color === 'green',
-                'bg-yellow-500': result.color === 'yellow',
-                'bg-red-500': result.color === 'red',
-                'bg-black': result.color === 'black',
-              }"
-            />
-            <div :class="noCountDay && result.no_count ? 'font-bold' : ''">
-              {{ result.name }}
-            </div>
-            <div class="ml-4 text-xs text-gray-400">
-              {{ result.points }} puntos / {{ result.quantity }} {{ result.unit.toLowerCase() }}
-            </div>
-          </Link>
+            <Link
+              :href="
+                ziggyRoute('points.show', {
+                  food: result.id,
+                  dayActive,
+                  noCountDay,
+                  special: specialNoCountQuantity,
+                  oil: oilNoCountQuantity,
+                })
+              "
+              class="flex items-center flex-1 min-w-0"
+            >
+              <div
+                class="w-2 h-2 rounded-full mr-2"
+                :class="{
+                  'bg-blue-500': result.color === 'blue',
+                  'bg-green-500': result.color === 'green',
+                  'bg-yellow-500': result.color === 'yellow',
+                  'bg-red-500': result.color === 'red',
+                  'bg-black': result.color === 'black',
+                }"
+              />
+              <div :class="noCountDay && result.no_count ? 'font-bold' : ''">
+                {{ result.name }}
+              </div>
+              <div class="ml-4 text-xs text-gray-400">
+                {{ result.points }} puntos / {{ result.quantity }} {{ result.unit?.toLowerCase() }}
+              </div>
+            </Link>
+            <button
+              v-if="result.is_favorite !== undefined && isAdminOrDietician"
+              @click.stop="handleToggleFavorite(result.id)"
+              class="shrink-0 flex items-center justify-center w-5 h-5 hover:opacity-70 transition-opacity text-yellow-500 ml-2"
+              type="button"
+            >
+              <SvgIcon :name="result.is_favorite ? 'star-filled' : 'star'" class="w-5 h-5" />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -262,7 +287,13 @@ import { useUser } from '@/composables/useUser';
           }}</span>
         </button>
         <div class="flex flex-col items-center w-1/3">
-          <div class="text-4xl">
+          <div class="relative text-4xl">
+            <div
+v-if="weekPointsConsumedThisDay"
+class="text-xs absolute -top-2 -right-4 rounded-full w-5 h-5 flex items-center justify-center"
+            :class="!noCountDay ? 'bg-secondary-focus' : 'bg-primary-focus'">
+{{ weekPointsConsumedThisDay }}
+            </div>
             {{ weekRemainingPoints }}
           </div>
           <div class="text-xs">extras</div>
@@ -395,129 +426,12 @@ import { useUser } from '@/composables/useUser';
               :href="ziggyRoute('recipes.index', { time, dayActive })"
               class="text-primary-content rounded-full h-3 w-3 flex items-center justify-center p-3 z-10 mr-2"
             >
-              <div class="flex justify-between items-center">
-                <svg
-                  class="w-6 h-6"
-                  viewBox="0 0 64 64"
-                  xmlns="http://www.w3.org/2000/svg"
-                  version="1.1"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  xmlns:svgjs="http://svgjs.dev/svgjs"
-                >
-                  <g transform="matrix(1,0,0,1,0,0)">
-                    <g id="_x35_0_Cup" />
-                    <g id="_x34_9_Fork" />
-                    <g id="_x34_8_Spoon" />
-                    <g id="_x34_7_Steak_Hammer" />
-                    <g id="_x34_6_Pot_Holder" />
-                    <g id="_x34_5_Wok" />
-                    <g id="_x34_4_Whisk" />
-                    <g id="_x34_3_Pitcher" />
-                    <g id="_x34_2_Plater" />
-                    <g id="_x34_1_Tongs" />
-                    <g id="_x34_0_Pressure_Cooker" />
-                    <g id="_x33_9_Glass" />
-                    <g id="_x33_8_Funnel" />
-                    <g id="_x33_7_Measuring_Cup" />
-                    <g id="_x33_6_Stand_Mixer" />
-                    <g id="_x33_5_Water_Heater" />
-                    <g id="_x33_4_Drainer" />
-                    <g id="_x33_3_Colender" />
-                    <g id="_x33_2_Bowl" />
-                    <g id="_x33_1_Thermo" />
-                    <g id="_x33_0_coffee_grinder" />
-                    <g id="_x32_9_cup" />
-                    <g id="_x32_8_Knife" />
-                    <g id="_x32_7_cheese_grater" />
-                    <g id="_x32_6_grill" />
-                    <g id="_x32_5_chopping_board" />
-                    <g id="_x32_4_Cleaver" />
-                    <g id="_x32_3_Apron" />
-                    <g id="_x32_2_Electric_cooker" />
-                    <g id="_x32_1_juicer" />
-                    <g id="_x32_0_Toaster" />
-                    <g id="_x31_9_kettle" />
-                    <g id="_x31_8_Rolling_pin" />
-                    <g id="_x31_7_spatula" />
-                    <g id="_x31_6_chef_hat" />
-                    <g id="_x31_5_food_scale" />
-                    <g id="_x31_4_jug" />
-                    <g id="_x31_3_coffe_maker" />
-                    <g id="_x31_2_refrigerator" />
-                    <g id="_x31_1_food_mixer" />
-                    <g id="_x31_0_Slotted_Spatula" />
-                    <g id="_x30_9_Corkscrew" />
-                    <g id="_x30_8_blender" />
-                    <g id="_x30_7_gas_stove" />
-                    <g id="_x30_6_recipe_book">
-                      <g>
-                        <path
-                          d="m56 18c-1.104 0-2 .896-2 2v38c0 1.103-.897 2-2 2h-38c-1.103 0-2-.897-2-2v-4c1.104 0 2-.896 2-2s-.896-2-2-2h-1.995c-.002 0-.003 0-.005 0s-.003 0-.005 0h-1.995c-1.104 0-2 .896-2 2s.896 2 2 2v4c0 3.309 2.691 6 6 6h38c3.309 0 6-2.691 6-6v-38c0-1.104-.896-2-2-2z"
-                          fill="#c11387ff"
-                          data-original-color="#000000ff"
-                          stroke="none"
-                        />
-                        <path
-                          d="m52 0h-38c-3.309 0-6 2.691-6 6v4c-1.104 0-2 .896-2 2s.896 2 2 2h4c1.104 0 2-.896 2-2s-.896-2-2-2v-4c0-1.103.897-2 2-2h38c1.103 0 2 .897 2 2v2c0 1.104.896 2 2 2s2-.896 2-2v-2c0-3.309-2.691-6-6-6z"
-                          fill="#c11387ff"
-                          data-original-color="#000000ff"
-                          stroke="none"
-                        />
-                        <path
-                          d="m8 22h4c1.104 0 2-.896 2-2s-.896-2-2-2h-4c-1.104 0-2 .896-2 2s.896 2 2 2z"
-                          fill="#c11387ff"
-                          data-original-color="#000000ff"
-                          stroke="none"
-                        />
-                        <path
-                          d="m8 30h4c1.104 0 2-.896 2-2s-.896-2-2-2h-4c-1.104 0-2 .896-2 2s.896 2 2 2z"
-                          fill="#c11387ff"
-                          data-original-color="#000000ff"
-                          stroke="none"
-                        />
-                        <path
-                          d="m8 38h4c1.104 0 2-.896 2-2s-.896-2-2-2h-4c-1.104 0-2 .896-2 2s.896 2 2 2z"
-                          fill="#c11387ff"
-                          data-original-color="#000000ff"
-                          stroke="none"
-                        />
-                        <path
-                          d="m8 46h4c1.104 0 2-.896 2-2s-.896-2-2-2h-4c-1.104 0-2 .896-2 2s.896 2 2 2z"
-                          fill="#c11387ff"
-                          data-original-color="#000000ff"
-                          stroke="none"
-                        />
-                        <path
-                          d="m24 52c0 1.104.896 2 2 2h16c1.104 0 2-.896 2-2v-10.343c2.328-.825 4-3.05 4-5.657 0-3.393-2.865-6.137-6.252-5.995-.889-3.449-4.025-6.005-7.748-6.005s-6.859 2.556-7.748 6.005c-3.402-.138-6.252 2.602-6.252 5.995 0 2.607 1.672 4.832 4 5.657zm4-2v-2h12v2zm-2-16c.344 0 .683.098 1.009.291.646.383 1.454.372 2.09-.031.635-.402.991-1.127.921-1.875-.012-.128-.02-.256-.02-.385 0-2.206 1.794-4 4-4s4 1.794 4 4c0 .126-.008.25-.02.374-.074.75.279 1.478.915 1.883.635.404 1.444.419 2.094.035.327-.194.667-.292 1.011-.292 1.103 0 2 .897 2 2s-.897 2-2 2c-1.104 0-2 .896-2 2v4h-12v-4c0-1.104-.896-2-2-2-1.103 0-2-.897-2-2s.897-2 2-2z"
-                          fill="#c11387ff"
-                          data-original-color="#000000ff"
-                          stroke="none"
-                        />
-                        <path
-                          d="m50 18v-8c0-1.104-.896-2-2-2h-28c-1.104 0-2 .896-2 2v8c0 1.104.896 2 2 2h28c1.104 0 2-.896 2-2zm-4-2h-24v-4h24z"
-                          fill="#c11387ff"
-                          data-original-color="#000000ff"
-                          stroke="none"
-                        />
-                        <path
-                          d="m54.58 12.59c-.37.37-.58.89-.58 1.41 0 .53.21 1.04.59 1.41.37.38.88.59 1.41.59s1.04-.21 1.41-.59c.38-.37.59-.88.59-1.41 0-.52-.21-1.04-.59-1.41-.74-.75-2.08-.75-2.83 0z"
-                          fill="#c11387ff"
-                          data-original-color="#000000ff"
-                          stroke="none"
-                        />
-                      </g>
-                    </g>
-                    <g id="_x30_5_oven" />
-                    <g id="_x30_4_pot" />
-                    <g id="_x30_3_pepper_mill" />
-                    <g id="_x30_2_Peeler" />
-                    <g id="_x30_1_frying_pan" />
-                  </g>
-                </svg>
+              <div class="flex justify-between items-center text-primary">
+                <SvgIcon name="recipe-book" class="w-6 h-6 fill-current" />
               </div>
             </Link>
             <Link
-              :href="ziggyRoute('points.show', { time, dayActive, noCountDay })"
+              :href="!isAdminOrDietician ? ziggyRoute('my-foods.index', { time: time || getCurrentTimeOfDay(), dayActive: dayActive.toISOString(), noCountDay }) : ziggyRoute('points.show', { time, dayActive, noCountDay })"
               class="text-primary-content bg-primary rounded-full h-3 w-3 flex items-center justify-center p-3 z-10"
             >
               +

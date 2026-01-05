@@ -28,7 +28,7 @@ class PointsController extends Controller
             'points' => 'required|numeric',
             'quantity' => 'required|numeric',
             'name' => 'string',
-            'color' =>  Rule::in(['yellow', 'blue', 'green', 'red', 'black']),
+            'color' => Rule::in(['yellow', 'blue', 'green', 'red', 'black']),
             'time_of_day' => Rule::in(['Desayuno', 'Media mañana', 'Almuerzo', 'Merienda', 'Cena']),
             'consumed_at' => 'required|date',
         ]);
@@ -74,20 +74,19 @@ class PointsController extends Controller
             'date' => 'required|date',
         ]);
 
-
         auth()->user()->noCountDays()->whereDate('date', Carbon::parse(\request('date'))->toDateString())->delete();
 
         return redirect()->back()->with('message', 'Día de no contar puntos cancelado');
     }
 
-    public function storeGuideline(Guideline $guideline) {
+    public function storeGuideline(Guideline $guideline)
+    {
         $this->validate(\request(), [
             'water' => 'required|numeric',
             'fruit' => 'required|numeric',
             'vegetable' => 'required|numeric',
             'sport' => 'required|numeric',
         ]);
-
 
         $guideline->update([
             'water' => \request('water') > 20 ? 0 : \request('water'),
@@ -102,13 +101,22 @@ class PointsController extends Controller
     public function noCountFood()
     {
         $search = \request('q');
+        $color = \request('color');
+        $user = auth()->user();
 
         return Inertia::render('NoCountFoodList', [
             'foods' => Food::query()
-                ->when($search, fn($q) => $q->whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["%$search%"])->where(fn ($q) => $q->where('no_count', true)
-                    ->orWhere('special_no_count', true)->orWhere('oil_no_count', true)))
-                ->when(!$search, fn($q) => $q->where('no_count', true)
-                    ->orWhere('special_no_count', true)->orWhere('oil_no_count', true))
+                ->where(function ($q) {
+                    $q->where('no_count', true)
+                        ->orWhere('special_no_count', true)
+                        ->orWhere('oil_no_count', true);
+                })
+                ->when($search, fn ($q) => $q->whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["%$search%"]))
+                ->when($color, fn ($q) => $q->where('color', $color))
+                ->withExists(['favoritedByUsers as is_favorite' => function ($query) use ($user) {
+                    $query->where('users.id', $user->id);
+                }])
+                ->orderByDesc('is_favorite')
                 ->orderBy('name')
                 ->paginate(100)
                 ->withQueryString(),
