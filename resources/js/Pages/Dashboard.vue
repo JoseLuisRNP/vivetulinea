@@ -213,7 +213,7 @@ import { useUser } from '@/composables/useUser';
         <div
           v-show="openResults"
           ref="resultsWrapper"
-          class="absolute w-full bg-primary-content text-neutral max-h-48 overflow-auto"
+          class="absolute w-full bg-primary-content text-neutral max-h-48 overflow-auto z-30"
         >
           <div
             v-for="result in resultSearch"
