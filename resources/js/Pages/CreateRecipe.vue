@@ -69,6 +69,15 @@
     );
   });
 
+  const isFormValid = computed(() => {
+    return (
+      name.value.trim() !== '' &&
+      ration.value > 0 &&
+      foods.value.length > 0 &&
+      foods.value.every((food) => food.recipeQuantity && food.recipeQuantity > 0)
+    );
+  });
+
   const addToRecipe = (food: Food) => {
     if (foods.value.some((f) => f.id === food.id)) return;
 
@@ -254,7 +263,7 @@
     <div class="flex justify-center">
       <button
         class="btn btn-primary mt-4 w-2/4 m-auto"
-        :disabled="!(name && ration && foods.length)"
+        :disabled="!isFormValid"
         @click="createRecipe"
       >
         {{ props.recipe ? 'Actualizar' : 'Crear' }} receta
