@@ -11,94 +11,101 @@ class DashboardController extends Controller
 {
     public function __invoke()
     {
-        $search = \request('q');
-        $day = \request('dayActive') ? Carbon::parse(\request('dayActive')) : Carbon::now();
-        $meals = auth()->user()->meals()->with('recipe')->whereDate('consumed_at', $day->toDateString())->get();
+        $search = request('q');
+        $day = request('dayActive') ? Carbon::parse(request('dayActive')) : Carbon::now();
+        $user = auth()->user();
 
-        $from =$day->clone()
-            ->startOfWeek(auth()->user()->created_at->addDay()->dayOfWeek)->startOfDay();
+        // Calculate the week range
+        $from = $day->clone()->startOfWeek($user->created_at->addDay()->dayOfWeek)->startOfDay();
+        $to = $from->clone()->addDays(6)->endOfDay();
 
-        $noCountDayWeek = auth()->user()->noCountDays()->whereBetween('date', [$from->toDateString(), $from->clone()->addDays(6)->endOfDay()])->get();
+        // Fetch everything in unified queries
+        $weeklyMeals = $user->meals()
+            ->with('recipe')
+            ->whereBetween('consumed_at', [$from, $to])
+            ->get();
 
-        $noCountDay = $noCountDayWeek->contains(fn($d) => $d->date->isSameDay($day));
+        $noCountDays = $user->noCountDays()
+            ->whereBetween('date', [$from->toDateString(), $to->toDateString()])
+            ->get()
+            ->keyBy(fn($d) => Carbon::parse($d->date)->format('Y-m-d'));
 
-        $mealsRecipe = $meals->filter(fn ($meal) => $meal->recipe_id);
-        $mealsFood = $meals->filter(fn ($meal) => !$meal->recipe_id);
+        // Current day data
+        $dayString = $day->toDateString();
+        $meals = $weeklyMeals->filter(fn($meal) => $meal->consumed_at->toDateString() === $dayString);
+        $noCountDay = $noCountDays->has($dayString);
 
-        $pointsByColor = $mealsFood->groupBy('color')->map(function ($item, $key) {
-            return $item->sum('points');
-        });
+        // Calculate daily points by color
+        $pointsByColor = collect(['blue' => 0, 'green' => 0, 'red' => 0, 'yellow' => 0]);
 
-        $mealsRecipe->each(function (Meal $meal) use ($pointsByColor){
-            $recipe = $meal->recipe;
-            $quantityMultiplier = $meal->quantity / $recipe->quantity;
-            $pointsByColor->put('blue', $pointsByColor->get('blue', 0) + $recipe->proteins * $quantityMultiplier);
-            $pointsByColor->put('red', $pointsByColor->get('red', 0) + $recipe->fats * $quantityMultiplier);
-            $pointsByColor->put('green', $pointsByColor->get('green', 0) + $recipe->sugars * $quantityMultiplier);
-            $pointsByColor->put('yellow', $pointsByColor->get('yellow', 0) + $recipe->empty_points * $quantityMultiplier);
-        });
-
-        $remainingPoints = auth()->user()->daily_points - $meals->filter(fn ($meal) => !$noCountDayWeek->contains(fn($d) => $d->date->isSameDay($meal->consumed_at)) )->sum('points');
-
-
-
-        $weeklyMeals = auth()->user()->meals()->whereBetween('consumed_at', [$from, $from->clone()->addDays(6)->endOfDay()])->get();
-
-        $groupByDay = $weeklyMeals->groupBy(fn($meal) => $meal->consumed_at->format('Y-m-d'));
-
-        $weeklyPoints = $groupByDay->map(function($d,$key) use ($noCountDayWeek) {
-            $day = Carbon::parse($key);
-            if($noCountDayWeek->contains(fn ($d) => $d->date->isSameDay($day))) {
-                return $d->sum('points');
+        foreach ($meals as $meal) {
+            if ($meal->recipe_id) {
+                if ($recipe = $meal->recipe) {
+                    $multiplier = $meal->quantity / $recipe->quantity;
+                    $pointsByColor['blue'] += $recipe->proteins * $multiplier;
+                    $pointsByColor['green'] += $recipe->sugars * $multiplier;
+                    $pointsByColor['red'] += $recipe->fats * $multiplier;
+                    $pointsByColor['yellow'] += $recipe->empty_points * $multiplier;
+                }
+            } else {
+                $pointsByColor[$meal->color] = ($pointsByColor[$meal->color] ?? 0) + $meal->points;
             }
+        }
 
-            $total = $d->sum('points');
-            if($total > auth()->user()->daily_points) {
-                return $total - auth()->user()->daily_points;
-            }
+        // Calculate remaining points
+        $dailyPointsLimit = $user->daily_points;
+        $mealsOnNoCountDays = $noCountDays; // We'll use the keyed collection for lookup
 
-            return 0;
-        })->sum();
+        $totalPointsToday = $meals->sum('points');
+        $remainingPoints = $dailyPointsLimit - ($noCountDay ? 0 : $totalPointsToday);
 
-        $weekRemainingPoints = auth()->user()->weekly_points - $weeklyPoints;
+        // Weekly points calculation (points exceeding daily limit on non-no-count days)
+        $weeklyPointsExceeded = $weeklyMeals->groupBy(fn($m) => $m->consumed_at->toDateString())
+            ->map(function ($dayMeals, $date) use ($noCountDays, $dailyPointsLimit) {
+                if ($noCountDays->has($date)) {
+                    return $dayMeals->sum('points');
+                }
+                $dayTotal = $dayMeals->sum('points');
+                return max(0, $dayTotal - $dailyPointsLimit);
+            })->sum();
 
+        $weekRemainingPoints = $user->weekly_points - $weeklyPointsExceeded;
+
+        // Search logic
         $resultSearch = collect();
-        if($search) {
-            $user = auth()->user();
-            $resultSearch = Food::whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["%$search%"])
-                ->withExists(['favoritedByUsers as is_favorite' => function ($query) use ($user) {
-                    $query->where('users.id', $user->id);
-                }])
+        if ($search) {
+            $resultSearch = Food::where('name', 'like', "%$search%")
+                ->withExists([
+                    'favoritedByUsers as is_favorite' => function ($query) use ($user) {
+                        $query->where('users.id', $user->id);
+                    }
+                ])
                 ->orderByDesc('is_favorite')
-                ->orderByRaw("CASE WHEN LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?) THEN 1 ELSE 0 END DESC", ["$search%"])
+                ->orderByRaw("CASE WHEN name LIKE ? THEN 1 ELSE 0 END DESC", ["$search%"])
                 ->get();
         }
 
-        $guideLine = auth()->user()->guidelines()->where('consumed_at', $day->toDateString())->first();
-        if(!$guideLine) {
-            $guideLine = auth()->user()->guidelines()->create([
-                'consumed_at' => $day->toDateString(),
-                'water' => 0,
-                'fruit' => 0,
-                'vegetable' => 0,
-                'sport' => 0,
-            ]);
-        }
+        // Guideline logic
+        $guideLine = $user->guidelines()->firstOrCreate(
+            ['consumed_at' => $dayString],
+            ['water' => 0, 'fruit' => 0, 'vegetable' => 0, 'sport' => 0]
+        );
 
         return Inertia::render('Dashboard', [
             'meals' => $meals->groupBy('time_of_day'),
             'remainingPoints' => $this->format_number($remainingPoints, false),
-            'weekPointsConsumedThisDay' => $remainingPoints < 0 ? $remainingPoints * -1 : null,
+            'weekPointsConsumedThisDay' => $remainingPoints < 0 ? abs($remainingPoints) : null,
             'weekRemainingPoints' => $this->format_number($weekRemainingPoints, true),
             'pointsByColor' => $pointsByColor,
             'resultSearch' => $resultSearch,
-            'noCountDay' => !!$noCountDay,
+            'noCountDay' => $noCountDay,
             'guideline' => $guideLine,
         ]);
     }
 
-    private function format_number($num, $allowNegative = false) {
-        if($num < 0 && !$allowNegative) {
+    private function format_number($num, $allowNegative = false)
+    {
+        if ($num < 0 && !$allowNegative) {
             return 0;
         }
         if ($num == intval($num)) {
