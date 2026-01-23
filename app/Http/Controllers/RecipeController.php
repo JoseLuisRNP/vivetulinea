@@ -52,7 +52,7 @@ class RecipeController extends Controller
             'empty_points' => 'required|numeric',
             'points' => 'required|numeric',
             'foods' => 'required|array',
-            'foods.*.food_id' => 'required|exists:foods,id',
+            'foods.*.food_id' => 'required|exists:food,id',
             'foods.*.quantity' => 'required|numeric|min:0.01',
             'foods.*.unit' => 'required|string',
         ]);
