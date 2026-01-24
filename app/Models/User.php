@@ -40,7 +40,8 @@ class User extends Authenticatable implements FilamentUser
         'target_weight' => 'float',
     ];
 
-    public function isSuperAdmin() {
+    public function isSuperAdmin()
+    {
         return $this->isAdmin() && $this->id === 1;
     }
 
@@ -69,7 +70,8 @@ class User extends Authenticatable implements FilamentUser
         return $this->belongsTo(User::class, 'dietician_id');
     }
 
-    public function members(){
+    public function members()
+    {
         return $this->hasMany(User::class, 'dietician_id');
     }
 
@@ -116,6 +118,25 @@ class User extends Authenticatable implements FilamentUser
     public function userFoods()
     {
         return $this->hasMany(UserFood::class);
+    }
+
+    public function canSeeDiary(User $viewer): bool
+    {
+        if ($viewer->isSuperAdmin()) {
+            return true;
+        }
+
+        if ($this->dietician_id === $viewer->id) {
+            return true;
+        }
+
+        // Exception for users 4 and 14 working together
+        $partners = [4, 14];
+        if (in_array($viewer->id, $partners) && in_array($this->dietician_id, $partners)) {
+            return true;
+        }
+
+        return false;
     }
 
 }

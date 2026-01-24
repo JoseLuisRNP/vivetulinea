@@ -32,7 +32,7 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Schema $schema): Schema
     {
@@ -67,30 +67,36 @@ class UserResource extends Resource
                 TextColumn::make('dietician.name')->label('Dietista'),
                 IconColumn::make('is_actived')
                     ->label('Activo')
-                    ->icon(fn (string $state): string => match ($state) {
+                    ->icon(fn(string $state): string => match ($state) {
                         '1' => 'heroicon-o-check-circle',
                         '0' => 'heroicon-m-x-mark',
                     })
             ])
             ->filters([
-                Filter::make('Solo mis socias')->query( fn (Builder $query) => $query->where('dietician_id', auth()->user()->id))->toggle()->label('Solo mis socias'),
+                Filter::make('Solo mis socias')->query(function (Builder $query) {
+                    $partners = [4, 14];
+                    if (in_array(auth()->id(), $partners)) {
+                        return $query->whereIn('dietician_id', $partners);
+                    }
+                    return $query->where('dietician_id', auth()->id());
+                })->toggle()->label('Solo mis socias'),
             ])
             ->recordActions([
                 EditAction::make(),
                 Action::make('Ver diario')
                     ->icon('heroicon-o-calendar-days')
-                    ->url(fn (User $record): string => static::getUrl('diary', ['record' => $record]))
-                    ->visible(fn (User $user): bool => $user->dietician_id === auth()->id() || auth()->user()->isSuperAdmin()),
+                    ->url(fn(User $record): string => static::getUrl('diary', ['record' => $record]))
+                    ->visible(fn(User $record): bool => $record->canSeeDiary(auth()->user())),
                 Action::make('Cambiar password')
                     ->icon('heroicon-o-key')
                     ->requiresConfirmation()
                     ->schema([TextInput::make('password')->label('Nueva contraseña')->required()])
-                ->action(function (array $data, User $user): void {
-                    $user->update([
-                        'password' => Hash::make($data['password']),
-                    ]);
-                })
-                ->visible(fn (User $user): bool => $user->dietician_id === auth()->id() || $user->id === auth()->id() || auth()->user()->isSuperAdmin()),
+                    ->action(function (array $data, User $user): void {
+                        $user->update([
+                            'password' => Hash::make($data['password']),
+                        ]);
+                    })
+                    ->visible(fn(User $user): bool => $user->canSeeDiary(auth()->user()) || $user->id === auth()->id()),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
@@ -121,7 +127,7 @@ class UserResource extends Resource
         return 'Socias';
     }
 
-//    public static function getEloquentQuery(): Builder
+    //    public static function getEloquentQuery(): Builder
 //    {
 //        return parent::getEloquentQuery()->when(auth()->user()->isDietician(), function (Builder $query) {
 //            $query->where('dietician_id', auth()->id());
