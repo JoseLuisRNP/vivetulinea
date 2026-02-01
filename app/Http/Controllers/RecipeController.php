@@ -14,8 +14,8 @@ class RecipeController extends Controller
 
         $foods = auth()->user()->recipes()
             ->with(['foods.food:name,id,color,points,quantity'])
-            ->when($search, fn($q) => $q->whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["%$search%"])
-                ->orderByRaw("CASE WHEN LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?) THEN 1 ELSE 0 END DESC", ["$search%"]))
+            ->when($search, fn($q) => $q->where('name', 'like', "$search%")
+                ->orWhere('name', 'like', "%$search%"))
             ->when(!$search, fn($q) => $q->orderBy('name'))
             ->paginate(10);
 
@@ -31,8 +31,8 @@ class RecipeController extends Controller
         $resultSearch = collect();
         $search = \request('q');
         if ($search) {
-            $resultSearch = Food::whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["%$search%"])
-                ->orderByRaw("CASE WHEN LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?) THEN 1 ELSE 0 END DESC", ["$search%"])
+            $resultSearch = Food::where('name', 'like', "$search%")
+                ->orWhere('name', 'like', "%$search%")
                 ->get();
         }
 

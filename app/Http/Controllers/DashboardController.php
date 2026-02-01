@@ -3,78 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\Food;
-use App\Models\Meal;
+use App\Models\Guideline;
+use App\Services\DashboardService;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    public function __invoke()
+    public function __invoke(DashboardService $dashboardService)
     {
         $search = request('q');
         $day = request('dayActive') ? Carbon::parse(request('dayActive')) : Carbon::now();
         $user = auth()->user();
-
-        // Calculate the week range
-        $from = $day->clone()->startOfWeek($user->created_at->addDay()->dayOfWeek)->startOfDay();
-        $to = $from->clone()->addDays(6)->endOfDay();
-
-        // Fetch everything in unified queries
-        $weeklyMeals = $user->meals()
-            ->with('recipe')
-            ->whereBetween('consumed_at', [$from, $to])
-            ->get();
-
-        $noCountDays = $user->noCountDays()
-            ->whereBetween('date', [$from->toDateString(), $to->toDateString()])
-            ->get()
-            ->keyBy(fn($d) => Carbon::parse($d->date)->format('Y-m-d'));
-
-        // Current day data
         $dayString = $day->toDateString();
-        $meals = $weeklyMeals->filter(fn($meal) => $meal->consumed_at->toDateString() === $dayString);
-        $noCountDay = $noCountDays->has($dayString);
 
-        // Calculate daily points by color
-        $pointsByColor = collect(['blue' => 0, 'green' => 0, 'red' => 0, 'yellow' => 0]);
+        // 1. Service-level data (cached)
+        $cacheVersion = Cache::get("user_{$user->id}_dashboard_version", 1);
+        $cacheKey = "user_{$user->id}_dashboard_{$dayString}_v{$cacheVersion}";
 
-        foreach ($meals as $meal) {
-            if ($meal->recipe_id) {
-                if ($recipe = $meal->recipe) {
-                    $multiplier = $meal->quantity / $recipe->quantity;
-                    $pointsByColor['blue'] += $recipe->proteins * $multiplier;
-                    $pointsByColor['green'] += $recipe->sugars * $multiplier;
-                    $pointsByColor['red'] += $recipe->fats * $multiplier;
-                    $pointsByColor['yellow'] += $recipe->empty_points * $multiplier;
-                }
-            } else {
-                $pointsByColor[$meal->color] = ($pointsByColor[$meal->color] ?? 0) + $meal->points;
-            }
-        }
+        $data = Cache::remember($cacheKey, now()->addMinutes(30), function () use ($dashboardService, $user, $day) {
+            return $dashboardService->getDashboardData($user, $day);
+        });
 
-        // Calculate remaining points
-        $dailyPointsLimit = $user->daily_points;
-        $mealsOnNoCountDays = $noCountDays; // We'll use the keyed collection for lookup
-
-        $totalPointsToday = $meals->sum('points');
-        $remainingPoints = $dailyPointsLimit - ($noCountDay ? 0 : $totalPointsToday);
-
-        // Weekly points calculation (points exceeding daily limit on non-no-count days)
-        $weeklyPointsExceeded = $weeklyMeals->groupBy(fn($m) => $m->consumed_at->toDateString())
-            ->map(function ($dayMeals, $date) use ($noCountDays, $dailyPointsLimit) {
-                if ($noCountDays->has($date)) {
-                    return $dayMeals->sum('points');
-                }
-                $dayTotal = $dayMeals->sum('points');
-                return max(0, $dayTotal - $dailyPointsLimit);
-            })->sum();
-
-        $weekRemainingPoints = $user->weekly_points - $weeklyPointsExceeded;
-
-        // Search logic
+        // 2. Search logic (not cached, uses indexed 'name')
         $resultSearch = collect();
         if ($search) {
-            $resultSearch = Food::where('name', 'like', "%$search%")
+            $resultSearch = Food::where('name', 'like', "$search%") // Prefix search is very fast with index
+                ->orWhere('name', 'like', "%$search%") // Fallback to middle search
                 ->withExists([
                     'favoritedByUsers as is_favorite' => function ($query) use ($user) {
                         $query->where('users.id', $user->id);
@@ -82,36 +38,12 @@ class DashboardController extends Controller
                 ])
                 ->orderByDesc('is_favorite')
                 ->orderByRaw("CASE WHEN name LIKE ? THEN 1 ELSE 0 END DESC", ["$search%"])
+                ->limit(50)
                 ->get();
         }
 
-        // Guideline logic
-        $guideLine = $user->guidelines()->firstOrCreate(
-            ['consumed_at' => $dayString],
-            ['water' => 0, 'fruit' => 0, 'vegetable' => 0, 'sport' => 0]
-        );
-
-        return Inertia::render('Dashboard', [
-            'meals' => $meals->groupBy('time_of_day'),
-            'remainingPoints' => $this->format_number($remainingPoints, false),
-            'weekPointsConsumedThisDay' => $remainingPoints < 0 ? abs($remainingPoints) : null,
-            'weekRemainingPoints' => $this->format_number($weekRemainingPoints, true),
-            'pointsByColor' => $pointsByColor,
+        return Inertia::render('Dashboard', array_merge($data, [
             'resultSearch' => $resultSearch,
-            'noCountDay' => $noCountDay,
-            'guideline' => $guideLine,
-        ]);
-    }
-
-    private function format_number($num, $allowNegative = false)
-    {
-        if ($num < 0 && !$allowNegative) {
-            return 0;
-        }
-        if ($num == intval($num)) {
-            return intval($num);
-        } else {
-            return number_format($num, 1);
-        }
+        ]));
     }
 }

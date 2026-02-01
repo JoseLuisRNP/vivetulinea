@@ -15,7 +15,7 @@ class UserFoodController extends Controller
         $user = auth()->user();
 
         $userFoods = $user->userFoods()
-            ->when($search, fn ($q) => $q->whereRaw('LOWER(name) COLLATE utf8mb4_general_ci LIKE LOWER(?)', ["%$search%"]))
+            ->when($search, fn($q) => $q->where('name', 'like', "$search%")->orWhere('name', 'like', "%$search%"))
             ->orderBy('name')
             ->paginate(100)
             ->withQueryString();
