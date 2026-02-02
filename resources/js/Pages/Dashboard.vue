@@ -98,6 +98,11 @@ import { useUser } from '@/composables/useUser';
     return result;
   });
 
+  const hasMeals = computed(() => {
+    if (!props.meals) return false;
+    return Object.values(props.meals).some((mealArray) => mealArray.length > 0);
+  });
+
   const search = ref('');
 
   watchDebounced(
@@ -111,22 +116,22 @@ import { useUser } from '@/composables/useUser';
   const toast = useToast();
 
   const startNoCountDay = () => {
-    if (!Array.isArray(props.meals) || (Array.isArray(props.meals) && props.meals.length)) {
+    if (hasMeals.value) {
       toast.error('No puedes iniciar el día de no contar si ya has registrado alimentos');
       return;
     }
     router.post(ziggyRoute('points.no-count'), {
-      date: dayActive.value.toISOString(),
+      date: dayActive.value.toLocaleDateString('en-CA'), // Get YYYY-MM-DD
     });
   };
 
   const cancelNoCountDay = () => {
-    if (!Array.isArray(props.meals) || (Array.isArray(props.meals) && props.meals.length)) {
+    if (hasMeals.value) {
       toast.error('No puedes cancelar el día de no contar si ya has registrado alimentos');
       return;
     }
     router.post(ziggyRoute('points.cancel-no-count'), {
-      date: dayActive.value.toISOString(),
+      date: dayActive.value.toLocaleDateString('en-CA'), // Get YYYY-MM-DD
     });
   };
   const openResults = ref(false);

@@ -19,7 +19,7 @@ class DashboardController extends Controller
         $dayString = $day->toDateString();
 
         // 1. Service-level data (cached)
-        $cacheVersion = Cache::get("user_{$user->id}_dashboard_version", 1);
+        $cacheVersion = Cache::get("user_{$user->id}_dashboard_version", 0);
         $cacheKey = "user_{$user->id}_dashboard_{$dayString}_v{$cacheVersion}";
 
         $data = Cache::remember($cacheKey, now()->addMinutes(30), function () use ($dashboardService, $user, $day) {

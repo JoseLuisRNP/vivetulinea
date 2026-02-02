@@ -74,7 +74,7 @@ class PointsController extends Controller
             'date' => 'required|date',
         ]);
 
-        auth()->user()->noCountDays()->whereDate('date', Carbon::parse(\request('date'))->toDateString())->delete();
+        auth()->user()->noCountDays()->whereDate('date', Carbon::parse(\request('date'))->toDateString())->get()->each->delete();
 
         return redirect()->back()->with('message', 'Día de no contar puntos cancelado');
     }
