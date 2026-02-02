@@ -149,21 +149,27 @@
                   <div
                     class="w-2 h-2 rounded-full mr-2"
                     :class="{
-                      'bg-blue-500': f.food.color === 'blue',
-                      'bg-green-500': f.food.color === 'green',
-                      'bg-yellow-500': f.food.color === 'yellow',
-                      'bg-red-500': f.food.color === 'red',
-                      'bg-black': f.food.color === 'black',
+                      'bg-blue-500': (f.user_food || f.food).color === 'blue',
+                      'bg-green-500': (f.user_food || f.food).color === 'green',
+                      'bg-yellow-500': (f.user_food || f.food).color === 'yellow',
+                      'bg-red-500': (f.user_food || f.food).color === 'red',
+                      'bg-black': (f.user_food || f.food).color === 'black',
                     }"
                   />
                   <div class="flex justify-between w-full items-center">
                     <div>
                       <div class="text-sm">
-                        {{ f.food.name }}
+                        {{ (f.user_food || f.food).name }}
+                        <span v-if="f.user_food_id" class="text-[10px] opacity-60">(Propio)</span>
                       </div>
                       <div class="text-xs">
                         {{ f.quantity }} {{ f.unit }} -
-                        {{ roundedPoints((f.quantity * f.food.points) / f.food.quantity) }} puntos
+                        {{
+                          f.user_food_id
+                            ? f.user_food.points
+                            : roundedPoints((f.quantity * f.food.points) / f.food.quantity)
+                        }}
+                        puntos
                       </div>
                     </div>
                   </div>

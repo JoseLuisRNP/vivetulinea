@@ -15,6 +15,7 @@
     quantity: number;
     unit: string;
     recipeQuantity?: number;
+    isUserFood?: boolean;
   }
 
   const props = defineProps<{
@@ -35,13 +36,17 @@
   const name = ref(props.recipe?.name || '');
   const ration = ref(props.recipe?.quantity || 1);
   const foods = ref(
-    props.recipe?.foods?.map((food) => {
-      food.food.recipeQuantity = food.quantity;
-      return food.food as Food;
+    props.recipe?.foods?.map((f: any) => {
+      const foodItem = f.user_food_id ? { ...f.user_food, isUserFood: true } : { ...f.food, isUserFood: false };
+      foodItem.recipeQuantity = f.quantity;
+      return foodItem as Food;
     }) || []
   );
   const calculatedPointsPerFood = computed(() =>
     foods.value.map((food) => {
+      if (food.isUserFood) {
+        return food.points;
+      }
       const result = (food.recipeQuantity * food.points) / food.quantity;
       return roundedPoints(result);
     })
@@ -65,7 +70,7 @@
         red: 0,
         yellow: 0,
         black: 0,
-      }
+      } as Record<string, number>
     );
   });
 
@@ -79,7 +84,7 @@
   });
 
   const addToRecipe = (food: Food) => {
-    if (foods.value.some((f) => f.id === food.id)) return;
+    if (foods.value.some((f) => f.id === food.id && f.isUserFood === food.isUserFood)) return;
 
     food.recipeQuantity = food.quantity;
     foods.value.push(food);
@@ -87,7 +92,7 @@
   };
 
   const deleteFood = (food: Food) => {
-    foods.value = foods.value.filter((f) => f.id !== food.id);
+    foods.value = foods.value.filter((f) => !(f.id === food.id && f.isUserFood === food.isUserFood));
   };
   watch(search, () => {
     openResults.value = true;
@@ -111,12 +116,12 @@
       sugars: totalRecipePointsByColor.value.green,
       fats: totalRecipePointsByColor.value.red,
       empty_points: totalRecipePointsByColor.value.yellow,
-      foods: foods.value.map((food, index) => {
+      foods: foods.value.map((food) => {
         return {
-          food_id: food.id,
+          food_id: food.isUserFood ? null : food.id,
+          user_food_id: food.isUserFood ? food.id : null,
           quantity: food.recipeQuantity,
-          unit: food.unit,
-          // points: calculatedPointsPerFood.value[index]
+          unit: food.unit || 'ración',
         };
       }),
     };
@@ -170,32 +175,32 @@
             :class="resultSearch.length ? 'h-48' : ''"
           >
             <div class="dropdown-content">
-              <div
-                v-for="result in resultSearch"
-                :key="result.id"
-                class="hover:bg-primary hover:text-primary-content flex items-center p-1"
-                @click="addToRecipe(result)"
-              >
                 <div
-                  class="w-2 h-2 rounded-full mr-2"
-                  :class="{
-                    'bg-blue-500': result.color === 'blue',
-                    'bg-green-500': result.color === 'green',
-                    'bg-yellow-500': result.color === 'yellow',
-                    'bg-red-500': result.color === 'red',
-                    'bg-black': result.color === 'black',
-                  }"
-                />
-                <div>{{ result.name }}</div>
-                <div class="ml-4 text-xs text-gray-400">
-                  {{ result.points }} puntos / {{ result.quantity }} {{ result.unit.toLowerCase() }}
+                  v-for="result in resultSearch"
+                  :key="result.isUserFood ? 'u' + result.id : result.id"
+                  class="hover:bg-primary hover:text-primary-content flex items-center p-1"
+                  @click="addToRecipe(result)"
+                >
+                  <div
+                    class="w-2 h-2 rounded-full mr-2"
+                    :class="{
+                      'bg-blue-500': result.color === 'blue',
+                      'bg-green-500': result.color === 'green',
+                      'bg-yellow-500': result.color === 'yellow',
+                      'bg-red-500': result.color === 'red',
+                      'bg-black': result.color === 'black',
+                    }"
+                  />
+                  <div>{{ result.name }} <span v-if="result.isUserFood" class="text-[10px] ml-1 opacity-60">(Propio)</span></div>
+                  <div class="ml-4 text-xs text-gray-400">
+                    {{ result.points }} puntos / {{ result.quantity }} {{ (result.unit || 'ración').toLowerCase() }}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         <ul class="ml-4 text-neutral">
-          <li v-for="(food, i) in foods" :key="food.id" class="border-b py-2">
+          <li v-for="(food, i) in foods" :key="food.isUserFood ? 'u' + food.id : food.id" class="border-b py-2">
             <div class="flex items-center">
               <div
                 class="w-2 h-2 rounded-full mr-2"
@@ -208,9 +213,9 @@
                 }"
               />
               <div class="flex justify-between w-full items-center">
-                <div class="max-w-[2rem]">
+                <div class="max-w-[10rem]">
                   <div class="text-sm">
-                    {{ food.name }}
+                    {{ food.name }} <span v-if="food.isUserFood" class="text-[10px] opacity-60">(Propio)</span>
                   </div>
                 </div>
                 <div class="flex items-center">
@@ -220,8 +225,9 @@
                       type="number"
                       placeholder="0"
                       class="input input-xs w-12"
+                      :disabled="food.isUserFood"
                     />
-                    <span class="text-xs ml-2">Cantidad</span>
+                    <span class="text-xs ml-2">{{ food.isUserFood ? (food.unit || 'ración') : 'Cantidad' }}</span>
                   </div>
                   <div class="text-sm mr-2">{{ calculatedPointsPerFood[i] }} pt</div>
                   <button class="btn btn-xs btn-error btn-outline" @click="deleteFood(food)">

@@ -13,7 +13,7 @@ class RecipeController extends Controller
         $search = \request('q');
 
         $foods = auth()->user()->recipes()
-            ->with(['foods.food:name,id,color,points,quantity'])
+            ->with(['foods.food:name,id,color,points,quantity', 'foods.userFood'])
             ->when($search, fn($q) => $q->where('name', 'like', "$search%")
                 ->orWhere('name', 'like', "%$search%"))
             ->when(!$search, fn($q) => $q->orderBy('name'))
@@ -26,17 +26,35 @@ class RecipeController extends Controller
     {
         $recipeId = request('id');
         if ($recipeId) {
-            $recipe = auth()->user()->recipes()->with(['foods', 'foods.food'])->find($recipeId);
+            $recipe = auth()->user()->recipes()->with(['foods.food', 'foods.userFood'])->find($recipeId);
         }
         $resultSearch = collect();
         $search = \request('q');
         if ($search) {
-            $resultSearch = Food::where('name', 'like', "$search%")
+            $foods = Food::where('name', 'like', "$search%")
                 ->orWhere('name', 'like', "%$search%")
-                ->get();
+                ->get()
+                ->map(function ($food) {
+                    $food->isUserFood = false;
+                    return $food;
+                });
+
+            $userFoods = auth()->user()->userFoods()
+                ->where('name', 'like', "$search%")
+                ->orWhere('name', 'like', "%$search%")
+                ->get()
+                ->map(function ($food) {
+                    $food->isUserFood = true;
+                    return $food;
+                });
+
+            $resultSearch = $foods->merge($userFoods);
         }
 
-        return Inertia::render('CreateRecipe', ['resultSearch' => $resultSearch, 'recipe' => $recipe ?? null]);
+        return Inertia::render('CreateRecipe', [
+            'resultSearch' => $resultSearch,
+            'recipe' => $recipe ?? null
+        ]);
     }
 
     public function create()
@@ -52,7 +70,8 @@ class RecipeController extends Controller
             'empty_points' => 'required|numeric',
             'points' => 'required|numeric',
             'foods' => 'required|array',
-            'foods.*.food_id' => 'required|exists:food,id',
+            'foods.*.food_id' => 'nullable|exists:food,id',
+            'foods.*.user_food_id' => 'nullable|exists:user_foods,id',
             'foods.*.quantity' => 'required|numeric|min:0.01',
             'foods.*.unit' => 'required|string',
         ]);
