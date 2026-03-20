@@ -178,13 +178,6 @@ import { useUser } from '@/composables/useUser';
 
     <NavBar>
       <Link
-        v-if="!isAdminOrDietician"
-        :href="ziggyRoute('recipes.new')"
-        class="btn btn-ghost flex items-end text-primary -mr-2"
-      >
-        <SvgIcon name="recipe-book" class="w-6 h-6" />
-      </Link>
-      <Link
         :href="
           ziggyRoute('calculator', {
             dayActive: dayActive.toISOString(),
@@ -259,7 +252,7 @@ import { useUser } from '@/composables/useUser';
               </div>
             </Link>
             <button
-              v-if="result.is_favorite !== undefined && isAdminOrDietician"
+              v-if="result.is_favorite !== undefined"
               @click.stop="handleToggleFavorite(result.id)"
               class="shrink-0 flex items-center justify-center w-5 h-5 hover:opacity-70 transition-opacity text-yellow-500 ml-2"
               type="button"
@@ -436,7 +429,7 @@ class="text-xs absolute -top-2 -right-4 rounded-full w-5 h-5 flex items-center j
               </div>
             </Link>
             <Link
-              :href="isAdminOrDietician ? ziggyRoute('my-foods.index', { time: time || getCurrentTimeOfDay(), dayActive: dayActive.toISOString(), noCountDay }) : ziggyRoute('points.show', { time, dayActive, noCountDay })"
+              :href="ziggyRoute('my-foods.index', { time: time || getCurrentTimeOfDay(), dayActive: dayActive.toISOString(), noCountDay })"
               class="text-primary-content bg-primary rounded-full h-3 w-3 flex items-center justify-center p-3 z-10"
             >
               +
