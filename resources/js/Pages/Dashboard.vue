@@ -9,7 +9,6 @@
   import { roundedPoints, getCurrentTimeOfDay } from '../helpers';
   import SvgIcon from '@/Components/SvgIcon.vue';
   import ziggyRoute from 'ziggy-js';
-import { useUser } from '@/composables/useUser';
 
   interface Meal {
     id: number;
@@ -43,7 +42,6 @@ import { useUser } from '@/composables/useUser';
     guideline: Guideline;
   }>();
 
-  const { isAdminOrDietician } = useUser();
 
   const oneDay = 24 * 60 * 60 * 1000;
   const dayActive = ref(new Date());
