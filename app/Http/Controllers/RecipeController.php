@@ -14,8 +14,10 @@ class RecipeController extends Controller
 
         $foods = auth()->user()->recipes()
             ->with(['foods.food:name,id,color,points,quantity', 'foods.userFood'])
-            ->when($search, fn($q) => $q->where('name', 'like', "$search%")
-                ->orWhere('name', 'like', "%$search%"))
+            ->when($search, fn($q) => $q->where(function ($q) use ($search) {
+                $q->where('name', 'like', "$search%")
+                  ->orWhere('name', 'like', "%$search%");
+            }))
             ->when(!$search, fn($q) => $q->orderBy('name'))
             ->paginate(10);
 
@@ -40,8 +42,10 @@ class RecipeController extends Controller
                 });
 
             $userFoods = auth()->user()->userFoods()
-                ->where('name', 'like', "$search%")
-                ->orWhere('name', 'like', "%$search%")
+                ->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "$search%")
+                      ->orWhere('name', 'like', "%$search%");
+                })
                 ->get()
                 ->map(function ($food) {
                     $food->isUserFood = true;

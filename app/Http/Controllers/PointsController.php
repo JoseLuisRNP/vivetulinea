@@ -111,7 +111,9 @@ class PointsController extends Controller
                         ->orWhere('special_no_count', true)
                         ->orWhere('oil_no_count', true);
                 })
-                ->when($search, fn($q) => $q->where('name', 'like', "$search%")->orWhere('name', 'like', "%$search%"))
+                ->when($search, fn($q) => $q->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "$search%")->orWhere('name', 'like', "%$search%");
+                }))
                 ->when($color, fn($q) => $q->where('color', $color))
                 ->withExists([
                     'favoritedByUsers as is_favorite' => function ($query) use ($user) {
