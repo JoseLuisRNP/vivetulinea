@@ -655,10 +655,10 @@
             <section class="acordeon">
                 <article>
                     <h2>Teatinos</h2> CP: 29010 - Málaga Capital
-                    <div>
+                    {{-- <div> --}}
                         {{-- <red>* Cerrado por vacaciones de 1 de Agosto al 31 Agosto</red> --}}
                         {{-- <br/> --}}
-                    </div>
+                    {{-- </div> --}}
                     <div class="block">
                         <span class="clear padding15"></span>
 
@@ -677,6 +677,7 @@
 
 
                         <b>Dirección:</b> Avenida Diego Fernandez de Mendoza 20. Planta 1 - clase 8 (Asociación Hanuca). 29010 Malaga.
+                        <br/> Frente a Domino's Pizza, junto al colegio Pintor Denis Belgrano
                         <br/><br/>
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3198.031322362392!2d-4.4721385256119355!3d36.721808972116975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f73780fc09b3%3A0x91ab6e0a85681cb5!2sAv.%20Diego%20Fern%C3%A1ndez%20de%20Mendoza%2C%2020%2C%2029010%20M%C3%A1laga!5e0!3m2!1ses!2ses!4v1693863316230!5m2!1ses!2ses" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
