@@ -83,13 +83,20 @@
     router.visit(ziggyRoute('points.show', { food: foodId }));
   };
 
+  const pendingFavoriteIds = ref<Set<number>>(new Set());
+
   const handleToggleFavorite = (foodId: number) => {
+    if (pendingFavoriteIds.value.has(foodId)) return;
+    pendingFavoriteIds.value.add(foodId);
     router.post(
       ziggyRoute('favorites.toggle', { food: foodId }),
       {},
       {
         preserveState: true,
         preserveScroll: true,
+        onFinish: () => {
+          pendingFavoriteIds.value.delete(foodId);
+        },
       }
     );
   };
@@ -130,6 +137,7 @@
           :key="food.id"
           :food="food"
           :clickable="true"
+          :favorite-pending="pendingFavoriteIds.has(food.id)"
           @click="handleFoodClick"
           @toggle-favorite="handleToggleFavorite"
         />

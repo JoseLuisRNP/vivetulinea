@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Head, router, usePage } from '@inertiajs/vue3';
+  import { Head, router, usePage, useForm } from '@inertiajs/vue3';
   import NavBar from '@/Components/Layout/NavBar.vue';
   import { ref, onMounted, onUnmounted } from 'vue';
   import { useToast } from 'vue-toastification';
@@ -52,12 +52,15 @@
   const urlParams = new URLSearchParams(window.location.search);
   const search = ref(urlParams.get('q') || '');
 
-  const form = ref({
+  const form = useForm({
     name: '',
     color: 'yellow',
     points: 0,
     quantity: 0,
   });
+
+  const deleting = ref(false);
+  const adding = ref(false);
 
   const colorOptions = [
     { value: 'yellow', label: '🟡 Sin identificar' },
@@ -92,25 +95,23 @@
     { debounce: 300 }
   );
 
+  const resetForm = (food?: UserFood) => {
+    form.name = food?.name ?? '';
+    form.color = food?.color ?? 'yellow';
+    form.points = food?.points ?? 0;
+    form.quantity = food?.quantity ?? 0;
+    form.clearErrors();
+  };
+
   const openCreateModal = () => {
     editingFood.value = null;
-    form.value = {
-      name: '',
-      color: 'yellow',
-      points: 0,
-      quantity: 0,
-    };
+    resetForm();
     showModal.value = true;
   };
 
   const openEditModal = (food: UserFood) => {
     editingFood.value = food;
-    form.value = {
-      name: food.name,
-      color: food.color,
-      points: food.points,
-      quantity: food.quantity,
-    };
+    resetForm(food);
     showModal.value = true;
     showMenu.value = null;
   };
@@ -122,37 +123,29 @@
 
   const saveFood = () => {
     if (editingFood.value) {
-      router.put(
-        ziggyRoute('my-foods.update', { userFood: editingFood.value.id }),
-        form.value,
-        {
-          preserveState: true,
-          preserveScroll: true,
-          onSuccess: () => {
-            closeModal();
-            toast.success('Alimento actualizado correctamente');
-          },
-          onError: () => {
-            toast.error('Error al actualizar el alimento');
-          },
-        }
-      );
+      form.put(ziggyRoute('my-foods.update', { userFood: editingFood.value.id }), {
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: () => {
+          closeModal();
+          toast.success('Alimento actualizado correctamente');
+        },
+        onError: () => {
+          toast.error('Error al actualizar el alimento');
+        },
+      });
     } else {
-      router.post(
-        ziggyRoute('my-foods.store'),
-        form.value,
-        {
-          preserveState: true,
-          preserveScroll: true,
-          onSuccess: () => {
-            closeModal();
-            toast.success('Alimento creado correctamente');
-          },
-          onError: () => {
-            toast.error('Error al crear el alimento');
-          },
-        }
-      );
+      form.post(ziggyRoute('my-foods.store'), {
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: () => {
+          closeModal();
+          toast.success('Alimento creado correctamente');
+        },
+        onError: () => {
+          toast.error('Error al crear el alimento');
+        },
+      });
     }
   };
 
@@ -168,22 +161,22 @@
   };
 
   const confirmDelete = () => {
-    if (foodToDelete.value) {
-      router.delete(
-        ziggyRoute('my-foods.destroy', { userFood: foodToDelete.value.id }),
-        {
-          preserveState: true,
-          preserveScroll: true,
-          onSuccess: () => {
-            closeDeleteModal();
-            toast.success('Alimento eliminado correctamente');
-          },
-          onError: () => {
-            toast.error('Error al eliminar el alimento');
-          },
-        }
-      );
-    }
+    if (!foodToDelete.value || deleting.value) return;
+    deleting.value = true;
+    router.delete(ziggyRoute('my-foods.destroy', { userFood: foodToDelete.value.id }), {
+      preserveState: true,
+      preserveScroll: true,
+      onSuccess: () => {
+        toast.success('Alimento eliminado correctamente');
+      },
+      onError: () => {
+        toast.error('Error al eliminar el alimento');
+      },
+      onFinish: () => {
+        deleting.value = false;
+        closeDeleteModal();
+      },
+    });
   };
 
   const handleFoodClick = (food: UserFood) => {
@@ -193,6 +186,8 @@
       toast.error('No se pueden añadir alimentos propios el día de no contar');
       return;
     }
+    if (adding.value) return;
+    adding.value = true;
 
     router.post(
       ziggyRoute('my-foods.add-meal', { userFood: food.id }),
@@ -207,6 +202,9 @@
         },
         onError: () => {
           toast.error('Error al añadir el alimento');
+        },
+        onFinish: () => {
+          adding.value = false;
         },
       }
     );
@@ -289,6 +287,7 @@
           v-for="food in userFoods.data"
           :key="food.id"
           class="flex items-center border-b p-2 w-full cursor-pointer hover:bg-base-200"
+          :class="{ 'pointer-events-none opacity-60': adding }"
           @click="handleFoodClick(food)"
         >
           <div
@@ -431,8 +430,10 @@
           </div>
         </div>
         <div class="modal-action">
-          <button class="btn" @click="closeModal">Cancelar</button>
-          <button class="btn btn-primary" @click="saveFood">Guardar</button>
+          <button class="btn" :disabled="form.processing" @click="closeModal">Cancelar</button>
+          <button class="btn btn-primary" :disabled="form.processing" @click="saveFood">
+            Guardar
+          </button>
         </div>
       </div>
       <form method="dialog" class="modal-backdrop">
@@ -448,8 +449,10 @@
           ¿Estás seguro de que quieres eliminar este alimento? Esta acción no se puede deshacer.
         </p>
         <div class="modal-action">
-          <button class="btn" @click="closeDeleteModal">Cancelar</button>
-          <button class="btn btn-error" @click="confirmDelete">Eliminar</button>
+          <button class="btn" :disabled="deleting" @click="closeDeleteModal">Cancelar</button>
+          <button class="btn btn-error" :disabled="deleting" @click="confirmDelete">
+            Eliminar
+          </button>
         </div>
       </div>
       <form method="dialog" class="modal-backdrop">

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { Head, router } from '@inertiajs/vue3';
+  import { Head, useForm } from '@inertiajs/vue3';
   import NavBar from '@/Components/Layout/NavBar.vue';
   import ziggyRoute from 'ziggy-js';
-  import { computed, onMounted, ref } from 'vue';
+  import { computed, ref } from 'vue';
 
   const props = defineProps<{
     weight?: {
@@ -12,13 +12,25 @@
     } | null;
   }>();
 
-  const weight = ref(props.weight?.value || 0);
-  const date = ref(props.weight ? new Date(props.weight.date) : new Date());
   const showDatePicker = ref(false);
 
-  // Format date helper
+  const normalizeWeight = (raw: number | string): number | null => {
+    const parsed = parseFloat(String(raw).replace(',', '.'));
+    return Number.isFinite(parsed) ? parsed : null;
+  };
+
+  const form = useForm({
+    weight: (props.weight?.value ?? '') as number | string,
+    date: (props.weight ? new Date(props.weight.date) : new Date()) as Date,
+  });
+
+  form.transform((data) => ({
+    weight: normalizeWeight(data.weight),
+    date: data.date,
+  }));
+
   const formattedDate = computed(() => {
-    return date.value.toLocaleDateString('es-ES', {
+    return form.date.toLocaleDateString('es-ES', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
@@ -26,15 +38,12 @@
   });
 
   const handleSubmit = () => {
-    const data = {
-      weight: weight.value,
-      date: date.value,
-    };
+    if (normalizeWeight(form.weight) === null) return;
 
     if (props.weight) {
-      router.patch(ziggyRoute('weight.update', { weight: props.weight.id }), data);
+      form.patch(ziggyRoute('weight.update', { weight: props.weight.id }));
     } else {
-      router.post(ziggyRoute('weight.store'), data);
+      form.post(ziggyRoute('weight.store'));
     }
   };
 </script>
@@ -55,12 +64,20 @@
         <div class="fieldset max-w-xs w-full">
           <label class="label text-lg">Peso en kg</label>
           <input
-            v-model="weight"
+            v-model="form.weight"
             type="number"
+            min="20"
+            max="300"
+            step="0.1"
+            inputmode="decimal"
             placeholder="Peso en kg"
             class="input focus:border-primary"
+            :class="{ 'border-error': form.errors.weight }"
             @focus="$event.target.select()"
           />
+          <span v-if="form.errors.weight" class="text-error text-sm mt-1">{{
+            form.errors.weight
+          }}</span>
         </div>
         <div class="fieldset max-w-xs relative w-full">
           <label class="label text-lg">Fecha</label>
@@ -74,18 +91,19 @@
 
           <div v-show="showDatePicker" class="absolute top-full left-0 z-10 mt-1">
             <VDatePicker
-              v-model="date"
+              v-model="form.date"
               mode="date"
               locale="es"
               color="vivetulinea"
               @update:model-value="showDatePicker = false"
             />
           </div>
+          <span v-if="form.errors.date" class="text-error text-sm mt-1">{{ form.errors.date }}</span>
         </div>
 
         <button
-          :disabled="!date || !weight"
-          :class="!date || !weight ? 'btn-disabled' : ''"
+          :disabled="!form.date || !form.weight || form.processing"
+          :class="!form.date || !form.weight || form.processing ? 'btn-disabled' : ''"
           class="btn btn-primary mt-8 w-2/4 m-auto"
           @click="handleSubmit"
         >

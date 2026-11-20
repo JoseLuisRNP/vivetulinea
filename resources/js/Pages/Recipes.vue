@@ -78,8 +78,16 @@
     { debounce: 300 }
   );
 
+  const pendingDeleteIds = ref<Set<number>>(new Set());
+
   const deleteRecipe = (recipe: Recipe) => {
-    router.delete(ziggyRoute('recipes.destroy', { id: recipe.id }));
+    if (pendingDeleteIds.value.has(recipe.id)) return;
+    pendingDeleteIds.value.add(recipe.id);
+    router.delete(ziggyRoute('recipes.destroy', { id: recipe.id }), {
+      onFinish: () => {
+        pendingDeleteIds.value.delete(recipe.id);
+      },
+    });
   };
 
   const editRecipe = (recipe: Recipe) => {
@@ -180,7 +188,11 @@
             <button class="text-neutral text-right py-2 mr-2" @click="editRecipe(food)">
               <span class="btn btn-xs btn-secondary btn-outline">Editar receta</span>
             </button>
-            <button class="text-neutral text-right py-2" @click="deleteRecipe(food)">
+            <button
+              class="text-neutral text-right py-2"
+              :disabled="pendingDeleteIds.has(food.id)"
+              @click="deleteRecipe(food)"
+            >
               <span class="btn btn-xs btn-error btn-outline">Borrar receta</span>
             </button>
           </div>

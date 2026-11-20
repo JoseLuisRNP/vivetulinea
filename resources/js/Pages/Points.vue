@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Head, router } from '@inertiajs/vue3';
+  import { Head, useForm } from '@inertiajs/vue3';
   import NavBar from '@/Components/Layout/NavBar.vue';
   import ziggyRoute from 'ziggy-js';
   import { computed, ref } from 'vue';
@@ -14,29 +14,31 @@
   const dayActiveParam = urlParams.get('dayActive') || new Date().toISOString();
   const dayActive = ref(new Date(dayActiveParam));
 
-  const name = ref(props.food?.name || '');
-  const color = ref(props.food?.color || 'yellow');
-  const timeOfDay = ref(urlParams.get('time') || 'Desayuno');
-  const points = ref(0);
   const noCountDay = ref(!!parseInt(urlParams.get('noCountDay')));
   const oilCount = ref(parseInt(urlParams.get('oil')));
   const specialCount = ref(parseInt(urlParams.get('special')));
-  const quantity = ref(
-    noCountDay.value && props.food && (props.food.special_no_count || props.food.oil_no_count)
-      ? 1
-      : 0
-  );
   const isRecipe = ref(urlParams.get('recipe'));
+
+  const form = useForm({
+    name: props.food?.name || '',
+    color: props.food?.color || 'yellow',
+    time_of_day: urlParams.get('time') || 'Desayuno',
+    points: 0,
+    quantity:
+      noCountDay.value && props.food && (props.food.special_no_count || props.food.oil_no_count)
+        ? 1
+        : 0,
+  });
 
   const calculatedPoints = computed(() => {
     const isNoCountDay = noCountDay.value;
     const isNoCountFood = props.food.no_count;
     const isNoCountFoodSpecial = props.food.special_no_count || props.food.oil_no_count;
-    let realQuantity = quantity.value;
+    let realQuantity = form.quantity;
     if (!props.food) return 0;
     if (isNoCountDay && isNoCountFoodSpecial) {
       const freeLeft = props.food.oil_no_count ? 2 - oilCount.value : 3 - specialCount.value;
-      realQuantity = Math.max(0, quantity.value - freeLeft);
+      realQuantity = Math.max(0, form.quantity - freeLeft);
     }
 
     if (isNoCountDay && isNoCountFood) {
@@ -48,19 +50,16 @@
   });
 
   const registerPoints = () => {
-    const data = {
-      quantity: quantity.value,
-      points: props.food ? calculatedPoints.value : points.value,
-      name: name.value,
-      color: color.value,
-      time_of_day: timeOfDay.value,
+    form.transform((data) => ({
+      ...data,
+      points: props.food ? calculatedPoints.value : data.points,
       consumed_at: dayActive.value.toISOString(),
       special_no_count: noCountDay.value && props.food && props.food.special_no_count,
       oil_no_count: noCountDay.value && props.food && props.food.oil_no_count,
       recipe_id: isRecipe.value ? props.food.id : null,
-    };
+    }));
 
-    router.post(ziggyRoute('points.store'), data);
+    form.post(ziggyRoute('points.store'));
   };
 </script>
 <template>
@@ -80,7 +79,7 @@
         <div class="fieldset w-full mb-4">
           <label class="label text-lg">Nombre</label>
           <input
-            v-model="name"
+            v-model="form.name"
             type="text"
             placeholder="Alimento"
             class="input focus:border-primary w-full"
@@ -92,7 +91,7 @@
         <div v-if="!food" class="fieldset w-full mb-4">
           <label class="label text-lg">Puntos</label>
           <input
-            v-model.number="points"
+            v-model.number="form.points"
             type="number"
             placeholder="Alimento"
             class="input focus:border-primary w-full"
@@ -104,7 +103,7 @@
             >Cantidad <span v-if="food && food.unit"> en {{ food.unit }}</span></label
           >
           <input
-            v-model.number="quantity"
+            v-model.number="form.quantity"
             type="number"
             placeholder="0"
             class="input focus:border-primary w-full"
@@ -113,7 +112,7 @@
         </div>
         <div v-if="!food" class="fieldset w-full mb-4">
           <label class="label text-lg">Color</label>
-          <select v-model="color" class="select w-full">
+          <select v-model="form.color" class="select w-full">
             <option value="green">🟢 Hidratos de carbono</option>
             <option value="blue">🔵 Proteínas</option>
             <option value="red">🔴 Grasas</option>
@@ -122,7 +121,7 @@
         </div>
         <div class="fieldset w-full mb-4">
           <label class="label text-lg">Momento</label>
-          <select v-model="timeOfDay" class="select w-full">
+          <select v-model="form.time_of_day" class="select w-full">
             <option v-for="time in times" :key="time" :value="time">
               {{ time }}
             </option>
@@ -133,7 +132,11 @@
             <span class="text-xl">{{ calculatedPoints }}</span>
           </div>
         </div>
-        <button class="btn btn-primary mt-4 w-full" @click="registerPoints">
+        <button
+          class="btn btn-primary mt-4 w-full"
+          :disabled="form.processing"
+          @click="registerPoints"
+        >
           Añadir puntos al diario
         </button>
       </div>

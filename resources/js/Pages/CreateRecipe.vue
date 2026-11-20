@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import NavBar from '@/Components/Layout/NavBar.vue';
-  import { Head, router, Link } from '@inertiajs/vue3';
+  import { Head, router, Link, useForm } from '@inertiajs/vue3';
   import { computed, ref, watch } from 'vue';
   import { onClickOutside, watchDebounced } from '@vueuse/core';
   import ziggyRoute from 'ziggy-js';
@@ -106,27 +106,39 @@
     openResults.value = false;
   });
 
-  const createRecipe = () => {
-    const recipe = {
-      id: props.recipe?.id,
-      name: name.value,
-      ration: ration.value,
-      points: totalRecipePoints.value,
-      proteins: totalRecipePointsByColor.value.blue,
-      sugars: totalRecipePointsByColor.value.green,
-      fats: totalRecipePointsByColor.value.red,
-      empty_points: totalRecipePointsByColor.value.yellow,
-      foods: foods.value.map((food) => {
-        return {
-          food_id: food.isUserFood ? null : food.id,
-          user_food_id: food.isUserFood ? food.id : null,
-          quantity: food.recipeQuantity,
-          unit: food.unit || 'ración',
-        };
-      }),
-    };
+  const form = useForm({
+    id: props.recipe?.id as number | undefined,
+    name: '',
+    ration: 1,
+    points: 0,
+    proteins: 0,
+    sugars: 0,
+    fats: 0,
+    empty_points: 0,
+    foods: [] as Array<{
+      food_id: number | null;
+      user_food_id: number | null;
+      quantity: number | undefined;
+      unit: string;
+    }>,
+  });
 
-    router.post(ziggyRoute('recipes.create'), recipe);
+  const createRecipe = () => {
+    form.name = name.value;
+    form.ration = ration.value;
+    form.points = totalRecipePoints.value;
+    form.proteins = totalRecipePointsByColor.value.blue;
+    form.sugars = totalRecipePointsByColor.value.green;
+    form.fats = totalRecipePointsByColor.value.red;
+    form.empty_points = totalRecipePointsByColor.value.yellow;
+    form.foods = foods.value.map((food) => ({
+      food_id: food.isUserFood ? null : food.id,
+      user_food_id: food.isUserFood ? food.id : null,
+      quantity: food.recipeQuantity,
+      unit: food.unit || 'ración',
+    }));
+
+    form.post(ziggyRoute('recipes.create'));
   };
 </script>
 
@@ -269,7 +281,7 @@
     <div class="flex justify-center">
       <button
         class="btn btn-primary mt-4 w-2/4 m-auto"
-        :disabled="!isFormValid"
+        :disabled="!isFormValid || form.processing"
         @click="createRecipe"
       >
         {{ props.recipe ? 'Actualizar' : 'Crear' }} receta

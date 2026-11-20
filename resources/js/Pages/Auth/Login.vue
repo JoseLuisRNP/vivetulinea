@@ -79,7 +79,9 @@
           page.props.errors.email
         }}</span>
         <div>
-          <button type="submit" class="btn btn-primary w-full">Iniciar sesión</button>
+          <button type="submit" class="btn btn-primary w-full" :disabled="form.processing">
+            Iniciar sesión
+          </button>
         </div>
       </form>
 

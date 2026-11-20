@@ -113,14 +113,29 @@
 
   const toast = useToast();
 
+  const noCountProcessing = ref(false);
+  const guidelineProcessing = ref(false);
+  const pendingDeleteMealIds = ref<Set<number>>(new Set());
+  const pendingFavoriteIds = ref<Set<number>>(new Set());
+
   const startNoCountDay = () => {
     if (hasMeals.value) {
       toast.error('No puedes iniciar el día de no contar si ya has registrado alimentos');
       return;
     }
-    router.post(ziggyRoute('points.no-count'), {
-      date: dayActive.value.toLocaleDateString('en-CA'), // Get YYYY-MM-DD
-    });
+    if (noCountProcessing.value) return;
+    noCountProcessing.value = true;
+    router.post(
+      ziggyRoute('points.no-count'),
+      {
+        date: dayActive.value.toLocaleDateString('en-CA'), // Get YYYY-MM-DD
+      },
+      {
+        onFinish: () => {
+          noCountProcessing.value = false;
+        },
+      }
+    );
   };
 
   const cancelNoCountDay = () => {
@@ -128,9 +143,19 @@
       toast.error('No puedes cancelar el día de no contar si ya has registrado alimentos');
       return;
     }
-    router.post(ziggyRoute('points.cancel-no-count'), {
-      date: dayActive.value.toLocaleDateString('en-CA'), // Get YYYY-MM-DD
-    });
+    if (noCountProcessing.value) return;
+    noCountProcessing.value = true;
+    router.post(
+      ziggyRoute('points.cancel-no-count'),
+      {
+        date: dayActive.value.toLocaleDateString('en-CA'), // Get YYYY-MM-DD
+      },
+      {
+        onFinish: () => {
+          noCountProcessing.value = false;
+        },
+      }
+    );
   };
   const openResults = ref(false);
 
@@ -149,15 +174,33 @@
   const user = computed(() => page.props.auth.user);
 
   const updateGuideline = (property) => {
+    if (guidelineProcessing.value) return;
+    guidelineProcessing.value = true;
     props.guideline[property] += property === 'sport' ? 30 : 1;
-    router.post(ziggyRoute('guidelines.store', { id: props.guideline.id }), { ...props.guideline });
+    router.post(
+      ziggyRoute('guidelines.store', { id: props.guideline.id }),
+      { ...props.guideline },
+      {
+        onFinish: () => {
+          guidelineProcessing.value = false;
+        },
+      }
+    );
   };
 
   const deleteMeal = (meal) => {
-    router.delete(ziggyRoute('points.destroy', { id: meal.id }));
+    if (pendingDeleteMealIds.value.has(meal.id)) return;
+    pendingDeleteMealIds.value.add(meal.id);
+    router.delete(ziggyRoute('points.destroy', { id: meal.id }), {
+      onFinish: () => {
+        pendingDeleteMealIds.value.delete(meal.id);
+      },
+    });
   };
 
   const handleToggleFavorite = (foodId: number) => {
+    if (pendingFavoriteIds.value.has(foodId)) return;
+    pendingFavoriteIds.value.add(foodId);
     router.post(
       ziggyRoute('favorites.toggle', { food: foodId }),
       {},
@@ -165,6 +208,9 @@
         preserveState: true,
         preserveScroll: true,
         only: ['resultSearch'],
+        onFinish: () => {
+          pendingFavoriteIds.value.delete(foodId);
+        },
       }
     );
   };
@@ -251,8 +297,9 @@
             </Link>
             <button
               v-if="result.is_favorite !== undefined"
+              :disabled="pendingFavoriteIds.has(result.id)"
               @click.stop="handleToggleFavorite(result.id)"
-              class="shrink-0 flex items-center justify-center w-5 h-5 hover:opacity-70 transition-opacity text-yellow-500 ml-2"
+              class="shrink-0 flex items-center justify-center w-5 h-5 hover:opacity-70 transition-opacity text-yellow-500 ml-2 disabled:opacity-50"
               type="button"
             >
               <SvgIcon :name="result.is_favorite ? 'star-filled' : 'star'" class="w-5 h-5" />
@@ -273,8 +320,9 @@
         </template>
 
         <button
-          class="border border-primary-content rounded-md flex flex-col items-center justify-center p-2 w-1/3"
+          class="border border-primary-content rounded-md flex flex-col items-center justify-center p-2 w-1/3 disabled:opacity-60"
           :class="noCountDay ? 'bg-secondary-focus' : 'bg-primary-focus'"
+          :disabled="noCountProcessing"
           @click="noCountDay ? cancelNoCountDay() : startNoCountDay()"
         >
           <SvgIcon name="no-count-day" class="h-10 w-10 fill-current" />
@@ -343,13 +391,14 @@ class="text-xs absolute -top-2 -right-4 rounded-full w-5 h-5 flex items-center j
       <div class="m-4 flex justify-evenly w-full text-xl">
         <div
           class="flex rounded-lg"
-          :class="
+          :class="[
             guideline.water >= 8
               ? 'bg-primary-content text-neutral'
               : noCountDay
                 ? 'bg-secondary'
-                : 'bg-primary'
-          "
+                : 'bg-primary',
+            { 'pointer-events-none opacity-60': guidelineProcessing },
+          ]"
           @click="updateGuideline('water')"
         >
           <span class="p-2 flex flex-col justify-center items-center text-base">
@@ -359,13 +408,14 @@ class="text-xs absolute -top-2 -right-4 rounded-full w-5 h-5 flex items-center j
         </div>
         <div
           class="flex rounded-lg"
-          :class="
+          :class="[
             guideline.fruit >= 2
               ? 'bg-primary-content text-neutral'
               : noCountDay
                 ? 'bg-secondary'
-                : 'bg-primary'
-          "
+                : 'bg-primary',
+            { 'pointer-events-none opacity-60': guidelineProcessing },
+          ]"
           @click="updateGuideline('fruit')"
         >
           <span class="p-2 flex flex-col justify-center items-center text-base">
@@ -375,13 +425,14 @@ class="text-xs absolute -top-2 -right-4 rounded-full w-5 h-5 flex items-center j
         </div>
         <div
           class="flex rounded-lg"
-          :class="
+          :class="[
             guideline.vegetable >= 3
               ? 'bg-primary-content text-neutral'
               : noCountDay
                 ? 'bg-secondary'
-                : 'bg-primary'
-          "
+                : 'bg-primary',
+            { 'pointer-events-none opacity-60': guidelineProcessing },
+          ]"
           @click="updateGuideline('vegetable')"
         >
           <span class="p-2 flex flex-col justify-center items-center text-base">
@@ -391,13 +442,14 @@ class="text-xs absolute -top-2 -right-4 rounded-full w-5 h-5 flex items-center j
         </div>
         <div
           class="flex rounded-lg"
-          :class="
+          :class="[
             guideline.sport >= 30
               ? 'bg-primary-content text-neutral'
               : noCountDay
                 ? 'bg-secondary'
-                : 'bg-primary'
-          "
+                : 'bg-primary',
+            { 'pointer-events-none opacity-60': guidelineProcessing },
+          ]"
           @click="updateGuideline('sport')"
         >
           <span class="p-2 flex flex-col justify-center items-center text-base">
@@ -486,7 +538,11 @@ class="text-xs absolute -top-2 -right-4 rounded-full w-5 h-5 flex items-center j
                   </div>
                   <div class="flex">
                     <div class="text-sm mr-2">{{ meal.points }} puntos</div>
-                    <button class="btn btn-xs btn-error btn-outline" @click="deleteMeal(meal)">
+                    <button
+                      class="btn btn-xs btn-error btn-outline"
+                      :disabled="pendingDeleteMealIds.has(meal.id)"
+                      @click="deleteMeal(meal)"
+                    >
                       Borrar
                     </button>
                   </div>

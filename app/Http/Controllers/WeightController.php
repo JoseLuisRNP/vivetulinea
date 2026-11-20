@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreWeightRequest;
 use App\Models\Weight;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class WeightController extends Controller
@@ -25,17 +25,14 @@ class WeightController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreWeightRequest $request)
     {
-        $request->validate([
-            'weight' => 'required|numeric',
-            'date' => 'required|date',
-        ]);
+        $validated = $request->validated();
 
         Weight::create([
             'user_id' => auth()->id(),
-            'value' => $request->weight,
-            'date' => $request->date,
+            'value' => $validated['weight'],
+            'date' => $validated['date'],
         ]);
 
         return redirect()->route('weights.show');
@@ -48,16 +45,13 @@ class WeightController extends Controller
         return redirect()->back();
     }
 
-    public function update(Request $request, Weight $weight)
+    public function update(StoreWeightRequest $request, Weight $weight)
     {
-        $request->validate([
-            'weight' => 'required|numeric',
-            'date' => 'required|date',
-        ]);
+        $validated = $request->validated();
 
         $weight->update([
-            'value' => $request->weight,
-            'date' => $request->date,
+            'value' => $validated['weight'],
+            'date' => $validated['date'],
         ]);
 
         return redirect()->route('weights.show');

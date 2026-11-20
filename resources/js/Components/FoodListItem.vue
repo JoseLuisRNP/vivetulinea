@@ -18,6 +18,7 @@ import SvgIcon from '@/Components/SvgIcon.vue';
     food: Food;
     showNoCountHighlight?: boolean;
     clickable?: boolean;
+    favoritePending?: boolean;
   }>();
 
   const emit = defineEmits<{
@@ -33,6 +34,7 @@ import SvgIcon from '@/Components/SvgIcon.vue';
 
   const handleStarClick = (e: Event) => {
     e.stopPropagation();
+    if (props.favoritePending) return;
     emit('toggleFavorite', props.food.id);
   };
 
@@ -66,8 +68,9 @@ import SvgIcon from '@/Components/SvgIcon.vue';
       <div class="flex items-center gap-2 min-w-0">
         <button
           v-if="food.is_favorite !== undefined"
+          :disabled="favoritePending"
           @click="handleStarClick"
-          class="shrink-0 flex items-center justify-center w-5 h-5 hover:opacity-70 transition-opacity text-yellow-500"
+          class="shrink-0 flex items-center justify-center w-5 h-5 hover:opacity-70 transition-opacity text-yellow-500 disabled:opacity-50"
           type="button"
         >
           <SvgIcon :name="food.is_favorite ? 'star-filled' : 'star'" class="w-5 h-5" />
