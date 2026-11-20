@@ -11,10 +11,10 @@ composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
 echo "" | sudo -S service php8.4-fpm reload
 
-yarn install
+npm ci
 export NODE_OPTIONS="--max-old-space-size=2048"  # Cambia 2048 a un valor adecuado según tu memoria disponible
 
-yarn build
+npm run build
 rm -rf ./node_modules
 
 # Prepare Laravel
