@@ -1,4 +1,5 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import path from 'path';
 
 import laravel from 'laravel-vite-plugin';
@@ -8,7 +9,12 @@ import vueDevTools from 'vite-plugin-vue-devtools';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd(), '');
+    return {
+    build: {
+        sourcemap: true,
+    },
     server: {
         host: '0.0.0.0',
         port: 5173,
@@ -747,5 +753,11 @@ export default defineConfig({
                 ],
             },
         }),
+        sentryVitePlugin({
+            org: env.SENTRY_ORG,
+            project: env.SENTRY_PROJECT,
+            authToken: env.SENTRY_AUTH_TOKEN,
+        }),
     ],
+    };
 });

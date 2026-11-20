@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { computed, ref } from 'vue';
-  import { Head, router } from '@inertiajs/vue3';
+  import { Head, useForm } from '@inertiajs/vue3';
   import NavBar from '@/Components/Layout/NavBar.vue';
   import ziggyRoute from 'ziggy-js';
   import { times } from '@/data';
@@ -12,40 +12,41 @@
     errors: any;
   }>();
 
+  const calories = ref(0);
+  const fats = ref(0);
+  const sugars = ref(0);
+  const proteins = ref(0);
+
+  const form = useForm({
+    name: '',
+    color: 'yellow',
+    time_of_day: 'Desayuno',
+    quantity: 0,
+    points: 0 as number | string,
+  });
+
   const points = computed(() => {
-    if (!calories.value || !quantity.value) return '-';
+    if (!calories.value || !form.quantity) return '-';
 
     const result =
       (calories.value * 0.0305 +
         fats.value * 0.275 +
         sugars.value * 0.12 -
         proteins.value * 0.098) *
-      (quantity.value / 100);
+      (form.quantity / 100);
     return roundedPoints(result);
   });
 
-  const calories = ref(0);
-  const fats = ref(0);
-  const sugars = ref(0);
-  const proteins = ref(0);
-  const quantity = ref(0);
-  const name = ref('');
-  const color = ref('yellow');
-  const timeOfDay = ref('Desayuno');
-
   const registerPoints = () => {
-    if (!calories.value || !quantity.value) return;
+    if (!calories.value || !form.quantity) return;
 
-    const data = {
-      quantity: quantity.value,
-      points: points.value,
-      name: name.value,
-      color: color.value,
-      time_of_day: timeOfDay.value,
+    form.points = points.value;
+    form.transform((data) => ({
+      ...data,
       consumed_at: props.dayActive || new Date().toISOString(),
-    };
+    }));
 
-    router.post(ziggyRoute('points.store'), data);
+    form.post(ziggyRoute('points.store'));
   };
 </script>
 <template>
@@ -103,7 +104,7 @@
       <div class="fieldset max-w-xs">
         <label class="label">Cantidad consumida</label>
         <input
-          v-model.number="quantity"
+          v-model.number="form.quantity"
           type="number"
           class="input focus:border-primary"
           @focus="$event.target.select()"
@@ -120,18 +121,18 @@
         <div class="fieldset max-w-xs">
           <label class="label">Nombre</label>
           <input
-            v-model="name"
+            v-model="form.name"
             type="text"
             placeholder="Alimento"
             class="input focus:border-primary"
-            :class="errors.name ? 'border-error' : ''"
+            :class="form.errors.name ? 'border-error' : ''"
             @focus="$event.target.select()"
           />
-          <span v-if="errors.name" class="text-xs text-error">{{ errors.name }}</span>
+          <span v-if="form.errors.name" class="text-xs text-error">{{ form.errors.name }}</span>
         </div>
         <div class="fieldset max-w-xs">
           <label class="label">Color</label>
-          <select v-model="color" class="select">
+          <select v-model="form.color" class="select">
             <option value="green">🟢 Hidratos de carbono</option>
             <option value="blue">🔵 Proteínas</option>
             <option value="red">🔴 Grasas</option>
@@ -140,7 +141,7 @@
         </div>
         <div class="fieldset max-w-xs">
           <label class="label">Momento</label>
-          <select v-model="timeOfDay" class="select">
+          <select v-model="form.time_of_day" class="select">
             <option v-for="time in times" :key="time" :value="time">
               {{ time }}
             </option>
@@ -148,7 +149,7 @@
         </div>
         <button
           class="btn btn-primary mt-4 w-2/4 m-auto w-full"
-          :disabled="!points || !quantity"
+          :disabled="!points || !form.quantity || form.processing"
           @click="registerPoints"
         >
           Añadir puntos al diario

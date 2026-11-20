@@ -40,6 +40,7 @@
 
   const showDeleteModal = ref(false);
   const weightToDelete = ref<number | null>(null);
+  const deleting = ref(false);
 
   const openDeleteModal = (id: number) => {
     weightToDelete.value = id;
@@ -52,10 +53,14 @@
   };
 
   const confirmDelete = () => {
-    if (weightToDelete.value) {
-      router.delete(route('weight.destroy', { weight: weightToDelete.value }));
-      closeDeleteModal();
-    }
+    if (!weightToDelete.value || deleting.value) return;
+    deleting.value = true;
+    router.delete(route('weight.destroy', { weight: weightToDelete.value }), {
+      onFinish: () => {
+        deleting.value = false;
+        closeDeleteModal();
+      },
+    });
   };
 
   const handleRangeChange = (event: Event) => {
@@ -176,8 +181,10 @@
         <h3 class="font-bold text-lg">Confirmar eliminación</h3>
         <p class="py-4">¿Estás seguro de que quieres eliminar este registro de peso? Esta acción no se puede deshacer.</p>
         <div class="modal-action">
-          <button class="btn" @click="closeDeleteModal">Cancelar</button>
-          <button class="btn btn-error" @click="confirmDelete">Eliminar</button>
+          <button class="btn" :disabled="deleting" @click="closeDeleteModal">Cancelar</button>
+          <button class="btn btn-error" :disabled="deleting" @click="confirmDelete">
+            Eliminar
+          </button>
         </div>
       </div>
       <form method="dialog" class="modal-backdrop">

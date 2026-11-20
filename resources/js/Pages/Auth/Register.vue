@@ -53,7 +53,9 @@
           >
         </div>
         <div>
-          <button type="submit" class="btn btn-primary w-full mt-6">Registrarse</button>
+          <button type="submit" class="btn btn-primary w-full mt-6" :disabled="form.processing">
+            Registrarse
+          </button>
         </div>
       </form>
 
