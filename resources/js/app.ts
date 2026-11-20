@@ -10,6 +10,9 @@ import Toast, { POSITION } from 'vue-toastification';
 import * as Sentry from '@sentry/vue';
 import VCalendar from 'v-calendar';
 import 'v-calendar/style.css';
+import { rememberTimezone } from './helpers';
+
+rememberTimezone();
 
 // Import the CSS or use your own!
 import 'vue-toastification/dist/index.css';

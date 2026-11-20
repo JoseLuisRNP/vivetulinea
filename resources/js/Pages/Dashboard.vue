@@ -2,11 +2,17 @@
   import { Head, router, usePage } from '@inertiajs/vue3';
   import NavBar from '@/Components/Layout/NavBar.vue';
   import { Link } from '@inertiajs/vue3';
-  import { computed, ref, watch } from 'vue';
+  import { computed, onMounted, ref, watch } from 'vue';
   import { times } from '@/data';
   import { watchDebounced, onClickOutside } from '@vueuse/core';
   import { useToast } from 'vue-toastification';
-  import { roundedPoints, getCurrentTimeOfDay } from '../helpers';
+  import {
+    roundedPoints,
+    getCurrentTimeOfDay,
+    parseLocalDate,
+    toLocalDateString,
+    todayLocalDateString,
+  } from '../helpers';
   import SvgIcon from '@/Components/SvgIcon.vue';
   import ziggyRoute from 'ziggy-js';
 
@@ -40,23 +46,37 @@
     resultSearch: any[];
     noCountDay: boolean;
     guideline: Guideline;
+    day: string;
   }>();
 
 
-  const oneDay = 24 * 60 * 60 * 1000;
-  const dayActive = ref(new Date());
+  // Local calendar day being shown. It comes from the server so the header
+  // and the data always match.
+  const dayActive = ref(parseLocalDate(props.day));
+  const dayActiveString = computed(() => toLocalDateString(dayActive.value));
 
-  const nextDay = () => {
-    dayActive.value = new Date(dayActive.value.getTime() + oneDay);
+  const moveDay = (offset: number) => {
+    const next = new Date(dayActive.value);
+    next.setDate(next.getDate() + offset);
+    dayActive.value = next;
   };
 
-  const prevDay = () => {
-    dayActive.value = new Date(dayActive.value.getTime() - oneDay);
-  };
+  const nextDay = () => moveDay(1);
+
+  const prevDay = () => moveDay(-1);
 
   watch(dayActive, () => {
     // Get points of this day
-    router.reload({ data: { dayActive: dayActive.value.toISOString() } });
+    router.reload({ data: { dayActive: dayActiveString.value } });
+  });
+
+  onMounted(() => {
+    // Without an explicit day the server guesses "today" from the timezone
+    // cookie, which may not exist yet on the very first visit.
+    const hasExplicitDay = new URLSearchParams(window.location.search).has('dayActive');
+    if (!hasExplicitDay && props.day !== todayLocalDateString()) {
+      dayActive.value = parseLocalDate(todayLocalDateString());
+    }
   });
 
   const getTotalPoints = (array: Meal[]) =>
@@ -119,7 +139,7 @@
       return;
     }
     router.post(ziggyRoute('points.no-count'), {
-      date: dayActive.value.toLocaleDateString('en-CA'), // Get YYYY-MM-DD
+      date: dayActiveString.value,
     });
   };
 
@@ -129,7 +149,7 @@
       return;
     }
     router.post(ziggyRoute('points.cancel-no-count'), {
-      date: dayActive.value.toLocaleDateString('en-CA'), // Get YYYY-MM-DD
+      date: dayActiveString.value,
     });
   };
   const openResults = ref(false);
@@ -178,7 +198,7 @@
       <Link
         :href="
           ziggyRoute('calculator', {
-            dayActive: dayActive.toISOString(),
+            dayActive: dayActiveString,
           })
         "
         class="btn btn-ghost flex items-end text-primary -mr-2"
@@ -224,7 +244,7 @@
               :href="
                 ziggyRoute('points.show', {
                   food: result.id,
-                  dayActive,
+                  dayActive: dayActiveString,
                   noCountDay,
                   special: specialNoCountQuantity,
                   oil: oilNoCountQuantity,
@@ -419,7 +439,7 @@ class="text-xs absolute -top-2 -right-4 rounded-full w-5 h-5 flex items-center j
           {{ time }}
           <div class="flex">
             <Link
-              :href="ziggyRoute('recipes.index', { time, dayActive })"
+              :href="ziggyRoute('recipes.index', { time, dayActive: dayActiveString })"
               class="text-primary-content rounded-full h-3 w-3 flex items-center justify-center p-3 z-10 mr-2"
             >
               <div class="flex justify-between items-center text-primary">
@@ -427,7 +447,7 @@ class="text-xs absolute -top-2 -right-4 rounded-full w-5 h-5 flex items-center j
               </div>
             </Link>
             <Link
-              :href="ziggyRoute('my-foods.index', { time: time || getCurrentTimeOfDay(), dayActive: dayActive.toISOString(), noCountDay })"
+              :href="ziggyRoute('my-foods.index', { time: time || getCurrentTimeOfDay(), dayActive: dayActiveString, noCountDay })"
               class="text-primary-content bg-primary rounded-full h-3 w-3 flex items-center justify-center p-3 z-10"
             >
               +

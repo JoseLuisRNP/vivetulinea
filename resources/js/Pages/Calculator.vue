@@ -4,7 +4,7 @@
   import NavBar from '@/Components/Layout/NavBar.vue';
   import ziggyRoute from 'ziggy-js';
   import { times } from '@/data';
-  import { roundedPoints } from '@/helpers';
+  import { roundedPoints, todayLocalDateString } from '@/helpers';
 
   const props = defineProps<{
     backTo: string;
@@ -42,7 +42,7 @@
       name: name.value,
       color: color.value,
       time_of_day: timeOfDay.value,
-      consumed_at: props.dayActive || new Date().toISOString(),
+      consumed_at: props.dayActive || todayLocalDateString(),
     };
 
     router.post(ziggyRoute('points.store'), data);

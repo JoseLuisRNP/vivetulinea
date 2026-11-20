@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Food;
 use App\Models\Guideline;
 use App\Models\Recipe;
-use Illuminate\Support\Carbon;
+use App\Support\UserTime;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -39,7 +39,7 @@ class PointsController extends Controller
             'name' => \request('name'),
             'color' => \request('color'),
             'time_of_day' => \request('time_of_day'),
-            'consumed_at' => Carbon::parse(\request('consumed_at')),
+            'consumed_at' => UserTime::consumedAt(\request('consumed_at')),
             'special_no_count' => \request('special_no_count') ?? false,
             'oil_no_count' => \request('oil_no_count') ?? false,
             'recipe_id' => \request('recipe_id'),
@@ -62,7 +62,7 @@ class PointsController extends Controller
         ]);
 
         auth()->user()->noCountDays()->create([
-            'date' => Carbon::parse(\request('date')),
+            'date' => UserTime::day(\request('date')),
         ]);
 
         return redirect()->back()->with('message', 'Día de no contar puntos iniciado correctamente');
@@ -74,7 +74,7 @@ class PointsController extends Controller
             'date' => 'required|date',
         ]);
 
-        auth()->user()->noCountDays()->whereDate('date', Carbon::parse(\request('date'))->toDateString())->get()->each->delete();
+        auth()->user()->noCountDays()->whereDate('date', UserTime::day(\request('date'))->toDateString())->get()->each->delete();
 
         return redirect()->back()->with('message', 'Día de no contar puntos cancelado');
     }

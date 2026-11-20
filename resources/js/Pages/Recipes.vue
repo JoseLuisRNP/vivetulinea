@@ -4,7 +4,7 @@
   import { watchDebounced } from '@vueuse/core';
   import { Head, router, Link, usePage } from '@inertiajs/vue3';
   import ziggyRoute from 'ziggy-js';
-  import { roundedPoints } from '../helpers';
+  import { roundedPoints, todayLocalDateString } from '../helpers';
 
   interface Paginate<T> {
     data: T[];
@@ -54,18 +54,14 @@
   const page = usePage();
   const search = ref('');
   const urlParams = new URLSearchParams(window.location.search);
-  const dayActiveParam = urlParams.get('dayActive') || new Date().toISOString();
-  const dayActive = ref(new Date(dayActiveParam));
+  const dayActive = urlParams.get('dayActive') || todayLocalDateString();
   const time = ref(urlParams.get('time') || 'Desayuno');
 
   const getPointsUrl = (recipeId: number) => {
-    const dayActiveDate = dayActive.value instanceof Date && !isNaN(dayActive.value.getTime())
-      ? dayActive.value
-      : new Date();
     return ziggyRoute('points.show', {
       food: recipeId,
       time: time.value || 'Desayuno',
-      dayActive: dayActiveDate.toISOString(),
+      dayActive,
       recipe: true,
     });
   };
