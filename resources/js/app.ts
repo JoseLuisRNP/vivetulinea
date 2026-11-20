@@ -15,11 +15,6 @@ import 'v-calendar/style.css';
 import 'vue-toastification/dist/index.css';
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-if (import.meta.env.PROD) {
-  Sentry.init({
-    dsn: import.meta.env.VITE_SENTRY_DSN_PUBLIC,
-  });
-}
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
@@ -29,12 +24,29 @@ createInertiaApp({
       import.meta.glob<DefineComponent>('./Pages/**/*.vue')
     ),
   setup({ el, App, props, plugin }) {
-    createApp({ render: () => h(App, props) })
+    const app = createApp({ render: () => h(App, props) })
       .use(plugin)
       .use(ZiggyVue, Ziggy)
       .use(Toast, { position: POSITION.BOTTOM_LEFT })
-      .use(VCalendar, {})
-      .mount(el);
+      .use(VCalendar, {});
+
+    if (import.meta.env.PROD) {
+      Sentry.init({
+        app,
+        dsn: import.meta.env.VITE_SENTRY_DSN_PUBLIC,
+      });
+
+      const user = (props.initialPage.props as any).auth?.user;
+      if (user) {
+        Sentry.setUser({
+          id: user.id,
+          email: user.email,
+          username: user.name,
+        });
+      }
+    }
+
+    app.mount(el);
   },
   progress: {
     color: '#4B5563',
