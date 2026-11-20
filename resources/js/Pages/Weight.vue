@@ -2,6 +2,7 @@
   import { Head, router } from '@inertiajs/vue3';
   import NavBar from '@/Components/Layout/NavBar.vue';
   import ziggyRoute from 'ziggy-js';
+  import { parseLocalDate, toLocalDateString } from '@/helpers';
   import { computed, onMounted, ref } from 'vue';
 
   const props = defineProps<{
@@ -13,7 +14,7 @@
   }>();
 
   const weight = ref(props.weight?.value || 0);
-  const date = ref(props.weight ? new Date(props.weight.date) : new Date());
+  const date = ref(props.weight ? parseLocalDate(props.weight.date) : new Date());
   const showDatePicker = ref(false);
 
   // Format date helper
@@ -28,7 +29,8 @@
   const handleSubmit = () => {
     const data = {
       weight: weight.value,
-      date: date.value,
+      // Local calendar day, not a UTC instant.
+      date: toLocalDateString(date.value),
     };
 
     if (props.weight) {

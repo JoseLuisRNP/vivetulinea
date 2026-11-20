@@ -12,6 +12,7 @@ class EncryptCookies extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        // Browser timezone, written by the frontend (see resources/js/app.ts).
+        'tz',
     ];
 }

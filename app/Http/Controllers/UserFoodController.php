@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserFoodRequest;
 use App\Models\UserFood;
-use Illuminate\Support\Carbon;
+use App\Support\UserTime;
 use Inertia\Inertia;
 
 class UserFoodController extends Controller
@@ -66,7 +66,7 @@ class UserFoodController extends Controller
         }
 
         $timeOfDay = \request('time') ?: $this->getCurrentTimeOfDay();
-        $dayActive = \request('dayActive') ? Carbon::parse(\request('dayActive')) : now();
+        $dayActive = UserTime::consumedAt(\request('dayActive'));
 
         auth()->user()->meals()->create([
             'points' => $userFood->points,
@@ -78,13 +78,13 @@ class UserFoodController extends Controller
         ]);
 
         return redirect()->route('dashboard', [
-            'dayActive' => $dayActive->toISOString(),
+            'dayActive' => $dayActive->toDateString(),
         ])->with('success', 'Alimento añadido correctamente');
     }
 
     private function getCurrentTimeOfDay(): string
     {
-        $hour = (int) now()->format('H');
+        $hour = (int) UserTime::now()->format('H');
 
         if ($hour < 10) {
             return 'Desayuno';

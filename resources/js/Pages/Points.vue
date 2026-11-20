@@ -4,15 +4,15 @@
   import ziggyRoute from 'ziggy-js';
   import { computed, ref } from 'vue';
   import { times } from '@/data';
-  import { roundedPoints } from '@/helpers';
+  import { roundedPoints, todayLocalDateString } from '@/helpers';
 
   const props = defineProps<{
     food: any;
   }>();
 
   const urlParams = new URLSearchParams(window.location.search);
-  const dayActiveParam = urlParams.get('dayActive') || new Date().toISOString();
-  const dayActive = ref(new Date(dayActiveParam));
+  // Local day ("YYYY-MM-DD") the food is logged on; the server resolves it.
+  const dayActive = urlParams.get('dayActive') || todayLocalDateString();
 
   const name = ref(props.food?.name || '');
   const color = ref(props.food?.color || 'yellow');
@@ -54,7 +54,7 @@
       name: name.value,
       color: color.value,
       time_of_day: timeOfDay.value,
-      consumed_at: dayActive.value.toISOString(),
+      consumed_at: dayActive,
       special_no_count: noCountDay.value && props.food && props.food.special_no_count,
       oil_no_count: noCountDay.value && props.food && props.food.oil_no_count,
       recipe_id: isRecipe.value ? props.food.id : null,

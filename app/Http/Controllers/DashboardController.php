@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Food;
 use App\Models\Guideline;
 use App\Services\DashboardService;
-use Illuminate\Support\Carbon;
+use App\Support\UserTime;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
@@ -14,7 +14,7 @@ class DashboardController extends Controller
     public function __invoke(DashboardService $dashboardService)
     {
         $search = request('q');
-        $day = request('dayActive') ? Carbon::parse(request('dayActive')) : Carbon::now();
+        $day = UserTime::day(request('dayActive'));
         $user = auth()->user();
         $dayString = $day->toDateString();
 
@@ -44,6 +44,7 @@ class DashboardController extends Controller
 
         return Inertia::render('Dashboard', array_merge($data, [
             'resultSearch' => $resultSearch,
+            'day' => $dayString,
         ]));
     }
 }
