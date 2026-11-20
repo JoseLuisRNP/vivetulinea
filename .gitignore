@@ -17,3 +17,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# Server-side leftovers (prod backups and hand-made config copies)
+/storage/backups
+*.bak.*
