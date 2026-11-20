@@ -40,6 +40,8 @@ class WeightController extends Controller
 
     public function destroy(Weight $weight)
     {
+        abort_unless((int) $weight->user_id === (int) auth()->id(), 404);
+
         $weight->delete();
 
         return redirect()->back();
@@ -47,6 +49,8 @@ class WeightController extends Controller
 
     public function update(StoreWeightRequest $request, Weight $weight)
     {
+        abort_unless((int) $weight->user_id === (int) auth()->id(), 404);
+
         $validated = $request->validated();
 
         $weight->update([

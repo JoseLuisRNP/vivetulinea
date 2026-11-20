@@ -171,4 +171,54 @@ class WeightControllerTest extends TestCase
         $this->assertSame('73.20', (string) $weight->value);
         $this->assertSame('2026-05-15', $weight->date->toDateString());
     }
+
+    public function test_user_cannot_update_other_user_weight(): void
+    {
+        $owner = User::factory()->create();
+        $attacker = User::factory()->create();
+        $weight = Weight::create([
+            'user_id' => $owner->id,
+            'value' => 72.5,
+            'date' => '2026-05-10',
+        ]);
+
+        $response = $this->actingAs($attacker)->patch(
+            route('weight.update', ['weight' => $weight->id]),
+            ['weight' => 99, 'date' => '2026-05-15']
+        );
+
+        $response->assertNotFound();
+        $weight->refresh();
+        $this->assertSame('72.50', (string) $weight->value);
+    }
+
+    public function test_user_cannot_delete_other_user_weight(): void
+    {
+        $owner = User::factory()->create();
+        $attacker = User::factory()->create();
+        $weight = Weight::create([
+            'user_id' => $owner->id,
+            'value' => 72.5,
+            'date' => '2026-05-10',
+        ]);
+
+        $response = $this->actingAs($attacker)->delete(route('weight.destroy', ['weight' => $weight->id]));
+
+        $response->assertNotFound();
+        $this->assertDatabaseHas('weights', ['id' => $weight->id]);
+    }
+
+    public function test_user_can_delete_own_weight(): void
+    {
+        $user = User::factory()->create();
+        $weight = Weight::create([
+            'user_id' => $user->id,
+            'value' => 72.5,
+            'date' => '2026-05-10',
+        ]);
+
+        $this->actingAs($user)->delete(route('weight.destroy', ['weight' => $weight->id]));
+
+        $this->assertDatabaseMissing('weights', ['id' => $weight->id]);
+    }
 }
